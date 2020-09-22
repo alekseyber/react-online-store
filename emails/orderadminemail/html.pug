@@ -1,0 +1,83 @@
+doctype html
+html(lang='ru')
+    head
+        meta(charset='UTF-8')
+        meta(name='viewport' content='width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0')
+        meta(http-equiv='X-UA-Compatible' content='ie=edge')
+        title Заказ #{orderNum}
+    body
+        h3 Поступил заказ № #{orderNum} от #{dateStr}.
+        table(style='border:1px solid #ddd;border-collapse:collapse;width: 100%')
+            thead
+                tr(style='background:#f9f9f9')
+                    th(colspan='2' style='padding:8px;border:1px solid #ddd;background:#f9f9f9') Данные покупателя
+            tbody
+                if acquirer_block
+                    tr
+                        td(colspan='2' style='padding:8px;border:1px solid #FF0000;background:#FF0000')  Покупатель в черном списке
+                tr
+                    td(style='padding:8px;border:1px solid #ddd;background:#f9f9f9;width:30%') Имя:
+                    td(style='padding:8px;border:1px solid #ddd;width:70%') #{name}
+                tr
+                    td(style='padding:8px;border:1px solid #ddd;background:#f9f9f9;width:30%') Телефон:
+                    td(style='padding:8px;border:1px solid #ddd;width:70%') 
+                        a(href='tel:+'+phone) +#{phone}
+                tr
+                    td(style='padding:8px;border:1px solid #ddd;background:#f9f9f9;width:30%') Город:
+                    td(style='padding:8px;border:1px solid #ddd;width:70%') #{cityName}
+                tr
+                    td(style='padding:8px;border:1px solid #ddd;background:#f9f9f9;width:30%') Регион:
+                    td(style='padding:8px;border:1px solid #ddd;width:70%') #{oblName}
+                if geoCity
+                    tr
+                        td(style='padding:8px;border:1px solid #ddd;background:#f9f9f9;width:30%') Гео город:
+                        td(style='padding:8px;border:1px solid #ddd;width:70%') #{geoCity}
+                if pvzSelect
+                    tr
+                        td(colspan='2' style='padding:8px;border:1px solid #ddd;background:#f9f9f9')  <strong>Выбран ПВЗ:</strong> #{pvzCode}
+                else
+                    tr
+                        td(style='padding:8px;border:1px solid #ddd;background:#f9f9f9;width:30%') Адрес:
+                        td(style='padding:8px;border:1px solid #ddd;width:70%') ул. #{street}, д. #{house}, кв/оф. #{flat}
+                if comment.length>0
+                    tr
+                        td(style='padding:8px;border:1px solid #ddd;background:#f9f9f9;width:30%') Сообщение клиента:
+                        td(style='padding:8px;border:1px solid #ddd;width:70%') #{comment}
+                tr
+                    td(style='padding:8px;border:1px solid #ddd;background:#f9f9f9;width:30%') Стоимость доставки:
+                    td(style='padding:8px;border:1px solid #ddd;width:70%') #{deliveryPrice} #{currSymbol}
+                if deliveryComment.length>0
+                    tr
+                        td(style='padding:8px;border:1px solid #ddd;background:#f9f9f9;width:30%') Текст доставки:
+                        td(style='padding:8px;border:1px solid #ddd;width:70%') #{deliveryComment}
+                if cupon
+                    tr
+                        td(colspan='2' style='padding:8px;border:1px solid #ddd;background:#f9f9f9')  <strong>Введен промокод, дисконт:</strong> #{discontcupon}
+
+                tr
+                    td(style='padding:8px;border:1px solid #ddd;background:#f9f9f9;width:30%') Сумма заказа:
+                    td(style='padding:8px;border:1px solid #ddd;width:70%') #{summa} #{currSymbol}
+        br
+        table(style='border:1px solid #ddd;border-collapse:collapse;width: 100%')
+            thead
+                tr(style='background:#f9f9f9')
+                    th(colspan='5' style='padding:8px;border:1px solid #ddd;background:#f9f9f9') Позиции заказа
+            tbody
+                each item, index in cart
+                    tr
+                        td(colspan='5' style='padding:8px;border:1px solid #ddd;background:#f9f9f9') #{index+1}. 
+                            a(href=baseUrl+item.link target='_blank') #{item.title}
+                    tr
+                        td(colspan='5' style='padding: 8px; border: 1px solid #ddd; text-align: center')
+                            img(
+                                src=baseUrl+item.img 
+                                height='130' 
+                                width='130' 
+                                style='max-width:auto;max-height:130px'
+                                alt=item.title
+                                )
+                    tr                     
+                        td(style='padding: 8px;border:1px solid #ddd') Количество: <strong>#{item.qty} шт</strong>
+                        td(style='padding: 8px;border:1px solid #ddd' colspan='2') Цена: <strong>#{item.price} #{currSymbol}</strong>
+                        td(style='padding: 8px;border:1px solid #ddd' colspan='2') Cумма: <strong>#{item.itemSumm} #{currSymbol}</strong>        
+        p Интернет магазин <strong>#{shopName}</strong>.

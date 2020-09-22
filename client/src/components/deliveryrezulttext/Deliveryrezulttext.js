@@ -1,0 +1,52 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+//import { useDispatch } from 'react-redux';
+import Box from '@material-ui/core/Box';
+import Typography from '@material-ui/core/Typography';
+//import Button from '@material-ui/core/Button';
+//import { openPvzSelector } from '../../redux/actions/modaldialog';
+import DeliveryPvzDescrNoProps from '../deliverypvzdescrnoprops/Deliverypvzdescrnoprops';
+
+
+const DeliveryRezulText = ({ pvz, price, currSymbol, dateMax, sel_pvz_v }) => {
+    const title = pvz ? 'Забрать в пункте выдачи заказов (ПВЗ):' : 'Курьер доставит по адресу:';
+    const descr = pvz ? 'При поступлении в ПВЗ Вы получите уведомление.' : 'Курьер позвонит перед доставкой.';
+    const pvzSelectedVisible = (sel_pvz_v && pvz);
+    
+
+    return (
+
+        <Box mt={1} mb={1}>
+            <Typography variant="subtitle2" component="div" gutterBottom className="font-weight-black">{title}</Typography>
+            <div>
+                <Typography variant="body2" component="span" color="textSecondary">Стоимость доставки:</Typography>
+                <Typography variant="body2" component="span" className="font-weight-black ml-1">{price} {currSymbol}</Typography>
+            </div>
+            <div>
+                <Typography variant="body2" component="span" color="textSecondary">Срок доставки:</Typography>
+                <Typography variant="body2" component="span" className="font-weight-black ml-1">{dateMax}</Typography>
+            </div>
+            <Typography variant="body2" component="div" color="textSecondary" className="font-weight-black">{descr}</Typography>
+            {pvzSelectedVisible && <DeliveryPvzDescrNoProps />}
+        </Box >
+
+    )
+}
+
+DeliveryRezulText.defaultProps = {
+    pvz: false,
+    currSymbol: '',
+    sel_pvz_v: true
+
+};
+
+DeliveryRezulText.propTypes = {
+    pvz: PropTypes.bool,
+    sel_pvz_v: PropTypes.bool,
+    price: PropTypes.number.isRequired,
+    currSymbol: PropTypes.string,
+    dateMax: PropTypes.string.isRequired,
+
+};
+
+export default DeliveryRezulText;
