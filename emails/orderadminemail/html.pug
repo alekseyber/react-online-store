@@ -79,5 +79,18 @@ html(lang='ru')
                     tr                     
                         td(style='padding: 8px;border:1px solid #ddd') Количество: <strong>#{item.qty} шт</strong>
                         td(style='padding: 8px;border:1px solid #ddd' colspan='2') Цена: <strong>#{item.price} #{currSymbol}</strong>
-                        td(style='padding: 8px;border:1px solid #ddd' colspan='2') Cумма: <strong>#{item.itemSumm} #{currSymbol}</strong>        
+                        td(style='padding: 8px;border:1px solid #ddd' colspan='2') Cумма: <strong>#{item.itemSumm} #{currSymbol}</strong>
+        p ======Текст======
+        div Заказ № #{orderNum} от #{dateStr}
+        div Клиент: #{name}
+        div Телефон: +#{phone}
+        div Город: #{cityName}
+        div Адрес: ул. #{street}, д. #{house}, кв/оф. #{flat}
+        if comment.length>0
+            div --Коментарий--
+            div #{comment}
+        div ---Товары---
+        each item, index in cart
+            div #{index+1}. #{item.title} Кол-во: #{item.qty}, Цена: #{item.price} #{currSymbol}, Сумма: #{item.itemSumm} #{currSymbol}       
+        p =================
         p Интернет магазин <strong>#{shopName}</strong>.
