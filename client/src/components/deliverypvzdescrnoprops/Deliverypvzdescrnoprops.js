@@ -4,7 +4,7 @@ import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
-import DeliveryPvzDescr from '../deliverypvzdescr/Deliverypvzdescr';
+import DeliveryPvzDescr from '../deliverypvzdescr/DeliveryPvzDescr';
 import { openPvzSelector } from '../../redux/actions/modaldialog';
 
 

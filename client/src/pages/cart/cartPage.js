@@ -1,6 +1,6 @@
 import React from 'react';
 import { PageBase } from '../../hoc/PageBase';
-import CartPageContent from '../../containers/cartpagecontent/Cartpagecontent'
+import CartPageContent from '../../containers/cartpagecontent/CartPageContent'
 
 export default () => {
 

@@ -3,8 +3,8 @@ import { useDispatch } from 'react-redux';
 import { PageBase } from '../../hoc/PageBase';
 import { useRouter } from '../../hooks/router.hook';
 import { useHttp } from '../../hooks/http.hook';
-import OrderInfPage from '../../components/orderinfpage/Orderinfpage';
-import LoaderPage from '../../components/loaderpage/Loader';
+import OrderInfPage from '../../components/orderinfpage/OrderInfPage';
+import LoaderPage from '../../components/loaderpage/LoaderPage';
 
 
 

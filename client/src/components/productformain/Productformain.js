@@ -16,8 +16,8 @@ import Box from '@material-ui/core/Box';
 import { green } from '@material-ui/core/colors';
 import { setColorProductAction } from '../../redux/actions/productselect';
 import { cartAddAction } from '../../redux/actions/cart';
-import ProductSizeSelector from '../productsizeselector/Productsizeselector';
-import DeliveryRezult from '../../containers/deliveryrezult/Deliveryrezult';
+import ProductSizeSelector from '../productsizeselector/ProductSizeSelector';
+import DeliveryRezult from '../../containers/deliveryrezult/DeliveryRezult';
 
 const useStyles = makeStyles((theme) => ({
     rowinf: {

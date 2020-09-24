@@ -1,30 +1,14 @@
-
-import React from 'react';//, , useCallback , { useMemo, useEffect }
+import React from 'react';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux'; //, useDispatch
-//import { makeStyles } from '@material-ui/core/styles';
+import { useSelector } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 import { useProductDataRender } from '../../hooks/product-data-render.hook';
-import ProductImgCarusel from '../../components/productimgcarusel/Productimgcarusel';
-import ProductForMain from '../../components/productformain/Productformain';
-
-
-
-// const useStyles = makeStyles((theme) => ({
-//     root: {
-//         // marginTop: theme.spacing(1),
-//         // marginBottom: theme.spacing(1),
-//     },
-
-// }));
-
-
+import ProductImgCarusel from '../../components/productimgcarusel/ProductImgCarusel';
+import ProductForMain from '../../components/productformain/ProductForMain';
 
 
 
 const ProductMainCard = ({ productData, colors, imgproperty, baseurl, quality, bagdes, currsymbol }) => {
-
-    //const classes = useStyles();
 
     const stateSelectColor = useSelector(state => state.productselect.color[productData.alias]);
     const main = true;

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import ProductForCatalog from '../../components/productforcatalog/Productforcatalog'
+import ProductForCatalog from '../../components/productforcatalog/ProductForCatalog'
 import { useProductDataRender } from '../../hooks/product-data-render.hook';
 
 

@@ -8,11 +8,9 @@ import Popover from '@material-ui/core/Popover';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
-//import CardActionArea from '@material-ui/core/CardActionArea';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-//import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import { Image } from '../../image/Image';
 
 const MenuButton = withStyles((theme) => ({

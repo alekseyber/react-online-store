@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from "react-router-dom";
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import Drawer from '@material-ui/core/Drawer';
-import Itemgrupp from './itemgrupp/Itemgrupp';
-import ItemgruppMbile from './itemgruppmobile/Itemgruppmobile';
 import { makeStyles } from '@material-ui/core/styles';
+import ItemGrupp from './itemgrupp/ItemGrupp';
+import ItemGruppMbile from './itemgruppmobile/ItemGruppMobile';
 import { removeFilterSelect } from '../../redux/actions/filter';
 
 const useStyles = makeStyles((theme) => ({
@@ -22,7 +22,7 @@ const AppFilter = ({ filterRezult, filterSelect, colorsData, sizesData, category
 
     const classes = useStyles();
     const dispatch = useDispatch();
-    const [state, setState] = React.useState(false);
+    const [state, setState] = useState(false);
 
     const toggleDrawer = (open) => (event) => {
         console.log()
@@ -33,7 +33,7 @@ const AppFilter = ({ filterRezult, filterSelect, colorsData, sizesData, category
         setState(open);
     };
 
-    const handleClear = () => {        
+    const handleClear = () => {
         dispatch(removeFilterSelect());
     };
 
@@ -71,13 +71,13 @@ const AppFilter = ({ filterRezult, filterSelect, colorsData, sizesData, category
                 >Результат</Button>
             )}
             {!mobile && (filterRezult.map((item, index) => (
-                <Itemgrupp key={index} itemGr={item} colorsData={colorsData} sizesData={sizesData} filterSelect={filterSelect} />
+                <ItemGrupp key={index} itemGr={item} colorsData={colorsData} sizesData={sizesData} filterSelect={filterSelect} />
 
             )))}
             {mobile &&
                 <Drawer anchor='bottom' open={state} onClose={toggleDrawer(false)}>
                     {filterRezult.map((item, index) => (
-                        <ItemgruppMbile key={index} itemGr={item} colorsData={colorsData} sizesData={sizesData} filterSelect={filterSelect} />
+                        <ItemGruppMbile key={index} itemGr={item} colorsData={colorsData} sizesData={sizesData} filterSelect={filterSelect} />
 
                     ))}
                 </Drawer>

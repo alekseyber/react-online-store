@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRouter } from '../../hooks/router.hook';
-import NewsItemFetch from '../../containers/newsitemfetch/Newsitemfetch';
+import NewsItemFetch from '../../containers/newsitemfetch/NewsItemFetch';
 
 export default () => {
 

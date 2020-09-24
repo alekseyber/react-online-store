@@ -17,8 +17,8 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
-import ButtonProgress from '../buttonprogress/Buttonprogress';
-import OrderDelivery from '../../containers/orderdelivery/Orderdelivery';
+import ButtonProgress from '../buttonprogress/ButtonProgress';
+import OrderDelivery from '../../containers/orderdelivery/OrderDelivery';
 import { openOferta } from '../../redux/actions/modaldialog';
 
 const useStyles = makeStyles((theme) => ({
@@ -76,10 +76,7 @@ const AppForm = ({ handleInputSubmit, fullOrder, variant, ofertaOn, commentOn, b
     if (commentAdd) {
         commentRulles.required = true;
     }
-    // console.log(watch("name")); // смотреть входное значение, передавая его имя
-
-    //console.log(errors)
-
+ 
     return (
 
         <form className={classes.root} noValidate autoComplete="off" onSubmit={handleSubmit(onSubmit)}>

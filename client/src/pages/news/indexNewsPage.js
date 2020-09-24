@@ -1,6 +1,6 @@
 import React from 'react';
 import { PageBase } from '../../hoc/PageBase';
-import NewsList from '../../containers/newslist/Newslist';
+import NewsList from '../../containers/newslist/NewsList';
 import { useGetQueryPage } from '../../hooks/router.hook';
 
 export default () => {

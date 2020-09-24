@@ -4,11 +4,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
-import CartNulled from "../../components/cartnulled/Cartnulled";
-import CartList from "../../components/cartlist/Cartlist";
-import CartSumm from "../../components/cartsumm/Cartsumm";
-import CartAddCupon from "../../components/cartaddcupon/Cartaddcupon";
-import AppForm from "../../components/appform/Appform";
+import CartNulled from "../../components/cartnulled/CartNulled";
+import CartList from "../../components/cartlist/CartList";
+import CartSumm from "../../components/cartsumm/CartSumm";
+import CartAddCupon from "../../components/cartaddcupon/CartAddCupon";
+import AppForm from "../../components/appform/AppForm";
 import { sendOrder } from '../../redux/actions/order';
 
 

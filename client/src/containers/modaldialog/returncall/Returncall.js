@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import Typography from '@material-ui/core/Typography';
-import AppForm from '../../../components/appform/Appform';
+import AppForm from '../../../components/appform/AppForm';
 import ModalBase from '../../../hoc/ModalBase';
 import { sendReturnCall } from '../../../redux/actions/order';
 

@@ -1,11 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-//import { useDispatch } from 'react-redux';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
-//import Button from '@material-ui/core/Button';
-//import { openPvzSelector } from '../../redux/actions/modaldialog';
-import DeliveryPvzDescrNoProps from '../deliverypvzdescrnoprops/Deliverypvzdescrnoprops';
+import DeliveryPvzDescrNoProps from '../deliverypvzdescrnoprops/DeliveryPvzDescrNoProps';
 
 
 const DeliveryRezulText = ({ pvz, price, currSymbol, dateMax, sel_pvz_v }) => {

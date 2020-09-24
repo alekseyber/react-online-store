@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux'; //, useSelector
 import { updateProducts } from '../../redux/actions/products';
-import ProductsGrid from '../productsgrid/Productsgrid';
+import ProductsGrid from '../productsgrid/ProductsGrid';
 
 
 

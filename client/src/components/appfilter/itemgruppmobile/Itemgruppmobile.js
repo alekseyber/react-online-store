@@ -8,8 +8,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { makeStyles } from '@material-ui/core/styles';
-
-import ItemAttr from '../itemattr/Itemattr';
+import ItemAttr from '../itemattr/ItemAttr';
 
 
 const useStyles = makeStyles((theme) => ({

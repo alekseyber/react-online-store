@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-//import { useParams } from 'react-router-dom';
 import { categoryFetch } from '../../redux/actions/category';
 import { setFilterSelectByQwery } from '../../redux/actions/filter';
-import LoaderPage from '../../components/loaderpage/Loader';
-import Category from '../../containers/category/category';
+import LoaderPage from '../../components/loaderpage/LoaderPage';
+import Category from '../../containers/category/Category';
 import { useQuery, useRouter } from '../../hooks/router.hook';
 
 

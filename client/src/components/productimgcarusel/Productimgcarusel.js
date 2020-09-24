@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-//import clsx from 'clsx';
-//import Card from '@material-ui/core/Card';
 import Carousel from "react-material-ui-carousel";
 import CardMedia from '@material-ui/core/CardMedia';
 import { makeStyles } from '@material-ui/core/styles';
@@ -28,19 +26,9 @@ const useStyles = makeStyles((theme) => ({
             },
         },
         margin: theme.spacing(.4),
-
-
     },
-    // activethumb: {
-    //     '& > img': {
-    //         border: "1px solid #000",
-    //         opacity: "0.7",
-    //     },
-    // }
 
 }));
-
-
 
 
 
@@ -106,11 +94,6 @@ const ProductImgCarusel = ({ gal, title }) => {
 
         const altText = `Thumb ${title} ${posistion + 1} из ${countImg}`;
 
-        // const classArr = [classes.imagethumb];
-        // if (currentImg === posistion) {
-        //     classArr.push(classes.activethumb);
-        // }
-        // const className = clsx(classArr);
         return (
             <div
                 className={classes.imagethumb}
@@ -123,9 +106,6 @@ const ProductImgCarusel = ({ gal, title }) => {
             </div>
         )
     }
-
-
-
 
 
 

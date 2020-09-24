@@ -6,9 +6,9 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { useHttp } from '../../hooks/http.hook';
-import ProductsGrid from '../../containers/productsgrid/Productsgrid';
+import ProductsGrid from '../../containers/productsgrid/ProductsGrid';
 import { updateProducts } from '../../redux/actions/products';
-import LoaderContent from '../../components/loadercontent/Loadercontent';
+import LoaderContent from '../../components/loadercontent/LoaderContent';
 
 const useStyles = makeStyles({
     root: {

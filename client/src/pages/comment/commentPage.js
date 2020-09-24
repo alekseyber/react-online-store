@@ -1,8 +1,8 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { PageBase } from '../../hoc/PageBase';
-import CommentAdd from '../../components/commentadd/Commentadd';
-import CommentList from '../../containers/commentlist/Commentlist';
+import CommentAdd from '../../components/commentadd/CommentAdd';
+import CommentList from '../../containers/commentlist/CommentList';
 import { useGetQueryPage } from '../../hooks/router.hook';
 
 
@@ -13,7 +13,6 @@ const useStyles = makeStyles({
         margin: '0 auto'
     },
 });
-
 
 
 

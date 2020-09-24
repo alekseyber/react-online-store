@@ -18,8 +18,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { YMaps, Map, Placemark } from "react-yandex-maps";
-
-import DeliveryPvzDescr from '../deliverypvzdescr/Deliverypvzdescr';
+import DeliveryPvzDescr from '../deliverypvzdescr/DeliveryPvzDescr';
 import { setDelivery } from '../../redux/actions/delivery';
 
 

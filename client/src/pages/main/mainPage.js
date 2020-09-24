@@ -6,11 +6,11 @@ import Container from '@material-ui/core/Container';
 import { Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { mainFetch } from '../../redux/actions/main';
-import MainSlider from '../../components/mainslider/Mainslider';
-import MainCatalog from '../../components/maincatalog/Maincatalog';
-import MainBanner from '../../components/mainbanner/Mainbanner';
-import LoaderPage from '../../components/loaderpage/Loader';
-import PageContent from '../../components/htmlcontent/Htmlcontent';
+import MainSlider from '../../components/mainslider/MainSlider';
+import MainCatalog from '../../components/maincatalog/MainCatalog';
+import MainBanner from '../../components/mainbanner/MainBanner';
+import LoaderPage from '../../components/loaderpage/LoaderPage';
+import PageContent from '../../components/pagecontent/PageContent';
 import Products from '../../containers/products/Products';
 
 const useStyles = makeStyles((theme) => ({

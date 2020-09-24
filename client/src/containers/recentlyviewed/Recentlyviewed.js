@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import ProductItem from '../productitem/Productitem';
+import ProductItem from '../productitem/ProductItem';
 import { addRecentlyViewed } from '../../redux/actions/app'
 
 const useStyles = makeStyles((theme) => ({

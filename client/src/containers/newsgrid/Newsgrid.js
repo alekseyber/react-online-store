@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { PaginationList, usePagin } from '../../hoc/Paginationlist';
-import NewsItem from '../../components/newsitem/Newsitem';
+import NewsItem from '../../components/newsitem/NewsItem';
 
 const NewsGrid = ({ news, page }) => {
 

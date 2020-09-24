@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Box from '@material-ui/core/Box';
-import DeliveryCityInput from '../deliverycityinput/Deliverycityinput';
-import DeliveryRezult from '../deliveryrezult/Deliveryrezult';
+import DeliveryCityInput from '../deliverycityinput/DeliveryCityInput';
+import DeliveryRezult from '../deliveryrezult/DeliveryRezult';
 
 
 const OrderDelivery = ({variant}) => {

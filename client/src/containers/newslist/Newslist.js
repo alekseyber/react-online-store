@@ -5,8 +5,8 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { useHttp } from '../../hooks/http.hook';
-import NewsGrid from '../newsgrid/Newsgrid';
-import LoaderContent from '../../components/loadercontent/Loadercontent';
+import NewsGrid from '../newsgrid/NewsGrid';
+import LoaderContent from '../../components/loadercontent/LoaderContent';
 
 
 

@@ -8,7 +8,7 @@ import MuiAccordionDetails from '@material-ui/core/AccordionDetails';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import AppForm from '../appform/Appform';
+import AppForm from '../appform/AppForm';
 import { sendComment } from '../../redux/actions/order';
 
 const Accordion = withStyles((theme) => ({

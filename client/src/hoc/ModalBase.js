@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import Button from '@material-ui/core/Button';
-import ModalTitle from '../containers/modaldialog/modaletitle/Modaltitle';
+import ModalTitle from '../containers/modaldialog/modaletitle/ModalTitle';
 
 
 const ModalBase = (props) => {

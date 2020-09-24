@@ -5,10 +5,8 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { useHttp } from '../../hooks/http.hook';
-import CommentGrid from '../commentgrid/Commentgrid';
-import LoaderContent from '../../components/loadercontent/Loadercontent';
-
-
+import CommentGrid from '../commentgrid/CommentGrid';
+import LoaderContent from '../../components/loadercontent/LoaderContent';
 
 
 const CommentList = ({ page }) => {

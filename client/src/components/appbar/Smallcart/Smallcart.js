@@ -10,7 +10,7 @@ import Badge from '@material-ui/core/Badge';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
-import CartList from '../../cartlist/Cartlist';
+import CartList from '../../cartlist/CartList';
 
 
 const MenuButton = withStyles(() => ({

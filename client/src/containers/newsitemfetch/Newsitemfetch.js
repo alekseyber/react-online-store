@@ -4,9 +4,9 @@ import { useDispatch } from 'react-redux';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { useHttp } from '../../hooks/http.hook';
-import LoaderContent from '../../components/loadercontent/Loadercontent';
+import LoaderContent from '../../components/loadercontent/LoaderContent';
 import { PageBase } from '../../hoc/PageBase';
-import PageContent from '../../components/htmlcontent/Htmlcontent';
+import PageContent from '../../components/pagecontent/PageContent';
 
 
 

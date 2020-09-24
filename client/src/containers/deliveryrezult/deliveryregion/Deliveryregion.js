@@ -2,8 +2,8 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
-import DeliveryRezulText from '../../../components/deliveryrezulttext/Deliveryrezulttext';
-import DeliverySelector from '../../../components/deliveryreselector/Deliveryselectror';
+import DeliveryRezulText from '../../../components/deliveryrezulttext/DeliveryRezulText';
+import DeliverySelector from '../../../components/deliveryreselector/DeliverySelector';
 
 
 

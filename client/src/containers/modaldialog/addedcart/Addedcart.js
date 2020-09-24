@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { useHistory } from "react-router-dom";
 import Button from '@material-ui/core/Button';
-import AddedCartComponent from '../../../components/addedcart/Addedcart';
+import AddedCartComponent from '../../../components/addedcart/AddedCart';
 import ModalBase from '../../../hoc/ModalBase';
 
 

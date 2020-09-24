@@ -2,10 +2,10 @@ import React, { useEffect, useMemo } from 'react';
 //import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { mainProductFetch } from '../../redux/actions/products';
-import LoaderPage from '../../components/loaderpage/Loader';
+import LoaderPage from '../../components/loaderpage/LoaderPage';
 //import { history } from '../../redux/store';
 import { setColorProductAction } from '../../redux/actions/productselect';
-import ProductMainPage from '../../containers/productmainpage/Productmainpage';
+import ProductMainPage from '../../containers/productmainpage/ProductMainPage';
 import { useRouter } from '../../hooks/router.hook';
 
 

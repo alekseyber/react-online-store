@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { pageFetch } from '../../redux/actions/page';
-import LoaderPage from '../../components/loaderpage/Loader';
+import LoaderPage from '../../components/loaderpage/LoaderPage';
 import { useRouter } from '../../hooks/router.hook';
 import { PageBase } from '../../hoc/PageBase';
-import PageContent from '../../components/htmlcontent/Htmlcontent';
+import PageContent from '../../components/pagecontent/PageContent';
 
 
 export default () => {

@@ -1,16 +1,18 @@
-import React, { useMemo } from 'react'; //useEffect, 
+import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-//import config from 'react-global-configuration';
-import MetaTags from 'react-meta-tags';
-import Container from '@material-ui/core/Container';
+//import MetaTags from 'react-meta-tags';
+//import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
-import ProductContetnt from '../../components/productcontent/Productcontent';
-import ProductItem from '../productitem/Productitem';
-import RecentlyViewed from '../recentlyviewed/Recentlyviewed';
+import ProductContetnt from '../../components/productcontent/ProductContetnt';
+import ProductItem from '../productitem/ProductItem';
+import RecentlyViewed from '../recentlyviewed/RecentlyViewed';
 import Breadcrumbs from '../../components/breadcrumbs/Breadcrumbs';
-import ProductMainCard from '../productmaincard/Productmainncard';
+import ProductMainCard from '../productmaincard/ProductMainCard';
+
+import { PageBase } from '../../hoc/PageBase';
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -21,13 +23,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ProductMainPage = ({ productData, color }) => {
+
     const classes = useStyles();
-
-
     const { colorsData, bagdesData, baseUrl } = useSelector(state => state.start);
-    // const bagdes = useSelector(state => state.start.bagdesData);
     const { select, productImgProperty, qualityproductImg, currSymbol } = useSelector(state => state.start.paramsData);
-    //const baseUrl = config.get('baseUrl');
 
     const meta = useMemo(() => {
         const rezult = {
@@ -93,61 +92,72 @@ const ProductMainPage = ({ productData, color }) => {
     }, [productData]);
 
 
+    const bind = {
+        name_page: meta.title,
+        action_page: meta.description,
+        meta_key: meta.keywords,
+        link_page: meta.canonical,
+        filter_on: false,
+        meta_full: true,
+        canonical_on: true,
+        breadcrumbs_on: false
+    }
+
+
     return (
-        <>
-            <MetaTags>
+        <PageBase {...bind}>
+            {/* <MetaTags>
                 <title>{meta.title}</title>
                 <meta name="description" content={meta.description} />
                 <meta name="keywords" content={meta.keywords} />
                 <meta property="og:title" content={meta.title} />
-                <link rel="canonical" href={meta.canonical} />
-                {/* <meta property="og:image" content="path/to/image.jpg" /> */}
+                <link rel="canonical" href={meta.canonical} />                
             </MetaTags>
-            <Container fixed>
-                <div className={classes.root}>
-                    <ProductMainCard
-                        colors={colorsData.colors}
-                        imgproperty={productImgProperty}
-                        baseurl={baseUrl}
-                        quality={qualityproductImg}
-                        bagdes={bagdesData}
-                        currsymbol={currSymbol}
-                        productData={productData}
-                    />
-                    <Breadcrumbs breadcrumbsData={breadcrumbsData} />
-                    <Grid
-                        container
-                        spacing={2}
-                    >
-                        <Grid item xs={12} md={8}>
-                            <ProductContetnt productContetntData={contetntData} />
-                        </Grid>
-                        {related && select && <Grid item xs={12} md={4}>
-                            <ProductItem
-                                alias={related}
-                                colors={colorsData.colors}
-                                imgproperty={productImgProperty}
-                                baseurl={baseUrl}
-                                quality={qualityproductImg}
-                                bagdes={bagdesData}
-                                currsymbol={currSymbol}
-                                related={true}
-                            />
-                        </Grid>}
+            <Container fixed> */}
+            <div className={classes.root}>
+                <ProductMainCard
+                    colors={colorsData.colors}
+                    imgproperty={productImgProperty}
+                    baseurl={baseUrl}
+                    quality={qualityproductImg}
+                    bagdes={bagdesData}
+                    currsymbol={currSymbol}
+                    productData={productData}
+                />
+                <Breadcrumbs breadcrumbsData={breadcrumbsData} />
+                <Grid
+                    container
+                    spacing={2}
+                >
+                    <Grid item xs={12} md={8}>
+                        <ProductContetnt productContetntData={contetntData} />
                     </Grid>
-                    <RecentlyViewed
-                        alias={productData.alias}
-                        colors={colorsData.colors}
-                        imgproperty={productImgProperty}
-                        baseurl={baseUrl}
-                        quality={qualityproductImg}
-                        bagdes={bagdesData}
-                        currsymbol={currSymbol}
-                    />
-                </div>
-            </Container>
+                    {related && select && <Grid item xs={12} md={4}>
+                        <ProductItem
+                            alias={related}
+                            colors={colorsData.colors}
+                            imgproperty={productImgProperty}
+                            baseurl={baseUrl}
+                            quality={qualityproductImg}
+                            bagdes={bagdesData}
+                            currsymbol={currSymbol}
+                            related={true}
+                        />
+                    </Grid>}
+                </Grid>
+                <RecentlyViewed
+                    alias={productData.alias}
+                    colors={colorsData.colors}
+                    imgproperty={productImgProperty}
+                    baseurl={baseUrl}
+                    quality={qualityproductImg}
+                    bagdes={bagdesData}
+                    currsymbol={currSymbol}
+                />
+            </div>
+            {/* </Container> */}
 
-        </>
+        </PageBase>
     )
 }
 

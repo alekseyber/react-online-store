@@ -1,6 +1,6 @@
 import React from 'react';
 import { PageBase } from '../../hoc/PageBase';
-import Delivery from '../../containers/delivery/delivery';
+import Delivery from '../../containers/delivery/Delivery';
 
 export default () => {
 

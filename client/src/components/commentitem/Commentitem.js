@@ -8,7 +8,7 @@ import CardContent from '@material-ui/core/CardContent';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { indigo } from '@material-ui/core/colors';
 import Avatar from '@material-ui/core/Avatar';
-import HtmlText from '../htmltext/Htmltext';
+import HtmlText from '../htmltext/HtmlText';
 
 const useStyles = makeStyles((theme) => ({
     root: {

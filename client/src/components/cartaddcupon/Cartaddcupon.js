@@ -11,7 +11,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import CloseIcon from '@material-ui/icons/Close';
 import { useInput } from '../../hooks/input.hook';
 import { cartAddCupon } from '../../redux/actions/cart';
-import ButtonProgress from "../buttonprogress/Buttonprogress";
+import ButtonProgress from "../buttonprogress/ButtonProgress";
 
 
 

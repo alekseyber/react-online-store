@@ -2,13 +2,13 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Dialog from '@material-ui/core/Dialog';
 import { hideDialog } from '../../redux/actions/modaldialog';
-import SizeChartContent from './sizechartcontent/Sizechartcontent';
-import AddedCart from './addedcart/Addedcart';
-import DeliveryModal from './deliverymodal/Deliverymodal';
-import DeliveryPvzModal from './deliverypvzmodal/Deliverypvzmodal';
-import QOrder from './qorder/Qorder';
-import OfertaContent from './ofertacontent/Ofertacontent';
-import ReturnCall from './returncall/Returncall';
+import SizeChartContent from './sizechartcontent/SizeChartContent';
+import AddedCart from './addedcart/AddedCart';
+import DeliveryModal from './deliverymodal/DeliveryModal';
+import DeliveryPvzModal from './deliverypvzmodal/DeliveryPvzModal';
+import QOrder from './qorder/QOrder';
+import OfertaContentModal from './ofertacontentmodal/OfertaContentModal';
+import ReturnCall from './returncall/ReturnCall';
 
 // modalRootData: {
 //     open: false,
@@ -49,7 +49,7 @@ export default function ModalDialog() {
             case 4:
                 return <QOrder handleClose={handleClose} />
             case 5:
-                return <OfertaContent handleClose={handleClose} />
+                return <OfertaContentModal handleClose={handleClose} />
             case 6:
                 return <ReturnCall handleClose={handleClose} />
 

@@ -4,16 +4,16 @@ import { useHtml } from '../../hooks/html.hook';
 
 
 
-const Html = ({ text }) => {
+const HtmlText = ({ text }) => {
     const contentReact = useHtml(text);
 
     return <>{contentReact}</>
 
 }
 
-Html.propTypes = {
+HtmlText.propTypes = {
     text: PropTypes.string.isRequired,
 };
 
 
-export default Html;
+export default HtmlText;

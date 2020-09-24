@@ -6,8 +6,7 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { makeStyles } from '@material-ui/core/styles';
-
-import ItemAttr from '../itemattr/Itemattr';
+import ItemAttr from '../itemattr/ItemAttr';
 
 
 const useStyles = makeStyles((theme) => ({

@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import Typography from '@material-ui/core/Typography';
-import DefaultDeliveryText from './defaultdeliverytext/Defaultdeliverytext';
-import DeliveryRegion from './deliveryregion/Deliveryregion';
+import DefaultDeliveryText from './defaultdeliverytext/DefaultDeliveryText';
+import DeliveryRegion from './deliveryregion/DeliveryRegion';
 import { useDeliveryDateHome } from '../../hooks/delivery-date-home.hook';
-import DeliveryCityCarrent from '../../components/deliverycitycarrent/Deliverycitycarrent';
+import DeliveryCityCarrent from '../../components/deliverycitycarrent/DeliveryCityCarrent';
 
 const DeliveryRezult = ({ pvz_selector, city_name_v, sel_pvz_v }) => {
     const { cityDefault, defaultDeliveryText, defaultDeliveryRegionText, maxDeliveryHourToday } = useSelector(state => state.start.paramsData);

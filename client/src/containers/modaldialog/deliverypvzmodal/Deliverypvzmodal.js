@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ModalBase from '../../../hoc/ModalBase';
-import DeliveryPvzSelectror from '../../deliveryrepvzselector/Deliverypvzselectror';
+import DeliveryPvzSelectror from '../../deliveryrepvzselector/DeliveryPvzSelector';
 
 
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-import ProductItem from '../productitem/Productitem';
+import ProductItem from '../productitem/ProductItem';
 import { PaginationList, usePagin } from '../../hoc/Paginationlist';
 
 

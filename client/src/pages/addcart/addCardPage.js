@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { PageBase } from '../../hoc/PageBase';
 import { useRouter } from '../../hooks/router.hook';
-import LoaderPage from '../../components/loaderpage/Loader';
+import LoaderPage from '../../components/loaderpage/LoaderPage';
 import { cartAddPageAction } from '../../redux/actions/cart';
 
 

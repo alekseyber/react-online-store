@@ -16,8 +16,8 @@ import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import FolderIcon from '@material-ui/icons/Folder';
 import Collapse from '@material-ui/core/Collapse';
-import CatalogItem from './Catalogitem/Catalogitem';
-import Search from '../Search/Search';
+import CatalogItem from './catalogitem/CatalogItem';
+import Search from '../search/Search';
 
 const useStyles = makeStyles((theme) => ({
     list: {

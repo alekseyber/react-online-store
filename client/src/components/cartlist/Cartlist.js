@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSelector } from 'react-redux';
 import List from '@material-ui/core/List';
-import CartItem from '../cartitem/Cartitem';
+import CartItem from '../cartitem/CartItem';
 
 const useStyles = makeStyles((theme) => ({
     root: {

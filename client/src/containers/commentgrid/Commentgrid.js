@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { PaginationList, usePagin } from '../../hoc/Paginationlist';
-import CommentItem from '../../components/commentitem/Commentitem';
+import CommentItem from '../../components/commentitem/CommentItem';
 
 const CommentGrid = ({ comments, page }) => {
 

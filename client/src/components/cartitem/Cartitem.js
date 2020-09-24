@@ -23,8 +23,8 @@ import Select from '@material-ui/core/Select';
 import { useItemCartData } from '../../hooks/cart-item.hook';
 import { cartDeleteItem, cartChangeItemCount } from '../../redux/actions/cart';
 import { setColorAndSizeProduct } from '../../redux/actions/productselect';
-import SizeSelector from "./sizeselector/Sizeselector";
-import ColorSelector from "./colorselector/Colorselector";
+import SizeSelector from "./sizeselector/SizeSelector";
+import ColorSelector from "./colorselector/ColorSelector";
 
 const useStyles = makeStyles(theme => ({
 

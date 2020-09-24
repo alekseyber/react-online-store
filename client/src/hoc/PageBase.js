@@ -6,7 +6,7 @@ import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Breadcrumbs from '../components/breadcrumbs/Breadcrumbs';
-import Filter from '../containers/filter/filter';
+import Filter from '../containers/filter/Filter';
 import { useAddGet } from '../hooks/addget.hook';
 
 

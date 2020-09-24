@@ -5,9 +5,9 @@ import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import SortBtn from '../../components/sortbtn/Sortbtn';
-import FilterPanel from '../../components/appfilter/Appfilter';
-//import Appfiltermobil from '../../components/appfilter/Appfiltermobil';
+import SortBtn from '../../components/sortbtn/SortBtn';
+import FilterPanel from '../../components/appfilter/AppFilter';
+//import Appfiltermobil from '../../components/appfilter/AppFiltermobil';
 
 const useStyles = makeStyles((theme) => ({
   root: {

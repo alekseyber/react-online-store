@@ -7,10 +7,10 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 import { makeStyles } from '@material-ui/core/styles'; //fade, 
-import DrawerApp from './Drawer/Drawer';
-import MenuItemBtn from './Menuitem/Menuitem';
-import SmallCart from './Smallcart/Smallcart';
-import Search from './Search/Search';
+import DrawerApp from './drawer/Drawer';
+import MenuItemBtn from './menuitem/MenuItem';
+import SmallCart from './smallcart/SmallCart';
+import Search from './search/Search';
 
 
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import AppForm from '../../../components/appform/Appform';
+import AppForm from '../../../components/appform/AppForm';
 import ModalBase from '../../../hoc/ModalBase';
 import { sendOrder } from '../../../redux/actions/order';
 

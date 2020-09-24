@@ -10,7 +10,7 @@ import { PageBase } from '../../hoc/PageBase';
 import { textReturnProductFetch } from '../../redux/actions/start';
 import { sendReturnProduct } from '../../redux/actions/order';
 import { useHtml } from '../../hooks/html.hook';
-import AppForm from '../../components/appform/Appform';
+import AppForm from '../../components/appform/AppForm';
 
 
 

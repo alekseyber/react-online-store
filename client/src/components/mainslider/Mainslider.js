@@ -1,10 +1,7 @@
-import React from 'react'; //, { useRef, useEffect }
+import React from 'react';
 import PropTypes from 'prop-types';
-//import Image from 'material-ui-image';
-
 import { makeStyles } from '@material-ui/core/styles';
-import withWidth, { isWidthUp } from '@material-ui/core/withWidth'; //, { isWidthUp }
-
+import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -48,19 +45,14 @@ const useStyles = makeStyles((theme) => ({
 
 const MainSliderF = (props) => {
 
-
     const classes = useStyles();
     const topSlider = props.topSlider;
     const baseUrl = props.baseUrl;
-
-
-
 
     const imgStyle = {
         backgroundImage: `url(${baseUrl + topSlider.imgBackground})`,
         height: topSlider.maxHeightBackground
     };
-
 
 
     return (
@@ -99,12 +91,7 @@ const MainSliderF = (props) => {
                     </Card>
                 </Grid>
             </Grid>
-
-
-
         </div>
-
-
     )
 }
 
