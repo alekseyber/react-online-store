@@ -34,4 +34,7 @@ export const SET_DELIVERY = 'DELIVERY/SET_DELIVERY';
 export const SET_ORDER_VALUE = 'ORDER/SET_ORDER_VALUE';
 export const SET_ORDER = 'ORDER/SET_ORDER';
 export const SET_PAGE = 'PAGE/SET_PAGE';
-
+export const SET_NEWS = 'PAGE/SET_NEWS';
+export const SET_NEWS_LIST = 'PAGE/SET_NEWS_LIST';
+export const SET_COMMENT_LIST = 'PAGE/SET_COMMENT_LIST';
+export const SET_COMMENT = 'PAGE/SET_COMMENT';

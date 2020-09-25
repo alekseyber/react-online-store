@@ -1,6 +1,6 @@
 import { batch } from 'react-redux';
 import { SET_CATEGORY, SET_SORT } from '../constants';
-import { useHttp } from './../../hooks/http.hook';
+import { httpActions } from './../../hooks/http.hook';
 import { updateProducts } from './products';
 
 
@@ -32,7 +32,7 @@ export const categoryFetch = (alias) => async (dispatch, getState) => { //, getS
             return null
         }
 
-        const { requestRedirect } = useHttp(dispatch);
+        const { requestRedirect } = httpActions(dispatch);
 
         const categoryData = await requestRedirect(
             `/api/category/getproductsforcategory/${alias}`, { sortValue: start.sortData.sortValue }

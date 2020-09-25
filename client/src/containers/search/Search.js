@@ -1,144 +1,124 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
-import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
-import { useHttp } from '../../hooks/http.hook';
-import ProductsGrid from '../../containers/productsgrid/ProductsGrid';
-import { updateProducts } from '../../redux/actions/products';
-import LoaderContent from '../../components/loadercontent/LoaderContent';
-
-const useStyles = makeStyles({
-    root: {
-        minHeight: '30vh',
-    },
-    loader: {
-        display: 'flex',
-        justifyContent: 'center'
-    }
-});
-
-
+import React, { useState, useEffect, useMemo } from "react";
+import PropTypes from "prop-types";
+import { useDispatch, useSelector } from "react-redux";
+import { useHttp } from "../../hooks/http.hook";
+import ProductsGrid from "../../containers/productsgrid/ProductsGrid";
+import { updateProducts } from "../../redux/actions/products";
+import LoaderContent from "../../components/loadercontent/LoaderContent";
+import NullPageContent from "../../components/nullpagecontent/NullPageContent";
 
 const Search = ({ q }) => {
+  const dispatch = useDispatch();
+  const { requestNoErrMsg } = useHttp();
 
-    const classes = useStyles();
+  const productsData = useSelector((state) => state.products);
 
-    const dispatch = useDispatch();
-    const { requestNoErrMsg } = useHttp(dispatch);
-    const requestNoErrMsgMemo = useCallback(requestNoErrMsg, []);
+  const initial = {
+    loader: true,
+    list: [],
+    color: [],
+  };
+  const [rezult, setRezult] = useState(initial);
 
-    const productsData = useSelector(state => state.products);
+  const { loader, list, color } = rezult;
 
-    const initial = {
-        loader: true,
-        list: [],
-        color: []
-    }
-    const [rezult, setRezult] = useState(initial);
+  useEffect(() => {
+    setRezult({
+      loader: true,
+      list: [],
+      color: [],
+    });
 
-    const { loader, list, color } = rezult;
-
-
-    useEffect(() => {
+    return () => {
         setRezult({
             loader: true,
             list: [],
-            color: []
-        });
+            color: [],
+          });
+    }
 
-    }, [q]);
+  }, [q]);
 
-    useEffect(() => {
+  useEffect(() => {
+    
+    const fetchData = async () => {
+      const rez = {
+        loader: false,
+        list: [],
+        color: [],
+      };
+      try {
+        if (q.length) {
+          const { products, filter } = await requestNoErrMsg(
+            "/api/search/full",
+            "get",
+            { q }
+          );
+          rez.list = products;
 
-        const fetchData = async () => {
-
-            const rez = {
-                loader: false,
-                list: [],
-                color: []
+          if (products.length) {
+            await dispatch(updateProducts(products));
+            if (filter.count && filter.selected) {
+              rez.color = filter.selected.color ?? [];
             }
-            try {
+          }
+        }
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setRezult(rez);
+      }
+    };
 
-                if (q.length) {
-                    const { products, filter } = await requestNoErrMsgMemo('/api/search/full', 'get', { q });
-                    rez.list = products;
+    fetchData();
+  }, [q, dispatch, requestNoErrMsg]);
 
-                    if (products.length) {
-                        await dispatch(updateProducts(products));
-                        if (filter.count && filter.selected) {
-                            rez.color = filter.selected.color ?? [];
-                        }
-                    }
-                }
+  const productList = useMemo(() => {
+    if (list.length === 0) {
+      return list;
+    }
 
-            } catch (e) {
-                console.error(e);
-
-            } finally {
-                setRezult(rez);
+    if (color.length) {
+      const productsColor = [];
+      list.forEach((item) => {
+        if (item.alias in productsData) {
+          const ptoductItem = productsData[item.alias];
+          color.forEach((itemcolor) => {
+            if (itemcolor in ptoductItem.level1) {
+              const product = {
+                alias: item.alias,
+                colorselect: itemcolor,
+              };
+              productsColor.push(product);
             }
+          });
         }
-        fetchData();
-       
-    }, [q, requestNoErrMsgMemo, dispatch]);
+      });
 
-    const productList = useMemo(() => {
+      return productsColor;
+    } else {
+      return list;
+    }
+  }, [list, color, productsData]);
 
-        if (list.length === 0) {
-            return list
-        }
+  if (loader) {
+    return <LoaderContent text="Поиск на сервере..." />;
+  }
 
-        if (color.length) {
-            const productsColor = [];
-            list.forEach(item => {
-                if (item.alias in productsData) {
-                    const ptoductItem = productsData[item.alias];
-                    color.forEach(itemcolor => {
-                        if (itemcolor in ptoductItem.level1) {
-                            const product = {
-                                alias: item.alias,
-                                colorselect: itemcolor
-                            }
-                            productsColor.push(product);
-                        }
-                    });
-                }
-
-            });
-
-            return productsColor
-        } else {
-            return list
-        }
-
-    }, [list, color, productsData]);
-
-
+  if (productList.length === 0) {
     return (
+      <NullPageContent
+        title="По данному запросу результатов не найдено."
+        str="Попробуйте изменить поисковую фразу."
+      />
+    );
+  }
 
-        <>
-            {(productList.length === 0) && <Card className={classes.root}>
-                <CardContent>
-                    {loader && <LoaderContent text="Поиск на сервере..." />}
-                    {!loader && (
-                        <>
-                            <Typography variant="h6" component="h2" align="center" gutterBottom>По данному запросу результатов не найдено.</Typography>
-                            <Typography variant="body1" component="p" align="center">Попробуйте изменить поисковую фразу.</Typography>
-                        </>
-                    )}
-                </CardContent>
-            </Card>}
-            {(productList.length > 0) && <ProductsGrid products={productList} />}
-        </>
-
-    )
-}
+  return <ProductsGrid products={productList} />;
+};
 
 Search.propTypes = {
-    q: PropTypes.string.isRequired,
+  q: PropTypes.string.isRequired,
 };
 
 export default Search;

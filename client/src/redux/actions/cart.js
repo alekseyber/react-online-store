@@ -1,6 +1,6 @@
 import { CART_ADD, CART_UPDATE, CART_ADD_COUNT, CART_SET_CUPON, CART_CLEAR_CUPON } from '../constants';
 import { openAddedCart, openQOrder } from './modaldialog';
-import { useHttp } from './../../hooks/http.hook';
+import { httpActions } from './../../hooks/http.hook';
 import { showAlert } from './app';
 import { updateProducts } from './products';
 import { history } from '../store';
@@ -46,7 +46,7 @@ const cartSetCupon = (payload) => {
 }
 
 export const cartAddCupon = cupontext => async (dispatch) => { //, getState
-    const { requestFormLoader } = useHttp(dispatch);
+    const { requestFormLoader } = httpActions(dispatch);
     const status = {
         msg: "Купон не найден",
         type: "error"
@@ -205,9 +205,9 @@ export const cartAddAction = (product, qorder = false) => (dispatch, getState) =
 
 
 
-export const cartAddPageAction = (id) => async (dispatch, getState) => { //, getState
+export const cartAddPageAction = (id) => async (dispatch) => { //, getState
 
-    const { requestRedirect } = useHttp(dispatch);
+    const { requestRedirect } = httpActions(dispatch);
 
     try {
         const productData = await requestRedirect(

@@ -1,5 +1,5 @@
 import { SET_DELIVERY } from '../constants';
-import { useHttp } from './../../hooks/http.hook';
+import { httpActions } from './../../hooks/http.hook';
 import { showAlert } from './app';
 
 export const setDelivery = (payload) => {
@@ -13,7 +13,7 @@ export const setDelivery = (payload) => {
 
 
 export const pvzFetch = (cityid) => async (dispatch) => { //, getState
-    const { requestNoErrMsg } = useHttp(dispatch);
+    const { requestNoErrMsg } = httpActions(dispatch);
 
     const errMsg = "Ошибка связи с сервером, повторите попытку позже";
     try {
@@ -36,7 +36,7 @@ export const pvzFetch = (cityid) => async (dispatch) => { //, getState
 
 
 export const deliveryFetch = (city) => async (dispatch) => { //, getState
-    const { requestNoErrMsg } = useHttp(dispatch);
+    const { requestNoErrMsg } = httpActions(dispatch);
     const errMsg = "Ошибка связи с сервером, повторите попытку позже";
     try {
 

@@ -1,5 +1,5 @@
 import { SET_DIALOG, OPEN_DIALOG, SET_LOADING_DIALOG, HIDE_DIALOG, SET_SIZECHART, SET_SIZECHART_SELECT, SET_DIALOG_TITLE, SET_OFERTA } from '../constants';
-import { useHttp } from './../../hooks/http.hook';
+import { httpActions } from './../../hooks/http.hook';
 import { showAlert } from './app';
 
 // modalRootData: {
@@ -132,7 +132,7 @@ export const openPvzSelector = () => {
 
 export const openSizeChart = (sizesgroup_id) => async (dispatch, getState) => {
     try {
-        const { request } = useHttp(dispatch);
+        const { request } = httpActions(dispatch);
         const { modaldialog } = getState();
         dispatch(setSizeChartSelect(sizesgroup_id));
 
@@ -161,7 +161,7 @@ export const openSizeChart = (sizesgroup_id) => async (dispatch, getState) => {
 
 export const openOferta = () => async (dispatch, getState) => {
     try {
-        const { request } = useHttp(dispatch);
+        const { request } = httpActions(dispatch);
         const { modaldialog } = getState();
         
 

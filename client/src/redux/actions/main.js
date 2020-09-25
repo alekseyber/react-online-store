@@ -1,6 +1,6 @@
 import { batch } from 'react-redux';
 import { SET_MAIN } from '../constants';
-import { useHttp } from './../../hooks/http.hook';
+import { httpActions } from './../../hooks/http.hook';
 import { updateProducts } from './products';
 import { setPageLoading } from './app';
 
@@ -14,17 +14,9 @@ const setMainData = (payload) => {
     }
 }
 
-// const setHitsData = (payload) => {
-//     return {
-//         type: SET_HITS,
-//         payload
-//     }
-// }
-
 export const mainFetch = () => async (dispatch, getState) => { //, getState
     try {
-        // console.log(getState())
-
+       
         const { main } = getState();
 
         if (main.loadData) {
@@ -32,7 +24,7 @@ export const mainFetch = () => async (dispatch, getState) => { //, getState
         }
         dispatch(setPageLoading(true));
 
-        const { requestNoLoader } = useHttp(dispatch);
+        const { requestNoLoader } = httpActions(dispatch);
         //   , method = 'get', params = null, body = null, redirect = false
         const mainData = await requestNoLoader('/api/mainpage/getdata');
         //  const mainData = await request('/api/mainpage/getdata', 'get', null, null, true);
