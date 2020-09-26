@@ -5,6 +5,7 @@ import { showAlert } from "./app";
 import { hideDialog } from "./modaldialog";
 import { cartUpdate } from "./cart";
 import { history } from "../store";
+import formatDateStr from "../middleware/format-date-str";
 
 export const setOrder = (payload) => {
   return {
@@ -175,7 +176,7 @@ export const sendComment = (formDataInput) => async (dispatch) => {
       commenText: formData.commenText,
       answer: "",
       datas: "",
-      date: "",
+      date: formatDateStr(new Date()),
       id: null,
     };
 

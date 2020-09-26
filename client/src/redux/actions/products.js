@@ -1,6 +1,7 @@
 import { batch } from "react-redux";
 import { SET_PRODUCTS, SET_MAIN_PRODUCT } from "../constants";
 import { httpActions } from "./../../hooks/http.hook";
+import { getEndTime, checkEndTime } from "./start";
 
 const setProductsData = (payload) => {
   return {
@@ -16,20 +17,11 @@ const setMainProduct = (payload) => {
   };
 };
 
-// export const setColorProduct = (payload) => {
-
-//     return {
-//         type: SET_COLOR,
-//         payload
-//     }
-// }
-
 export const updateProducts = (
   products,
   byalias = false,
   returnRez = false
 ) => async (dispatch, getState) => {
-  //, getState
   try {
     if (products.length === 0) {
       return null;
@@ -40,7 +32,12 @@ export const updateProducts = (
 
     const ids = [];
     products.forEach((element) => {
-      if (element.alias in state.products === false) {
+      let status = element.alias in state.products === false;
+      if (!status) {
+        status = !checkEndTime(state.products[element.alias]);
+      }
+
+      if (status) {
         if (byalias) {
           ids.push(element.alias);
         } else {
@@ -63,6 +60,12 @@ export const updateProducts = (
         "get",
         params
       );
+      const endTime = getEndTime(getState(), "product");
+
+      Object.keys(productsData).forEach((key) => {
+        productsData[key].endTime = endTime;
+      });
+
       dispatch(setProductsData(productsData));
       if (returnRez) {
         const productsReturn = {};
@@ -89,8 +92,9 @@ export const mainProductFetch = (alias) => async (dispatch, getState) => {
     let mainLoad = true;
 
     const added = [];
-
-    if (products[alias]) {
+    const status = !checkEndTime(products[alias]);
+    
+    if (products[alias] && status) {
       if (products[alias].mainData) {
         mainLoad = false;
       }

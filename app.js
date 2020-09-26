@@ -98,7 +98,7 @@ async function start() {
         console.error('reconnectTries - filed', error);
     });
 
-    app.listen(PORT, () => console.log(`App has been started on port ${PORT}...`))
+    app.listen(PORT, () => console.log(`App has been started on port ${PORT}..., URL: http://localhost:${PORT}`))
   } catch (e) {
     console.log('Server Error', e.message)
     process.exit(1)

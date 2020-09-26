@@ -278,6 +278,10 @@ const paramsSchema = new Schema({
       type: Number,
       default: 3600,
     },
+    start: {
+      type: Number,
+      default: 36000,
+    },
   },
 });
 

@@ -1,36 +1,30 @@
-import React from 'react'; //, { Suspense, lazy }
-import { Switch, Route } from 'react-router-dom';
+import React from "react"; //, { Suspense, lazy }
+import { Switch, Route } from "react-router-dom";
 //import { useLocation } from 'react-use';
 //import { animated, useTransition } from 'react-spring';
-import MainPage from '../pages/main/mainPage';
-import CategoryPage from '../pages/category/categoryPage';
-import ProductPage from '../pages/product/productPage';
-import CartPage from '../pages/cart/cartPage';
-import DeliveryPage from '../pages/delivery/devileryPage';
-import OrderDonePage from '../pages/order/orderDonePage';
-import OrderPage from '../pages/order/orderPage';
-import AddCartPage from '../pages/addcart/addCardPage';
-import PagePage from '../pages/page/pagePage';
-import PageFoundPage from '../pages/pagefound/pageFoundPage';
-import ReturnProductPage from '../pages/returnproduct/returnProductPage';
-import SearchPage from '../pages/search/searchPage';
-import CommentPage from '../pages/comment/commentPage';
-import IndexNewsPage from '../pages/news/indexNewsPage';
-import MewsPage from '../pages/news/newsPage';
-
+import MainPage from "../pages/main/mainPage";
+import CategoryPage from "../pages/category/categoryPage";
+import ProductPage from "../pages/product/productPage";
+import CartPage from "../pages/cart/cartPage";
+import DeliveryPage from "../pages/delivery/devileryPage";
+import OrderDonePage from "../pages/order/orderDonePage";
+import OrderPage from "../pages/order/orderPage";
+import AddCartPage from "../pages/addcart/addCardPage";
+import PagePage from "../pages/page/pagePage";
+import PageFoundPage from "../pages/pagefound/pageFoundPage";
+import ReturnProductPage from "../pages/returnproduct/returnProductPage";
+import SearchPage from "../pages/search/searchPage";
+import CommentPage from "../pages/comment/commentPage";
+import IndexNewsPage from "../pages/news/indexNewsPage";
+import MewsPage from "../pages/news/newsPage";
 
 //import ErrorBoundary from '../hoc/ErrorBoundary';
-
 
 // const MainPage = lazy(() => import('../pages/main/mainPage'));
 // const CategoryPage = lazy(() => import('../pages/category/categoryPage'));
 // const PageFoundPage = lazy(() => import('../pages/pagefound/pageFoundPage'));
 
-
-
-
 export const useRoutes = () => {
-
   return (
     <Switch>
       <Route path="/" exact>
@@ -79,20 +73,15 @@ export const useRoutes = () => {
         <PageFoundPage />
       </Route>
     </Switch>
-  )
-
+  );
 
   // const location = useLocation();
 
-
   // const transitions = useTransition(location, location => location.pathname, {
   //   from: { opacity: 0 }, //, transform: 'translate3d(100%,0,0)'
-  //   enter: { opacity: 1 }, //, transform: 'translate3d(0%,0,0)' 
-  //   leave: { opacity: 0 }, //, transform: 'translate3d(-50%,0,0)'    
+  //   enter: { opacity: 1 }, //, transform: 'translate3d(0%,0,0)'
+  //   leave: { opacity: 0 }, //, transform: 'translate3d(-50%,0,0)'
   // })
-
-
-
 
   // return transitions.map(({ item: location, props, key }) => (
   //   <animated.div key={key} style={props}>
@@ -109,8 +98,4 @@ export const useRoutes = () => {
   //     </Switch>
   //   </animated.div>
   // ))
-
-}
-
-
-
+};

@@ -12,7 +12,6 @@ Runs the app in the production mode.<br />
 NODE_ENV=production<br />
 Open [http://localhost:5000](http://localhost:5000) API is available at.
 
-
 For the React client to work, you need to build the client with the command `npm run client: build`.<br />
 The client will be available at (http://localhost:5000/).<br />
 You will also see any lint errors in the console.
@@ -29,7 +28,6 @@ You will also see any lint errors in the console.
 To run the React client in development mode, run `npm run clientdev`.<br />
 Open [http://localhost:3200](http://localhost:3200/) Client will be available at.
 
-
 ### `npm run clientdev`
 
 Runs the app in the development mode.<br />
@@ -42,14 +40,12 @@ When you make a change to the code, the server will not be rebuilt. (Servet not 
 Open [http://localhost:3200](http://localhost:3200/) Client will be available at.
 Open [http://localhost:5000](http://localhost:5000) API is available at.
 
-
 ### `npm run dev`
 
 Running the server and client simultaneously in the development mode.<br />
 When you make a change to the code, the server will be rebuilt. (Servet nodemon)<br />
 Open [http://localhost:3200](http://localhost:3200/) Client will be available at.
 Open [http://localhost:5000](http://localhost:5000) API is available at.
-
 
 ### `npm run client:build`
 
@@ -61,11 +57,9 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-
 ### `npm run client:install`
 
 npm install in /client folder.
-
 
 ### `npm run client:update`
 
@@ -97,4 +91,5 @@ REACT_APP_GA_KEY - key<br />
 
 REACT_APP_YM_ON - On/Off<br />
 REACT_APP_YM_KEY - key<br />
-REACT_APP_YM_WEBVISOR_ON - Webvisor On/Off
+REACT_APP_YM_WEBVISOR_ON - Webvisor On/Off<br />
+REACT_APP_REDUX_DEVTOOLS_ON - REDUX_DEVTOOLS_ON in production mode, default on only development mode

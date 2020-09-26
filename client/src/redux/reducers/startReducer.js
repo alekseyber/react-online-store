@@ -48,6 +48,7 @@ const initialState = {
       comment: 3600,
       news: 3600,
       page: 3600,
+      start: 36000,
     },
   },
   colorsData: null,
@@ -60,6 +61,7 @@ const initialState = {
   filterData: null,
   deliveryData: null,
   textReturnProduct: null,
+  endTime: 0,
   baseUrl: process.env.NODE_ENV !== "production" ? "http://localhost:5000" : "",
   yaMapKey:
     process.env.REACT_APP_YMAP_KEY || "b43c189e-389a-4ccc-b79e-436d89a914ee",

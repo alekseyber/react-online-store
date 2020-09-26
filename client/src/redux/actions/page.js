@@ -2,12 +2,6 @@ import { SET_PAGE, SET_NEWS, SET_NEWS_LIST, SET_COMMENT_LIST } from "../constant
 import { httpActions } from "./../../hooks/http.hook";
 import { getEndTime, checkEndTime } from "./start";
 
-// const setPageData = (alias, content) => {
-//   return {
-//     type: SET_PAGE,
-//     payload: { alias, content },
-//   };
-// };
 
 export const pageFetch = (alias) => async (dispatch, getState) => {
   try {
