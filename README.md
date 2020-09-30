@@ -71,7 +71,8 @@ npm update in /client folder.
 
 MONGO_URI<br />
 JWT<br />
-PORT
+PORT<br />
+API_SERVER_OFF - server return status 503
 
 ### Client
 

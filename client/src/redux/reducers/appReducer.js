@@ -1,4 +1,4 @@
-import { SET_LOADING, SET_LOADING_FORM, SET_PAGE_LOADING, HIDE_ALERT, SHOW_ALERT, TOGGLE_COLUMN, ADD_RECENTLY_VIEWED } from '../constants';
+import { SET_LOADING, SET_LOADING_FORM, SET_PAGE_LOADING, HIDE_ALERT, SHOW_ALERT, TOGGLE_COLUMN, ADD_RECENTLY_VIEWED, SET_ERROR_APP } from '../constants';
 
 const initialState = {
     loading: false,
@@ -8,7 +8,8 @@ const initialState = {
     alertVisible: false,
     column: true,
     pageloading: false,
-    recentlyViewed: []
+    recentlyViewed: [],
+    error: null
 }
 
 
@@ -20,6 +21,7 @@ const handlers = {
     [HIDE_ALERT]: state => ({ ...state, alertVisible: false }),
     [TOGGLE_COLUMN]: state => ({ ...state, column: !state.column }),
     [ADD_RECENTLY_VIEWED]: (state, { payload }) => ({ ...state, recentlyViewed: payload }),
+    [SET_ERROR_APP]: (state, { payload }) => ({ ...state, error: payload }),
     DEFAULT: state => state
 }
 

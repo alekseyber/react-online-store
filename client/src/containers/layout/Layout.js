@@ -10,18 +10,23 @@ import BackToTop from "../../components/backtotop/BackToTop";
 import { setStart } from "../../redux/actions/start";
 import LoaderComponent from "../../components/loader/Loader";
 import RouterToTop from "../../components/routettotop/RouterToTop";
+import ErrorContent from "../../components/errorcontent/ErrorContent";
 
 export default ({ children }) => {
   const dispatch = useDispatch();
   const start = useSelector((state) => state.start.paramsData.select);
+  const error = useSelector((state) => state.app.error);
 
   useEffect(() => {
     dispatch(setStart());
   }, [dispatch]);
 
+  if (error) {
+    return <ErrorContent />;
+  }
+
   if (!start) {
     return <LoaderComponent />;
-    //  return null
   }
 
   return (

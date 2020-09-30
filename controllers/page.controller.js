@@ -1,59 +1,34 @@
-const Page = require('../models/page.model');
-const applyPattern = require('../middleware/apply-pattern');
+const {
+  getPageByAlias,
+  getOfertaData,
+  getSizesChartData,
+} = require("../controllers_data/page.controller_data.js");
 
-
+const { getErrorStatus } = require("../controllers_data/errors.class");
 
 module.exports.getByAlias = async (req, res) => {
-    try {
-        const alias = req.params.alias;
-        if (alias) {
-            const doc = await Page.findOne({ status: true, alias: alias }, { _id: 0, title: 1, content: 1, meta: 1 });
-            if (doc) {
-                let contData = {};
-                contData['title'] = doc.title;
-                contData['meta_title'] = doc.meta.title;
-                contData['meta_description'] = doc.meta.description;
-                contData['meta_keywords'] = doc.meta.keywords;
-                contData['content'] = doc.content;
-                contData = await applyPattern(contData, {});
-
-                res.status(200).json(contData)
-            } else {
-                res.status(404).send('Не существует');
-            }
-
-        } else {
-            res.status(401).send('Алиас не передан');
-        }
-
-
-    } catch (e) {
-        console.error(e.message);
-        res.status(500).send('Получена ошибка БД');
-    }
-
-}
-
-
+  try {
+    const rezult = await getPageByAlias(req.params.alias);
+    res.status(200).json(rezult);
+  } catch (e) {
+    getErrorStatus(e, res);
+  }
+};
 
 module.exports.getOferta = async (req, res) => {
-    try {
+  try {
+    const rezult = await getOfertaData();
+    res.status(200).json(rezult);
+  } catch (e) {
+    getErrorStatus(e, res);
+  }
+};
 
-        const doc = await Page.findOne({ oferta: true }, { _id: 0, content: 1 });
-        let contData = {
-            content: ""
-        };
-        if (doc) {
-            contData.content = doc.content;
-            contData = await applyPattern(contData, {});
-        }
-
-        res.status(200).json(contData)
-
-
-    } catch (e) {
-        console.error(e.message);
-        res.status(500).send('Получена ошибка БД');
-    }
-
-}
+module.exports.getSizesChart = async (req, res) => {
+  try {
+    const rezult = await getSizesChartData(req.params.id);
+    res.status(200).json(rezult);
+  } catch (e) {
+    getErrorStatus(e, res);
+  }
+};

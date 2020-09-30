@@ -4,6 +4,7 @@ import { httpActions } from "./../../hooks/http.hook";
 import { updateProducts } from "./products";
 import { cartUpdate } from "./cart";
 import { setDelivery } from "./delivery";
+import { setErrorApp } from "./app";
 
 export const getEndTime = (state, key) => {
   const cacheTimeObj = state.start.paramsData.cacheTime ?? null;
@@ -118,7 +119,8 @@ export const setStart = () => async (dispatch, getState) => {
     const { cart } = getState();
     updateStartCart(cart, dispatch);
   } catch (e) {
-    console.error(e);
+    dispatch(setErrorApp(e, setStart));
+    // console.error(e);
   }
 };
 

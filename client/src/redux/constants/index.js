@@ -5,6 +5,7 @@ export const HIDE_ALERT = 'APP/HIDE_ALERT';
 export const SHOW_ALERT = 'APP/SHOW_ALERT';
 export const TOGGLE_COLUMN = 'APP/TOGGLE_COLUMN';
 export const ADD_RECENTLY_VIEWED = 'APP/ADD_RECENTLY_VIEWED';
+export const SET_ERROR_APP = 'APP/SET_ERROR_APP';
 export const SET_START = 'START/SET_START';
 export const SET_APP_SORT = 'START/SET_APP_SORT';
 export const SET_MAIN = 'MAIN/SET_MAIN';

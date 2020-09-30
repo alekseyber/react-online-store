@@ -11,11 +11,12 @@ export default () => {
   const { requestRedirect } = useHttp();
  
   const id = params.id;
-
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
         const order = await requestRedirect(`/api/order/${id}`);
+        
         setData(order);
       } catch (e) {
         console.error(e);
