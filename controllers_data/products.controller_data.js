@@ -100,6 +100,9 @@ module.exports.getProductsByIdsData = async (
       });
       return products;
     } else {
+      if (notObj) {
+        return [];
+      }
       return {};
     }
   } catch (e) {
