@@ -10,7 +10,7 @@ const {
   getSort,
   getBagdes,
 } = require("../middleware/start-data");
-const { OtherError, globalErrorCheck } = require("./errors.class");
+const { OtherError, DbError, globalErrorCheck } = require("./errors.class");
 
 const getTree = (data) => {
   let itemsByID = {};
@@ -77,15 +77,17 @@ const getDeliveryData = async (ip) => {
   }
 };
 
-module.exports.getStartData = async (ip) => {
+const getParamsData = async () => {
   try {
-    const paramsData = await Params.findOne({ select: true }, { _id: 0 });
-    const colorsData = await getColors();
-    const sizesData = await getSizes();
-    const sortData = await getSort();
-    const brandsData = await getBrands();
-    const bagdesData = await getBagdes();
-    const recomaccesData = await Product.find(
+    return await Params.findOne({ select: true }, { _id: 0 });
+  } catch (e) {
+    throw new DbError(e.message);
+  }
+};
+
+const getRecomaccesData = async () => {
+  try {
+    return await Product.find(
       {
         cart_on: true,
         "level1_data.level1_status": true,
@@ -93,6 +95,20 @@ module.exports.getStartData = async (ip) => {
       },
       { alias: 1 }
     ).limit(2);
+  } catch (e) {
+    throw new DbError(e.message);
+  }
+};
+
+const getStartData = async (ip) => {
+  try {
+    const paramsData = await getParamsData();
+    const colorsData = await getColors();
+    const sizesData = await getSizes();
+    const sortData = await getSort();
+    const brandsData = await getBrands();
+    const bagdesData = await getBagdes();
+    const recomaccesData = await getRecomaccesData();
     const categorytreeData = await getCategoryTree();
     const filterData = await getFilter();
     const deliveryData = await getDeliveryData(ip);
@@ -112,4 +128,18 @@ module.exports.getStartData = async (ip) => {
   } catch (e) {
     globalErrorCheck(e);
   }
+};
+
+module.exports = {
+  getStartData,
+  getParamsData,
+  getColors,
+  getSizes,
+  getSort,
+  getBrands,
+  getBagdes,
+  getRecomaccesData,
+  getCategoryTree,
+  getFilter,
+  getDeliveryData,
 };

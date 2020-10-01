@@ -20,7 +20,7 @@ class ProductItem {
     this.brand_id = data.brand_id;
     this.gender = data.gender;
     this.color_default = data.color_default;
-    this.color_default_base = data.color_default;
+    //this.color_default_base = data.color_default;
     this.level1 = data.level1;
     this._id = data._id;
   }
@@ -56,7 +56,11 @@ module.exports.getProductByAliasData = async (alias) => {
   }
 };
 
-module.exports.getProductsByIdsData = async (idsInput, byalias) => {
+module.exports.getProductsByIdsData = async (
+  idsInput,
+  byalias,
+  notObj = false
+) => {
   const idsString = String(idsInput);
   const ids = idsString.split(",");
 
@@ -84,7 +88,12 @@ module.exports.getProductsByIdsData = async (idsInput, byalias) => {
         //  filter: 1,
         level1_data: 1,
       });
-      let products = {};
+
+      if (notObj) {
+        return docs;
+      }
+
+      const products = {};
 
       docs.forEach((item) => {
         products[item.alias] = new ProductItem(item);
