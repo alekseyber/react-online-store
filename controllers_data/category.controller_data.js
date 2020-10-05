@@ -10,11 +10,12 @@ const { NotFoundError, globalErrorCheck } = require("./errors.class");
 const getProductsByCategory = async (
   category_ids = [],
   all = true,
-  sortValueInput = undefined,
+  sortValueInput,
   status = true
 ) => {
   let qwery = {};
-  let products = [];
+  const products = [];
+  const productsFetch = [];
   let colors = {};
   let level2 = {};
   let filter = {};
@@ -25,28 +26,26 @@ const getProductsByCategory = async (
   let countModif = 0;
 
   if (status === false) {
-    qwery =
-      all === true
-        ? {}
-        : {
-            category_ids: { $in: category_ids },
-          };
+    qwery = all
+      ? {}
+      : {
+          category_ids: { $in: category_ids },
+        };
   } else {
-    qwery =
-      all === true
-        ? { status: true }
-        : {
-            status: true,
-            category_ids: { $in: category_ids },
-          };
+    qwery = all
+      ? { status: true }
+      : {
+          status: true,
+          category_ids: { $in: category_ids },
+        };
     let sort_obj = {};
 
     let sort = null;
-    if (sortValueInput !== undefined) {
+    if (sortValueInput) {
       sort = await Sort.findById(sortValueInput, { order: 1, field: 1 });
     }
 
-    if (sort === null) {
+    if (!sort) {
       sort = await Sort.findOne(
         { sort_default: true },
         { _id: 1, order: 1, field: 1 }
@@ -56,7 +55,7 @@ const getProductsByCategory = async (
       sortValue = sortValueInput;
     }
 
-    if (sort !== null) {
+    if (sort) {
       sort_obj[sort.field] = sort.order === true ? -1 : 1;
     }
 
@@ -71,7 +70,7 @@ const getProductsByCategory = async (
     }).sort(sort_obj);
 
     docs.forEach((item) => {
-      if (item.level1_filter !== false) {
+      if (item.level1_filter) {
         const el = {
           alias: item.alias,
           _id: item._id,
@@ -83,6 +82,7 @@ const getProductsByCategory = async (
           level2: item.level1_filter.level2,
         };
         products.push(el);
+        productsFetch.push(el.alias);
         countProduct++;
         countModif += Object.keys(el.level1).length;
         Object.assign(colors, item.level1_filter.colors);
@@ -108,6 +108,7 @@ const getProductsByCategory = async (
     maxPrice,
     countModif,
     countProduct,
+    productsFetch
   };
 };
 
@@ -139,22 +140,30 @@ const getChildrenCategory = async (
   return category_ids;
 };
 
-module.exports.getProductsForCategoryData = async (
-  category_alias,
-  sortValue
-) => {
+module.exports.getProductsForCategoryData = async (alias, sortValue) => {
   try {
-    const cacheKey = md5("category_" + category_alias + sortValue);
+    const cacheKey = md5("category_" + alias + sortValue);
     const cacheAction = "category";
-    let cacheData = await Cache.findOne({ cacheKey }, { _id: 0, cacheData: 1 });
+    const cacheDataRezult = await Cache.findOne(
+      { cacheKey },
+      { _id: 0, cacheData: 1 }
+    );
 
-    if (cacheData) {
-      return cacheData.cacheData.get("obj");
+    if (cacheDataRezult) {
+      return cacheDataRezult.cacheData.get("obj");
     }
 
     const doc = await Category.findOne(
-      { alias: String(category_alias) },
-      { parent_id: 1, title: 1, meta: 1, htitle: 1, promo: 1, content: 1 }
+      { alias },
+      {
+        parent_id: 1,
+        title: 1,
+        meta: 1,
+        htitle: 1,
+        promo: 1,
+        content: 1,
+        alias: 1,
+      }
     );
     if (!doc) {
       throw new NotFoundError("Категория не существует");
@@ -199,12 +208,13 @@ module.exports.getProductsForCategoryData = async (
       }
     }
     contData["breadcrumbs"] = breadcrumbs;
+    const cacheData = {
+      obj: { productsData, contData, alias },
+    };
 
-    cacheData = {};
-    cacheData["obj"] = { productsData, contData };
     const сache = new Cache({ cacheKey, cacheData, cacheAction });
     сache.save();
-    return cacheData["obj"];
+    return cacheData.obj;
   } catch (e) {
     globalErrorCheck(e);
   }

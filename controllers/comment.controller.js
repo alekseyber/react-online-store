@@ -1,12 +1,12 @@
 const {
-  getAllData,
+  getCommentAllData,
   addCommentData,
 } = require("../controllers_data/comment.controller_data");
 const { getErrorStatus } = require("../controllers_data/errors.class");
 
 module.exports.getAll = async (req, res) => {
   try {
-    const docs = await getAllData();
+    const docs = await getCommentAllData();
 
     res.status(200).json(docs);
   } catch (e) {

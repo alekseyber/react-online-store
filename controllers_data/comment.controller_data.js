@@ -2,18 +2,14 @@ const Comment = require("../models/comment.model");
 const verifyingGRecaptcha = require("../middleware/verifying-g-recaptcha");
 const { sendAdminEmailAddComment } = require("../emails/sendmail");
 const formatDateStr = require("../middleware/format-date-str");
-const { RecaptchaError, DbError, globalErrorCheck } = require("./errors.class");
+const {
+  RecaptchaError,
+  DbError,
+  globalErrorCheck,
+  SuccessClass,
+} = require("./errors.class");
 
-// const detectIP = (req) => {
-//   return (
-//     (req.headers["x-forwarded-for"] || "").split(",").pop() ||
-//     req.connection.remoteAddress ||
-//     req.socket.remoteAddress ||
-//     req.connection.socket.remoteAddress
-//   );
-// };
-
-module.exports.getAllData = async () => {
+module.exports.getCommentAllData = async () => {
   try {
     return await Comment.find(
       { status: true },
@@ -42,10 +38,12 @@ module.exports.addCommentData = async (inputData, authorIp) => {
       const commenText = String(inputData.commenText.trim());
       const rezultObj = { authorName, commenText, authorIp };
       const newComment = new Comment(rezultObj);
-      const doc = await newComment.save();
+      await newComment.save();
       rezultObj.dateStr = formatDateStr();
       sendAdminEmailAddComment(rezultObj);
-      return rezultObj;
+      const rezult = new SuccessClass("Спасибо, комментарий получен.");
+
+      return rezult;
     } else {
       throw new RecaptchaError();
     }

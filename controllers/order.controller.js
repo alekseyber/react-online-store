@@ -1,7 +1,7 @@
 const {
   sentOrderData,
   getCuponData,
-  fetchByIdData,
+  fetchOrderByIdData,
   returnProductFormData,
   returnCallFormData,
 } = require("../controllers_data/order.controller_data");
@@ -27,7 +27,7 @@ module.exports.getCupon = async (req, res) => {
 
 module.exports.fetchById = async (req, res) => {
   try {
-    const rezult = await fetchByIdData(req.params.id);
+    const rezult = await fetchOrderByIdData(req.params.id);
     res.status(200).json(rezult);
   } catch (e) {
     getErrorStatus(e, res);

@@ -110,134 +110,142 @@ module.exports.getDeliveryMidel = async (cityid, ip) => {
     let city = { id: 0, cityName: "" };
     let receiverCityId = Number(cityid);
 
-    if (isNaN(receiverCityId)) {
+    if (isNaN(receiverCityId) || !cityid) {
       city = await getGeoCityId(ip);
       receiverCityId = city.id;
     }
 
-    if (receiverCityId) {
-      const deliverySettings = await Deliverysettings.findOne(
-        { vendor: "cdek" },
-        {
-          _id: 0,
-          tariff_code_courier: 1,
-          tariff_code_pvz: 1,
-          from_location: 1,
-          package_base: 1,
-          api_settings: 1,
-          priceAdd: 1,
-        }
-      );
-      if (deliverySettings) {
-        const senderCityId = Number(deliverySettings.from_location.code);
-        let currentDate = new Date();
-        currentDate.setDate(currentDate.getDate() + 1);
-        if (currentDate.getDay() === 0) {
-          currentDate.setDate(currentDate.getDate() + 1);
-        }
-        const priceAdd = Number(deliverySettings.priceAdd);
-
-        const dateExecute =
-          currentDate.getFullYear() +
-          "-" +
-          ("0" + (currentDate.getMonth() + 1)).slice(-2) +
-          "-" +
-          ("0" + currentDate.getDate()).slice(-2);
-        const authLogin = deliverySettings.api_settings.client_id;
-        let secure = deliverySettings.api_settings.client_secret;
-        secure = md5(dateExecute + "&" + secure);
-        //    const url = "https://api.cdek.ru/calculator/calculate_tarifflist.php"; //Расчет стоимости по тарифам без приоритета  Content-Type: application/json
-        const url = "https://api.cdek.ru/calculator/calculate_tarifflist.php"; //Расчет стоимости по тарифам без приоритета  Content-Type: application/json
-        const version = "1.0";
-
-        let goods = [];
-
-        goods[0] = {
-          length: deliverySettings.package_base.length,
-          width: deliverySettings.package_base.width,
-          height: deliverySettings.package_base.height,
-          weight: deliverySettings.package_base.weight / 1000,
-        };
-        // goods[0] = {
-        //     length: 38,
-        //     width: 32,
-        //     height: 14,
-        //     weight: 1,
-        //     volume: 0.017
-        // };
-        const tariffId = deliverySettings.tariff_code_courier; // Посылка склад-дверь
-        //const tariffId = 137; // Посылка склад-дверь
-        // const tariffId = 233 // курьер Экономичная посылка склад-дверь
-        // const tariffId = 234 // PVZ Экономичная посылка склад-склад
-        // const tariffId = 136 // PVZ Посылка склад-склад
-        let params = {
-          version,
-          authLogin,
-          secure,
-          dateExecute,
-          senderCityId,
-          receiverCityId,
-          tariffId,
-          goods,
-        };
-
-        let rezult = {
-          courier: false,
-          pvz: false,
-          status: false,
-          errMsg: "",
-          cityid: receiverCityId,
-          city: city,
-        };
-        const response = await axios.post(url, params);
-
-        if ("error" in response.data) {
-          rezult.errMsg = response.data.error[0].text;
-        } else {
-          if ("result" in response.data) {
-            rezult.status = true;
-            rezult.courier = response.data.result;
-            rezult.courier.priceByCurrency += priceAdd;
-            rezult.courier.deliveryDateMin = formatDateStr(
-              rezult.courier.deliveryDateMin,
-              false
-            );
-            rezult.courier.deliveryDateMax = formatDateStr(
-              rezult.courier.deliveryDateMax,
-              false
-            );
-          } else {
-            rezult.errMsg = "Ответ внешнего API содержит ошибку";
-          }
-        }
-
-        if (rezult.status) {
-          params.tariffId = deliverySettings.tariff_code_pvz;
-          //params.tariffId = 136;
-          const responsePVZ = await axios.post(url, params);
-
-          if ("result" in responsePVZ.data) {
-            rezult.pvz = responsePVZ.data.result;
-            rezult.pvz.priceByCurrency += priceAdd;
-            rezult.pvz.deliveryDateMin = formatDateStr(
-              rezult.pvz.deliveryDateMin,
-              false
-            );
-            rezult.pvz.deliveryDateMax = formatDateStr(
-              rezult.pvz.deliveryDateMax,
-              false
-            );
-          }
-          return rezult;
-        } else {
-          throw new Error(rezult.errMsg);
-        }
-      } else {
-        throw new Error("Получена ошибка apiKey");
-      }
-    } else {
+    if (!receiverCityId) {
       throw new Error("Код города не передан или не определен");
     }
+
+    if (!city.id) {
+      city = await City.findOne(
+        { id: cityid },
+        { _id: 0, id: 1, cityName: 1, oblName: 1 }
+      );
+      if (!city) {
+        throw new Error("Код города не найден в БД");
+      }
+    }
+
+    const deliverySettings = await Deliverysettings.findOne(
+      { vendor: "cdek" },
+      {
+        _id: 0,
+        tariff_code_courier: 1,
+        tariff_code_pvz: 1,
+        from_location: 1,
+        package_base: 1,
+        api_settings: 1,
+        priceAdd: 1,
+      }
+    );
+    if (!deliverySettings) {
+      throw new Error("Получена ошибка apiKey");
+    }
+    const senderCityId = Number(deliverySettings.from_location.code);
+    let currentDate = new Date();
+    currentDate.setDate(currentDate.getDate() + 1);
+    if (currentDate.getDay() === 0) {
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+    const priceAdd = Number(deliverySettings.priceAdd);
+
+    const dateExecute =
+      currentDate.getFullYear() +
+      "-" +
+      ("0" + (currentDate.getMonth() + 1)).slice(-2) +
+      "-" +
+      ("0" + currentDate.getDate()).slice(-2);
+    const authLogin = deliverySettings.api_settings.client_id;
+    let secure = deliverySettings.api_settings.client_secret;
+    secure = md5(dateExecute + "&" + secure);
+    //    const url = "https://api.cdek.ru/calculator/calculate_tarifflist.php"; //Расчет стоимости по тарифам без приоритета  Content-Type: application/json
+    const url = "https://api.cdek.ru/calculator/calculate_tarifflist.php"; //Расчет стоимости по тарифам без приоритета  Content-Type: application/json
+    const version = "1.0";
+
+    let goods = [];
+
+    goods[0] = {
+      length: deliverySettings.package_base.length,
+      width: deliverySettings.package_base.width,
+      height: deliverySettings.package_base.height,
+      weight: deliverySettings.package_base.weight / 1000,
+    };
+    // goods[0] = {
+    //     length: 38,
+    //     width: 32,
+    //     height: 14,
+    //     weight: 1,
+    //     volume: 0.017
+    // };
+    const tariffId = deliverySettings.tariff_code_courier; // Посылка склад-дверь
+    //const tariffId = 137; // Посылка склад-дверь
+    // const tariffId = 233 // курьер Экономичная посылка склад-дверь
+    // const tariffId = 234 // PVZ Экономичная посылка склад-склад
+    // const tariffId = 136 // PVZ Посылка склад-склад
+    const params = {
+      version,
+      authLogin,
+      secure,
+      dateExecute,
+      senderCityId,
+      receiverCityId,
+      tariffId,
+      goods,
+    };
+
+    const rezult = {
+      courier: null,
+      pvz: null,
+      status: false,
+      errMsg: "",
+      cityid: receiverCityId,
+      city,
+    };
+    const response = await axios.post(url, params);
+
+    if ("error" in response.data) {
+      rezult.errMsg = response.data.error[0].text;
+    } else {
+      if ("result" in response.data) {
+        rezult.status = true;
+        rezult.courier = response.data.result;
+        rezult.courier.priceByCurrency += priceAdd;
+        rezult.courier.deliveryDateMin = formatDateStr(
+          rezult.courier.deliveryDateMin,
+          false
+        );
+        rezult.courier.deliveryDateMax = formatDateStr(
+          rezult.courier.deliveryDateMax,
+          false
+        );
+      } else {
+        rezult.errMsg = "Ответ внешнего API содержит ошибку";
+      }
+    }
+
+    if (rezult.status) {
+      params.tariffId = deliverySettings.tariff_code_pvz;
+      //params.tariffId = 136;
+      const responsePVZ = await axios.post(url, params);
+
+      if ("result" in responsePVZ.data) {
+        rezult.pvz = responsePVZ.data.result;
+        rezult.pvz.priceByCurrency += priceAdd;
+        rezult.pvz.deliveryDateMin = formatDateStr(
+          rezult.pvz.deliveryDateMin,
+          false
+        );
+        rezult.pvz.deliveryDateMax = formatDateStr(
+          rezult.pvz.deliveryDateMax,
+          false
+        );
+      }
+      return rezult;
+    }
+    throw new Error(rezult.errMsg);
   } catch (e) {
     throw new Error(e.message);
   }

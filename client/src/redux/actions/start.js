@@ -134,10 +134,8 @@ export const textReturnProductFetch = () => async (dispatch, getState) => {
 
     const { requestNoLoader } = httpActions(dispatch);
 
-    const textReturnProduct = await requestNoLoader(
-      "/api/params/textreturnproduct"
-    );
-
+    const { content } = await requestNoLoader("/api/start/textreturnproduct");
+    const textReturnProduct = content;
     dispatch(setStartData({ textReturnProduct }));
   } catch (e) {}
 };

@@ -67,6 +67,7 @@ export const sendOrder = (formDataInput, qorder = false) => async (
         formData.pvzSelectStatus = true;
       }
     }
+
     const order = await requestFormLoader(
       "/api/order/sentorder",
       "post",
@@ -76,8 +77,8 @@ export const sendOrder = (formDataInput, qorder = false) => async (
 
     const rezult = {
       orderDone: true,
-      orderId: order.orderId,
-      orderNumber: order.order,
+      orderId: order.order.orderId,
+      orderNumber: order.order.orderNum,
     };
 
     batch(() => {
@@ -104,6 +105,7 @@ export const sendReturnProduct = (formDataInput) => async (dispatch) => {
 
   try {
     const formData = new FormDataClass(formDataInput, fieldsForm);
+
     await requestFormLoader(
       "/api/order/returnproductform",
       "post",
@@ -131,6 +133,7 @@ export const sendReturnCall = (formDataInput) => async (dispatch) => {
 
   try {
     const formData = new FormDataClass(formDataInput, fieldsForm);
+
     await requestFormLoader(
       "/api/order/returncallform",
       "post",

@@ -125,7 +125,7 @@ const Search = ({ fclose }) => {
                 if (data.products.length > 0) {
 
                     const rezult = data.products;
-                    if (data.searchAll) {                       
+                    if (data.products.length > 5) {                       
                         rezult.push({
                             link: data.searchAll + '?q=' + debouncedSearchTerm,
                             title: "Показать все"

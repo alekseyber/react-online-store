@@ -49,15 +49,15 @@ const Search = ({ q }) => {
       };
       try {
         if (q.length) {
-          const { products, filter } = await requestNoErrMsg(
+          const { list, filter } = await requestNoErrMsg(
             "/api/search/full",
             "get",
             { q }
           );
-          rez.list = products;
+          rez.list = list;
 
-          if (products.length) {
-            await dispatch(updateProducts(products));
+          if (list.length) {
+            await dispatch(updateProducts(list));
             if (filter.count && filter.selected) {
               rez.color = filter.selected.color ?? [];
             }

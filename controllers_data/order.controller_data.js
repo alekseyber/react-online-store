@@ -22,6 +22,7 @@ const {
   RecaptchaError,
   DetectPfoneError,
   globalErrorCheck,
+  SuccessClass,
 } = require("./errors.class");
 
 const phoneFormat = (inputPhone) => {
@@ -372,10 +373,16 @@ module.exports.sentOrderData = async (inputData, ip) => {
 
     sendAdminEmailFromOrder(order);
 
-    const rezultOrder = {
-      order: orderNum,
+    const rezultOrder = new SuccessClass(`Заказ № ${orderNum} получен.`);
+    rezultOrder.order = {
+      orderNum,
       orderId: doc._id,
     };
+
+    // const rezultOrder = {
+    //   order: orderNum,
+    //   orderId: doc._id,
+    // };
     return rezultOrder;
   } catch (e) {
     console.error(e.message);
@@ -419,7 +426,7 @@ module.exports.getCuponData = async (cupontextInput) => {
   }
 };
 
-module.exports.fetchByIdData = async (id) => {
+module.exports.fetchOrderByIdData = async (id) => {
   try {
     const doc = await Order.findById(id);
     if (!doc) {
@@ -433,6 +440,7 @@ module.exports.fetchByIdData = async (id) => {
 
     if (doc.acquirer_id.status_block === false && doc.hiddenClient === false) {
       const rezult = {};
+      rezult.id = doc._id;
       rezult.orderNum = doc.orderNum;
       rezult.cityName = doc.cityName;
       rezult.payAwait = doc.payAwait;
@@ -469,17 +477,18 @@ module.exports.returnProductFormData = async (inputData, acquirer_ip) => {
       if (detect) {
         const action = Number(inputData.action);
 
-        let rezultObj = { acquirer_id, phone, action, acquirer_ip };
+        const rezultObj = { acquirer_id, phone, action, acquirer_ip };
         const newReturnProduct = new Returnproduct(rezultObj);
-        const doc = await newReturnProduct.save();
+        await newReturnProduct.save();
         rezultObj.dateStr = formatDateStr();
 
         rezultObj.actionStr = action === 0 ? "обмен" : "возврат";
         sendAdminEmailReturnProduct(rezultObj);
-        return doc;
+        // return doc;
       }
     }
-    throw new DetectPfoneError("returnProductFormData not Detect");
+    return new SuccessClass("Заявка получена");
+    //throw new DetectPfoneError("returnProductFormData not Detect");
   } catch (e) {
     globalErrorCheck(e);
   }
@@ -501,10 +510,10 @@ module.exports.returnCallFormData = async (inputData, user_ip) => {
     if (phone) {
       const rezultObj = { phone, name, comment, user_ip };
       const newReturnCall = new Returncall(rezultObj);
-      const doc = await newReturnCall.save();
+      await newReturnCall.save();
       rezultObj.dateStr = formatDateStr();
       sendAdminEmailReturnCall(rezultObj);
-      return doc;
+      return new SuccessClass("Заявка получена");
     }
     throw new DetectPfoneError("returnCallFormData not phone detect");
   } catch (e) {

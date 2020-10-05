@@ -2,7 +2,7 @@ const News = require("../models/news.model");
 const applyPattern = require("../middleware/apply-pattern");
 const { DbError, NotFoundError, globalErrorCheck } = require("./errors.class");
 
-module.exports.getAllData = async () => {
+module.exports.getAllNewsData = async () => {
   try {
     return await News.find(
       { status: true },
@@ -13,11 +13,11 @@ module.exports.getAllData = async () => {
   }
 };
 
-module.exports.getByAliasData = async (alias) => {
+module.exports.getNewsByAliasData = async (alias) => {
   try {
     const doc = await News.findOne(
       { status: true, alias },
-      { _id: 0, title: 1, annonce: 1, content: 1, meta: 1 }
+      { _id: 0, title: 1, annonce: 1, content: 1, meta: 1, alias: 1 }
     );
 
     if (!doc) {
@@ -25,13 +25,14 @@ module.exports.getByAliasData = async (alias) => {
     }
 
     let contData = {};
-    contData["title"] = doc.title;
-    contData["meta_title"] = doc.meta.title;
-    contData["meta_description"] = doc.meta.description;
-    contData["meta_keywords"] = doc.meta.keywords;
-    contData["annonce"] = doc.annonce;
-    contData["content"] = doc.content;
+    contData.title = doc.title;
+    contData.meta_title = doc.meta.title;
+    contData.meta_description = doc.meta.description;
+    contData.meta_keywords = doc.meta.keywords;
+    contData.annonce = doc.annonce;
+    contData.content = doc.content;
     contData = await applyPattern(contData, {});
+    contData.alias = doc.alias;
 
     return contData;
   } catch (e) {

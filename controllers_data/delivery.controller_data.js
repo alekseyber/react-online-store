@@ -18,8 +18,21 @@ module.exports.getDeliveryData = async (cityid, ip) => {
   try {
     return await getDeliveryMidel(cityid, ip);
   } catch (e) {
-    //console.error(e.message);
-    throw new DeliveryError(e.message);
+    if (cityid) {
+      throw new DeliveryError(e.message);
+    }
+    return {
+      cityid: 44,
+      courier: null,
+      pvz: null,
+      status: false,
+      errMsg: e.message,
+      city: {
+        id: 44,
+        cityName: "Москва",
+        oblName: "Москва",
+      },
+    };
   }
 };
 

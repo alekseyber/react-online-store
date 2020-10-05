@@ -7,7 +7,9 @@ const { DbError } = require("./errors.class");
 module.exports.getMainPageData = async () => {
   try {
     const rezult = {};
-    const mainPage = await MainPage.findOne({ main: true }, { _id: 0 });
+    const mainPage = await MainPage.findOne({ main: true });
+
+    rezult._id = mainPage._id;
     rezult.hitvisible = false;
     rezult.hitcount = 0;
     if (mainPage.hitvisible === true && mainPage.hitcount > 0) {

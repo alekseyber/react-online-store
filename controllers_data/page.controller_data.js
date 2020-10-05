@@ -7,19 +7,20 @@ module.exports.getPageByAlias = async (alias) => {
   try {
     const doc = await Page.findOne(
       { status: true, alias },
-      { _id: 0, title: 1, content: 1, meta: 1 }
+      { _id: 0, alias: 1, title: 1, content: 1, meta: 1 }
     );
     if (!doc) {
       throw new NotFoundError("Страница не найднеа");
     }
 
     let contData = {};
-    contData["title"] = doc.title;
-    contData["meta_title"] = doc.meta.title;
-    contData["meta_description"] = doc.meta.description;
-    contData["meta_keywords"] = doc.meta.keywords;
-    contData["content"] = doc.content;
+    contData.title = doc.title;
+    contData.meta_title = doc.meta.title;
+    contData.meta_description = doc.meta.description;
+    contData.meta_keywords = doc.meta.keywords;
+    contData.content = doc.content;
     contData = await applyPattern(contData, {});
+    contData.alias = doc.alias;
     return contData;
   } catch (e) {
     globalErrorCheck(e);

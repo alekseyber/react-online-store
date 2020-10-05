@@ -5,13 +5,14 @@ const bodyParser = require("body-parser");
 const mongoSanitize = require("express-mongo-sanitize");
 const mongoose = require("mongoose");
 const passport = require("passport");
+const { ApolloServer } = require("apollo-server-express");
+const responseCachePlugin = require("apollo-server-plugin-response-cache");
 const passportStrategy = require("./middleware/passport-strategy");
 const startRoutes = require("./routes/start.routes");
 const authRoutes = require("./routes/auth.routes");
 const deliveryRoutes = require("./routes/delivery.routes");
 const productsRoutes = require("./routes/products.routes");
 const categoryRoutes = require("./routes/category.routes");
-const paramsRoutes = require("./routes/params.routes");
 const mainpageRoutes = require("./routes/mainpage.routes");
 const orderRoutes = require("./routes/order.routes");
 const searchRoutes = require("./routes/search.routes");
@@ -24,8 +25,23 @@ const satisexcellRoutes = require("./routes/satisexcell.routes");
 const satisdeliveryRoutes = require("./routes/satisdelivery.routes");
 const satispdfRoutes = require("./routes/satispdf.routes");
 const cronosworkRoutes = require("./routes/cronoswork.routes");
+const { typeDefs, resolvers } = require("./shema/shema");
 
 const keys = require("./keys");
+
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  context: ({ req }) => ({
+    ip: req.ip,
+  }),
+  debug: !process.env.NODE_ENV === "production",
+  plugins: [responseCachePlugin()],
+  cacheControl: {
+    defaultMaxAge: 3600,
+  },
+});
+
 const app = express();
 app.use(cors());
 
@@ -34,13 +50,19 @@ passport.use(passportStrategy);
 
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 app.use(bodyParser.json({ limit: "50mb", extended: true }));
+app.set("trust proxy", true);
 
 const API_SERVER_OFF = process.env.API_SERVER_OFF ? true : false;
 
-app.use((req, res, next) => {
+app.use((_, res, next) => {
   if (API_SERVER_OFF) {
     return res.status(503).send("На серевере проводятся технические работы...");
   }
+  next();
+});
+
+app.use((req, _, next) => {
+  req.ip = req.headers["X-Real-IP"] || req.connection.remoteAddress;
   next();
 });
 
@@ -49,7 +71,6 @@ app.use("/api/auth", authRoutes);
 app.use("/api/delivery", deliveryRoutes);
 app.use("/api/products", productsRoutes);
 app.use("/api/category", categoryRoutes);
-app.use("/api/params", paramsRoutes);
 app.use("/api/mainpage", mainpageRoutes);
 app.use("/api/order", orderRoutes);
 app.use("/api/search", searchRoutes);
@@ -68,7 +89,7 @@ app.use(express.static(path.join(__dirname, "static")));
 if (process.env.NODE_ENV === "production") {
   app.use("/", express.static(path.join(__dirname, "client", "build")));
 
-  app.get("*", (req, res) => {
+  app.get("*", (_, res) => {
     res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
   });
 }
@@ -81,6 +102,8 @@ app.use(
 );
 
 const PORT = keys.PORT || 5000;
+
+server.applyMiddleware({ app, path: "/api/graphql" });
 
 async function start() {
   try {

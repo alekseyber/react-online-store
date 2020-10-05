@@ -26,10 +26,32 @@ class ProductItem {
   }
 }
 
+class ProductItemV2 {
+  constructor(data) {
+    this.title = data.title;
+    this.alias = data.alias;
+    this.product_model = data.product_model;
+    this.sku = data.sku;
+    this.price = data.price;
+    this.old_price = data.old_price;
+    this.sizesgroup_id = data.sizesgroup_id;
+    this.brand_id = data.brand_id;
+    this.gender = data.gender;
+    this.color_default = data.color_default;
+    this.level1_arr = data.level1_arr;
+    // this._id = data._id;
+  }
+}
+
 module.exports.getProductByAliasData = async (alias) => {
   try {
     const doc = await Product.findOne(
-      { alias },
+      {
+        alias,
+        status: true,
+        "level1_data.level2.amount": { $gt: 0 },
+        "level1_data.level1_status": true,
+      },
       {
         alias: 1,
         title: 1,
@@ -44,13 +66,11 @@ module.exports.getProductByAliasData = async (alias) => {
         level1_data: 1,
       }
     );
+
     if (!doc) {
       throw new NotFoundError("Продукт не найден");
     }
-    // const rezult = {};
-    // rezult[alias] = new ProductItem(doc);
-
-    return new ProductItem(doc);
+    return doc;
   } catch (e) {
     globalErrorCheck(e);
   }
@@ -59,12 +79,16 @@ module.exports.getProductByAliasData = async (alias) => {
 module.exports.getProductsByIdsData = async (
   idsInput,
   byalias,
-  notObj = false
+  notObj = false,
+  idsArr
 ) => {
-  const idsString = String(idsInput);
-  const ids = idsString.split(",");
+  const ids = idsArr || String(idsInput).split(",");
 
-  const where = {};
+  const where = {
+    status: true,
+    "level1_data.level2.amount": { $gt: 0 },
+    "level1_data.level1_status": true,
+  };
   if (byalias) {
     where.alias = { $in: ids };
   } else {
@@ -85,7 +109,6 @@ module.exports.getProductsByIdsData = async (
         brand_id: 1,
         gender: 1,
         color_default: 1,
-        //  filter: 1,
         level1_data: 1,
       });
 
@@ -110,7 +133,7 @@ module.exports.getProductsByIdsData = async (
   }
 };
 
-module.exports.getProductsHitData = async (countHitsInput) => {
+module.exports.getProductsHitData = async (countHitsInput, small = false) => {
   try {
     let countHits = 8;
     const countHitsInputNumber = Number(countHitsInput);
@@ -120,49 +143,75 @@ module.exports.getProductsHitData = async (countHitsInput) => {
       }
     }
 
-    const aggregate = await Product.aggregate([
-      { $match: { status: true, hit: true } },
-      {
-        $project: {
-          alias: 1,
-          level1_data: {
-            $filter: {
-              input: "$level1_data",
-              as: "level1",
-              cond: { $eq: ["$$level1.level1_status", true] },
-            },
-          },
-        },
-      },
-      { $unwind: "$level1_data" },
-      {
-        $project: {
-          level2: "$level1_data.level2",
-          _id: "$_id",
-          alias: "$alias",
-        },
-      },
-      { $unwind: "$level2" },
-      {
-        $project: {
-          amount: "$level2.amount",
-          _id: "$_id",
-          alias: "$alias",
-        },
-      },
-      { $match: { amount: { $ne: 0 } } },
-      { $group: { _id: "$_id", alias: { $first: "$alias" } } },
-      { $sample: { size: countHits } },
-    ]);
-    return aggregate;
+    const where = {
+      status: true,
+      hit: true,
+      "level1_data.level2.amount": { $gt: 0 },
+      "level1_data.level1_status": true,
+    };
+
+    const hits = await Product.find(where, { alias: 1 }).limit(countHits);
+
+    if (small) {
+      return hits.map((item) => item.alias);
+    }
+    return hits;
+
+    // const aggregate = await Product.aggregate([
+    //   { $match: { status: true, hit: true } },
+    //   {
+    //     $project: {
+    //       alias: 1,
+    //       level1_data: {
+    //         $filter: {
+    //           input: "$level1_data",
+    //           as: "level1",
+    //           cond: { $eq: ["$$level1.level1_status", true] },
+    //         },
+    //       },
+    //     },
+    //   },
+    //   { $unwind: "$level1_data" },
+    //   {
+    //     $project: {
+    //       level2: "$level1_data.level2",
+    //       _id: "$_id",
+    //       alias: "$alias",
+    //     },
+    //   },
+    //   { $unwind: "$level2" },
+    //   {
+    //     $project: {
+    //       amount: "$level2.amount",
+    //       _id: "$_id",
+    //       alias: "$alias",
+    //     },
+    //   },
+    //   { $match: { amount: { $ne: 0 } } },
+    //   { $group: { _id: "$_id", alias: { $first: "$alias" } } },
+    //   { $sample: { size: countHits } },
+    // ]);
+    // return aggregate;
   } catch (e) {
     globalErrorCheck(e);
   }
 };
 
-module.exports.getProductContentData = async (alias) => {
+module.exports.getProductContentData = async (alias, arr = false) => {
   try {
-    const cacheKey = md5("productmain_" + alias);
+    const cacheKey = md5("productmain_" + alias + arr.toString());
+
+    const where = {
+      alias,
+      status: true,
+      "level1_data.level2.amount": { $gt: 0 },
+      "level1_data.level1_status": true,
+    };
+
+    const count = await Product.countDocuments(where);
+    if (!count) {
+      throw new NotFoundError("Продукт не найден");
+    }
 
     const cacheDataRezult = await Cache.findOne(
       { cacheKey },
@@ -173,29 +222,27 @@ module.exports.getProductContentData = async (alias) => {
       return cacheDataRezult.cacheData;
     }
 
-    const doc = await Product.findOne(
-      { alias },
-      {
-        _id: 0,
-        meta: 1,
-        category_id: 1,
-        content: 1,
-        level1_data: 1,
-        title: 1,
-        price: 1,
-        old_price: 1,
-        gender: 1,
-        brand_id: 1,
-        sku: 1,
-        filter: 1,
-        related_id: 1,
-      }
-    ).populate({ path: "related_id", select: { _id: 0, alias: 1 } });
+    const doc = await Product.findOne(where, {
+      _id: 0,
+      alias: 1,
+      meta: 1,
+      category_id: 1,
+      content: 1,
+      level1_data: 1,
+      title: 1,
+      price: 1,
+      old_price: 1,
+      gender: 1,
+      brand_id: 1,
+      sku: 1,
+      filter: 1,
+      related_id: 1,
+    }).populate({ path: "related_id", select: { _id: 0, alias: 1 } });
     if (doc) {
       const rezult = {};
       rezult.meta = doc.meta;
       rezult.content = doc.content;
-      rezult.level1 = doc.level1_gal;
+      rezult.level1 = arr ? doc.level1_gal_arr : doc.level1_gal;
       rezult.related = "";
       if (doc.related_id) {
         rezult.related = doc.related_id.alias;
@@ -228,10 +275,10 @@ module.exports.getProductContentData = async (alias) => {
         }
       }
       let contData = {};
-      contData["meta_title"] = rezult.meta.title;
-      contData["meta_description"] = rezult.meta.description;
-      contData["meta_keywords"] = rezult.meta.keywords;
-      contData["content"] = rezult.content;
+      contData.meta_title = rezult.meta.title;
+      contData.meta_description = rezult.meta.description;
+      contData.meta_keywords = rezult.meta.keywords;
+      contData.content = rezult.content;
 
       const currSymbol = bparams.currSymbol;
       const level1 = rezult.level1;
@@ -239,15 +286,16 @@ module.exports.getProductContentData = async (alias) => {
       const { patternData, filterData } = await getProductPatternData(
         doc,
         level1,
-        currSymbol
+        currSymbol,
+        !arr
       );
       rezult.filter = filterData;
 
       contData = await applyPattern(contData, patternData);
-      rezult.meta.title = contData["meta_title"];
-      rezult.meta.description = contData["meta_description"];
-      rezult.meta.keywords = contData["meta_keywords"];
-      rezult.content = contData["content"];
+      rezult.meta.title = contData.meta_title;
+      rezult.meta.description = contData.meta_description;
+      rezult.meta.keywords = contData.meta_keywords;
+      rezult.content = contData.content;
       const cacheAction = "product";
       const cacheData = rezult;
       const сache = new Cache({ cacheKey, cacheData, cacheAction });
@@ -264,7 +312,12 @@ module.exports.getProductByLevelTooData = async (id) => {
   try {
     const level2_id = Types.ObjectId(id);
     const product = await Product.findOne(
-      { "level1_data.level2._id": level2_id, status: true },
+      {
+        "level1_data.level2._id": level2_id,
+        status: true,
+        "level1_data.level2.amount": { $gt: 0 },
+        "level1_data.level1_status": true,
+      },
       { alias: 1, price: 1, "level1_data.level2.$": 1 }
     );
 
@@ -278,8 +331,8 @@ module.exports.getProductByLevelTooData = async (id) => {
         if (level2.amount > 0) {
           const rezult = {
             alias: product.alias,
-            color: product.level1_data[0].level1_alias,
-            sizes: level2.level2_alias,
+            level1: product.level1_data[0].level1_alias,
+            level2: level2.level2_alias,
             price,
           };
           return rezult;

@@ -115,7 +115,7 @@ module.exports.searchListData = async (q) => {
     const queryParams = getQuery(q);
     const rezult = {
       products: [],
-      searchAll: false,
+      searchAll: "/search",
     };
 
     if (queryParams.valid) {
@@ -125,7 +125,7 @@ module.exports.searchListData = async (q) => {
         },
       };
 
-      docs = await Indexproduct.find(query, {
+      const docs = await Indexproduct.find(query, {
         _id: 0,
         product_id: 1,
         title: 1,
@@ -133,7 +133,7 @@ module.exports.searchListData = async (q) => {
       })
         .sort({ product_id: 1, sortvalue: 1 })
         .limit(1300);
-      let product_ids = [];
+      const product_ids = [];
       for (let doc of docs) {
         if (!product_ids.includes(String(doc.product_id))) {
           product_ids.push(String(doc.product_id));
@@ -143,9 +143,9 @@ module.exports.searchListData = async (q) => {
           };
           rezult.products.push(item);
         }
-        if (product_ids.length === 2) {
-          rezult.searchAll = "/search"; //encodeURI('/search?q=' + queryParams.preview);
-        }
+        // if (product_ids.length === 2) {
+        //   rezult.searchAll = "/search"; //encodeURI('/search?q=' + queryParams.preview);
+        // }
         if (product_ids.length === 10) {
           break;
         }
@@ -157,12 +157,12 @@ module.exports.searchListData = async (q) => {
   }
 };
 
-module.exports.searchFullData = async (q) => {
+module.exports.searchFullData = async (q, arr) => {
   try {
     const queryParams = getQuery(q);
     let rezult = {
       preview: queryParams.preview,
-      products: [],
+      list: [],
       filter: {
         count: 0,
         selected: {},
@@ -171,7 +171,12 @@ module.exports.searchFullData = async (q) => {
     if (queryParams.valid) {
       const indexProduct = await getIndexProduct(queryParams.regex);
       if (indexProduct.status) {
-        rezult.products = indexProduct.products;
+        if (arr) {
+          rezult.list = indexProduct.products.map((el) => el.alias);
+        } else {
+          rezult.list = indexProduct.products;
+        }
+
         if (indexProduct.colorsCount) {
           rezult.filter.count = indexProduct.colorsCount;
           rezult.filter.selected.color = indexProduct.colors;

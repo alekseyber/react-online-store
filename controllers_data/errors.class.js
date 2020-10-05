@@ -75,26 +75,37 @@ const globalErrorCheck = (e) => {
   } else if (e instanceof DetectPfoneError) {
     throw new DetectPfoneError(e.message);
   } else {
-    console.error(e);
-    throw new OtherError(e.message);
+    console.error("OtherError: ", e.message);
+
+    throw new OtherError(
+      "Произошла ошибка на сервере, повторите попытку позже"
+    );
   }
 };
 
 const getErrorStatus = (e, res) => {
   const status = e.status ? e.status : 500;
-  const message = "Произошла ошибка на сервере, повторите попытку позже";
+  // const message = "Произошла ошибка на сервере, повторите попытку позже";
 
   if (!e.status) {
     console.error(e.message);
   }
   if (res) {
-    return res.status(status).send(message);
+    return res.status(status).send(e.message);
   }
   return {
     status,
     message,
   };
 };
+
+class SuccessClass {
+  constructor(message = "Запись успешно добавлена", code = "201") {
+    this.code = code;
+    this.message = message;
+    this.success = true;
+  }
+}
 
 module.exports = {
   NotFoundError,
@@ -106,4 +117,5 @@ module.exports = {
   DetectPfoneError,
   getErrorStatus,
   globalErrorCheck,
+  SuccessClass,
 };
