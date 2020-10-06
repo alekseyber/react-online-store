@@ -9,7 +9,7 @@ module.exports.getMainPageData = async () => {
     const rezult = {};
     const mainPage = await MainPage.findOne({ main: true });
 
-    rezult._id = mainPage._id;
+    //rezult.id = mainPage._id;
     rezult.hitvisible = false;
     rezult.hitcount = 0;
     if (mainPage.hitvisible === true && mainPage.hitcount > 0) {

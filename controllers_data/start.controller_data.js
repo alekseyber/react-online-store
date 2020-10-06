@@ -90,7 +90,7 @@ const getDeliveryData = async (cityid = 0, ip) => {
 
 const getParamsData = async () => {
   try {
-    return await Params.findOne({ select: true }); //, { _id: 0 }
+    return await Params.findOne({ select: true });
   } catch (e) {
     throw new DbError(e.message);
   }

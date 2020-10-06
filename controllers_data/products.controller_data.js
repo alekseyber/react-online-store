@@ -38,7 +38,7 @@ class ProductItemV2 {
     this.brand_id = data.brand_id;
     this.gender = data.gender;
     this.color_default = data.color_default;
-    this.level1_arr = data.level1_arr;
+    this.level1Arr = data.level1Arr;
     // this._id = data._id;
   }
 }

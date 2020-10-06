@@ -70,35 +70,35 @@ const typeDefs = gql`
   scalar JSON
   # ----ParamsData---
   type BannersProduct {
-    img: String
-    title: String
+    img: String!
+    title: String!
     str1: String
     str2: String
     sortvalue: Int
-    _id: String
+    # _id: String
   }
 
   type ProductImgProperty {
-    img_width: Int
+    img_width: Int!
     img_height: Int
     status: String
     sortvalue: Int
-    _id: String
-    path: String
+    # _id: String
+    path: String!
   }
 
-  type List {
-    icons: String
-    title: String
-    url: String
+  type BottomLinksListItem {
+    icons: String!
+    title: String!
+    url: String!
     sortBottomLinks: Int
-    _id: String
+    # _id: String
   }
 
   type BottomLinks {
     title: String
-    _id: String
-    list: [List]
+    #_id: String
+    list: [BottomLinksListItem]!
   }
 
   type TopLinks {
@@ -106,7 +106,7 @@ const typeDefs = gql`
     title: String
     url: String
     sortTopLinks: Int
-    _id: String
+    #_id: String
   }
 
   type BannersDelivery {
@@ -115,7 +115,7 @@ const typeDefs = gql`
     str1: String
     str2: String
     sortvalue: Int
-    _id: String
+    #_id: String
   }
 
   type CacheTime {
@@ -130,30 +130,30 @@ const typeDefs = gql`
   }
 
   type CityDefault {
-    id: Int
-    cityName: String
+    id: Int!
+    cityName: String!
     oblName: String
   }
 
   type Phone {
-    href: String
-    title: String
+    href: String!
+    title: String!
   }
 
   type ParamsData @cacheControl(maxAge: 36000) {
-    _id: ID
-    shop_name: String
+    #_id: ID!
+    shop_name: String!
     shop_name_rus: String
     shop_fullname_rus: String
     streetAddress: String
     shop_email: String
-    count_page_product: Int
-    count_page_comment: Int
-    count_page_news: Int
+    count_page_product: Int!
+    count_page_comment: Int!
+    count_page_news: Int!
     textDeliveryProduct: String
     bannersProductOn: Boolean
-    categoryImgProperty: String
-    logoimg: String
+    categoryImgProperty: String!
+    logoimg: String!
     currSymbol: String
     currency: String
     defaultDeliveryText: String
@@ -162,19 +162,19 @@ const typeDefs = gql`
     orderPrintText: String
     defaultDeliveryRegionText: String
     maxDeliveryHourToday: Int
-    qualityproductImg: Int
+    qualityproductImg: Int!
     baseUrl: String
     visisbleTopBanner: Boolean
-    timeCloseTopBanner: Int
-    bannersProduct: [BannersProduct]
-    productImgProperty: [ProductImgProperty]
-    bottomLinks: [BottomLinks]
-    topLinks: [TopLinks]
-    bannersDelivery: [BannersDelivery]
-    cacheTime: CacheTime
-    cityDefault: CityDefault
-    phone: Phone
-    select: Boolean
+    timeCloseTopBanner: Int!
+    bannersProduct: [BannersProduct]!
+    productImgProperty: [ProductImgProperty]!
+    bottomLinks: [BottomLinks]!
+    topLinks: [TopLinks]!
+    bannersDelivery: [BannersDelivery]!
+    cacheTime: CacheTime!
+    cityDefault: CityDefault!
+    phone: Phone!
+    #select: Boolean
   }
   # ----colors---
   type ColorGrupp @cacheControl(maxAge: 36000) {
@@ -200,17 +200,17 @@ const typeDefs = gql`
   }
   # ----sort---
   type SortList {
-    order: Boolean
-    sort_default: Boolean
-    _id: String
-    text: String
-    field: String
+    order: Boolean!
+    sort_default: Boolean!
+    _id: String!
+    text: String!
+    field: String!
   }
 
   type SortData {
-    _id: ID
-    sortValue: String
-    sortList: [SortList]
+    _id: ID!
+    sortValue: String!
+    sortList: [SortList]!
   }
   # ----Brand---
   type Brand {
@@ -226,7 +226,7 @@ const typeDefs = gql`
   }
   # ----getCategoryTree---
   type CategoryTreeChilds {
-    _id: String
+    # _id: String
     img: String
     title: String!
     alias: String!
@@ -235,10 +235,10 @@ const typeDefs = gql`
   }
 
   type CategoryTree {
-    _id: ID!
+    # _id: ID!
+    alias: ID!
     img: String
     title: String!
-    alias: String!
     parent_id: String!
     childs: [CategoryTreeChilds]!
   }
@@ -251,15 +251,15 @@ const typeDefs = gql`
   }
 
   type FilterGrupp {
-    alias: String
-    title: String
+    alias: String!
+    title: String!
     color: Boolean
     sizes: Boolean
-    attrs: [FilterAttrs]
+    attrs: [FilterAttrs!]!
   }
 
   type Filter {
-    filterRezult: [FilterGrupp]
+    filterRezult: [FilterGrupp]!
     colorsChToGr: JSON
     colorsGrupp: JSON
     filterIndex: JSON
@@ -315,11 +315,11 @@ const typeDefs = gql`
     sku: String!
     price: Int!
     old_price: Int
-    sizesgroup_id: String!
+    sizesgroupId: String!
     brand_id: String
     gender: String!
     color_default: String!
-    level1_arr: [ProductLevel1]!
+    level1Arr: [ProductLevel1]!
   }
 
   # ----ProductMain---
@@ -330,14 +330,14 @@ const typeDefs = gql`
   }
 
   type Breadcrumb {
-    text: String
-    disabled: Boolean
-    href: String
-    level: Int
+    text: String!
+    disabled: Boolean!
+    href: String!
+    level: Int!
   }
 
   type ProductGal {
-    imgs: [String]
+    imgs: [String]!
     level1_alias: ID!
   }
 
@@ -380,8 +380,8 @@ const typeDefs = gql`
   }
 
   type CategoryProduct {
-    alias: String
-    _id: String
+    alias: String!
+    # _id: String
     title: String
     update_at: Int
     price: Int
@@ -445,7 +445,7 @@ const typeDefs = gql`
   }
 
   type MainPage {
-    _id: String
+    #id: String
     hitvisible: Boolean
     hitcount: Int
     hittitle: String
@@ -472,7 +472,7 @@ const typeDefs = gql`
   }
   # ----sizesChart---
   type ContentId {
-    _id: ID
+    id: ID
     content: String
   }
   # ----News---
@@ -544,13 +544,12 @@ const typeDefs = gql`
     level1_id: String
     level2_id: String
     valid: Boolean
-    _id: String
     product_id: String
   }
 
   type Order {
     id: ID
-    orderNum: String
+    orderNum: String!
     cityName: String
     payAwait: Boolean
     payStatus: Boolean
@@ -579,11 +578,11 @@ const typeDefs = gql`
     colorItem(alias: ID!): Color
     size: [Size]
     sizeItem(alias: ID!): Size
-    sortData: ParamsData
+    sortData: SortData
     brand: [Brand]
-    brandItem(_id: ID!): Brand
+    brandItem(id: ID!): Brand
     bagde: [Bagde]
-    bagdeItem(_id: ID!): Bagde
+    bagdeItem(id: ID!): Bagde
     recomacces: Recomacces
     categoryTree: CategoryTree
     filterData: Filter
@@ -592,7 +591,7 @@ const typeDefs = gql`
     getPvz(cityid: Int!): PvzList
     textReturnProduct: Content
     product(alias: ID!): Product
-    products(ids: [ID]!): [Product]
+    products(ids: [ID!]!): [Product]
     productMain(alias: ID!): ProductMain
     productCartItem(id: String!): ProductForCart
     category(alias: ID!, sortValue: String): Category
@@ -600,12 +599,12 @@ const typeDefs = gql`
     mainPage: MainPage
     page(alias: ID!): Page
     oferta: Content
-    sizesChart(sizesgroup_id: ID!): ContentId
+    sizesChart(sizesgroupId: ID!): ContentId
     newsList: [NewsItem]
     news(alias: ID!): News
     searchList(q: String!): SearchListData
     searchFull(q: String!): SearchFull
-    comments: [Comment]
+    comments: [Comment]!
     getOrder(id: ID!): Order
     getCupon(cuponText: String!): Cupon
   }
@@ -659,9 +658,9 @@ const typeDefs = gql`
 
   input Cart {
     idItem: String
-    alias: String
-    level1: String
-    level2: String
+    alias: String!
+    level1: String!
+    level2: String!
     price: Int
     qty: Int
   }
@@ -679,7 +678,7 @@ const typeDefs = gql`
     pvzSelect: PvzSelect
     deliveryPrice: DeliveryPrice
     cityObj: CityInput
-    cart: [Cart]!
+    cart: [Cart!]!
   }
 
   type OrderResponse {
@@ -707,17 +706,17 @@ const typeDefs = gql`
   }
   #=========================================
   type Mutation {
-    addComment(comment: AddCommentMutationInput): BaseMutationResponse
-    addOrder(order: AddOrderMutationInput): AddOrderMutationResponse
-    addReturnProduct(form: ReturnProductMutationInput): BaseMutationResponse
-    addReturnCall(form: ReturnCallMutationInput): BaseMutationResponse
+    addComment(form: AddCommentMutationInput!): BaseMutationResponse
+    addOrder(form: AddOrderMutationInput!): AddOrderMutationResponse
+    addReturnProduct(form: ReturnProductMutationInput!): BaseMutationResponse
+    addReturnCall(form: ReturnCallMutationInput!): BaseMutationResponse
   }
 `;
 
 const resolvers = {
   Mutation: {
-    addComment: (_, { comment }, { ip }) => addCommentData(comment, ip),
-    addOrder: (_, { order }, { ip }) => sentOrderData(order, ip),
+    addComment: (_, { form }, { ip }) => addCommentData(form, ip),
+    addOrder: (_, { form }, { ip }) => sentOrderData(form, ip),
     addReturnProduct: (_, { form }, { ip }) => returnProductFormData(form, ip),
     addReturnCall: (_, { form }, { ip }) => returnCallFormData(form, ip),
   },
@@ -750,9 +749,9 @@ const resolvers = {
     sizeItem: (_, { alias }) => getSize(alias),
     sortData: () => getSort(),
     brand: () => getBrand(),
-    brandItem: (_, { _id }) => getBrand(_id),
+    brandItem: (_, { id }) => getBrand(id),
     bagde: () => getBagde(),
-    bagdeItem: (_, { _id }) => getBagde(_id),
+    bagdeItem: (_, { id }) => getBagde(id),
     recomacces: () => getRecomaccesData(true),
     categoryTree: () => getCategoryTree(),
     filterData: () => getFilter(),
@@ -770,7 +769,7 @@ const resolvers = {
     mainPage: () => getMainPageData(),
     page: (_, { alias }) => getPageByAlias(alias),
     oferta: () => getOfertaData(),
-    sizesChart: (_, { sizesgroup_id }) => getSizesChartData(sizesgroup_id),
+    sizesChart: (_, { sizesgroupId }) => getSizesChartData(sizesgroupId),
     newsList: () => getAllNewsData(),
     news: (_, { alias }) => getNewsByAliasData(alias, true),
     searchList: (_, { q }) => searchListData(q),

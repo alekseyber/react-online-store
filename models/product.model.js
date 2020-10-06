@@ -217,7 +217,7 @@ productSchema.virtual("level1").get((value, virtual, doc) => {
   return rezult;
 });
 
-productSchema.virtual("level1_arr").get((value, virtual, doc) => {
+productSchema.virtual("level1Arr").get((value, virtual, doc) => {
   const rezult = [];
   doc.level1_data.forEach((el) => {
     if (el.level1_status === true) {
