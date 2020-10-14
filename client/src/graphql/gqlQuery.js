@@ -869,12 +869,3 @@ export const DELIVERY_REZULT_QUERY = gql`
   ${DeliveryRezult.fragments.paramsData}
   ${DeliveryRezult.fragments.deliveryData}
 `;
-
-export const DELIVERY_REGION_QUERY = gql`
-  query DeliveryRegion($cityid: Int!) {
-    deliveryData(cityid: $cityid) {
-      ...DeliveryRegionDeliveryDataFragment
-    }
-  }
-  ${DeliveryRegion.fragments.deliveryData}
-`;

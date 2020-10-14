@@ -46,11 +46,14 @@ const DeliveryRezult = ({ pvz_selector, city_name_v, sel_pvz_v }) => {
     textDeliveryProduct,
   } = data.paramsData;
 
+  const deliveryData = data.deliveryData;
+
   const bindDeliveryRegion = {
     currSymbol,
     textDeliveryProduct,
     pvz_selector,
     sel_pvz_v,
+    deliveryData,
   };
 
   const RezultBody = () => {

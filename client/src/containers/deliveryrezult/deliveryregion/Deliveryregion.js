@@ -4,27 +4,19 @@ import PropTypes from "prop-types";
 import Typography from "@material-ui/core/Typography";
 import DeliveryRezulText from "../../../components/deliveryrezulttext/DeliveryRezulText";
 import DeliverySelector from "../../../components/deliveryreselector/DeliverySelector";
-import { DELIVERY_REGION_QUERY } from "../../../graphql/gqlQuery";
-import { useQueryApp } from "../../../hooks/appolloQueryApp.hook";
+// import { DELIVERY_REGION_QUERY } from "../../../graphql/gqlQuery";
+// import { useQueryApp } from "../../../hooks/appolloQueryApp.hook";
 
 const DeliveryRegion = ({
   pvz_selector,
   sel_pvz_v,
   currSymbol,
   textDeliveryProduct,
+  deliveryData,
 }) => {
-  const { city } = useSelector((state) => state.app);
-  const cityid = city.id;
-
   const { deliverySelect } = useSelector((state) => state.delivery);
 
-  const { data } = useQueryApp(DELIVERY_REGION_QUERY, { cityid });
-
-  if (!data) {
-    return null;
-  }
-
-  const { courier, pvz } = data.deliveryData;
+  const { courier, pvz } = deliveryData;
 
   const courierVisible =
     ((pvz_selector && deliverySelect === 0) || !pvz_selector) && courier;
@@ -79,6 +71,7 @@ DeliveryRegion.propTypes = {
   sel_pvz_v: PropTypes.bool,
   currSymbol: PropTypes.string.isRequired,
   textDeliveryProduct: PropTypes.string.isRequired,
+  deliveryData: PropTypes.object.isRequired,
 };
 
 export default DeliveryRegion;
