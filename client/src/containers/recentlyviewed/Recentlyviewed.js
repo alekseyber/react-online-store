@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-const RecentlyViewed = ({ alias, colors, imgproperty, baseurl, quality, bagdes, currsymbol }) => {
+const RecentlyViewed = ({ alias, imgproperty, baseurl, quality, currsymbol }) => {
     const classes = useStyles();
     const recentlyViewed = useSelector(state => state.app.recentlyViewed);
     const dispatch = useDispatch();
@@ -60,12 +60,10 @@ const RecentlyViewed = ({ alias, colors, imgproperty, baseurl, quality, bagdes, 
                 {products.map((item, index) => (
 
                     <ProductItem
-                        alias={item}
-                        colors={colors}
+                        item={item}                        
                         imgproperty={imgproperty}
                         baseurl={baseurl}
-                        quality={quality}
-                        bagdes={bagdes}
+                        quality={quality}                        
                         currsymbol={currsymbol}
                         key={index}
                     />
@@ -84,9 +82,7 @@ RecentlyViewed.defaultProps = {
 };
 
 RecentlyViewed.propTypes = {
-    alias: PropTypes.string.isRequired,
-    colors: PropTypes.object.isRequired,
-    bagdes: PropTypes.object.isRequired,
+    alias: PropTypes.string.isRequired,    
     imgproperty: PropTypes.array.isRequired,
     baseurl: PropTypes.string.isRequired,
     quality: PropTypes.number.isRequired,

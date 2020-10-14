@@ -219,7 +219,7 @@ module.exports.getProductContentData = async (alias, arr = false) => {
     );
 
     if (cacheDataRezult) {
-      return cacheDataRezult.cacheData;
+      return cacheDataRezult.cacheData.get("obj");
     }
 
     const doc = await Product.findOne(where, {
@@ -240,9 +240,15 @@ module.exports.getProductContentData = async (alias, arr = false) => {
     }).populate({ path: "related_id", select: { _id: 0, alias: 1 } });
     if (doc) {
       const rezult = {};
+      rezult.alias = doc.alias;
       rezult.meta = doc.meta;
       rezult.content = doc.content;
-      rezult.level1 = arr ? doc.level1_gal_arr : doc.level1_gal;
+      if (arr) {
+        rezult.level1GalArr = doc.level1GalArr;
+      } else {
+        rezult.level1 = doc.level1Gal;
+      }
+
       rezult.related = "";
       if (doc.related_id) {
         rezult.related = doc.related_id.alias;
@@ -281,7 +287,7 @@ module.exports.getProductContentData = async (alias, arr = false) => {
       contData.content = rezult.content;
 
       const currSymbol = bparams.currSymbol;
-      const level1 = rezult.level1;
+      const level1 = arr ? rezult.level1GalArr : rezult.level1;
 
       const { patternData, filterData } = await getProductPatternData(
         doc,
@@ -296,8 +302,13 @@ module.exports.getProductContentData = async (alias, arr = false) => {
       rezult.meta.description = contData.meta_description;
       rezult.meta.keywords = contData.meta_keywords;
       rezult.content = contData.content;
-      const cacheAction = "product";
-      const cacheData = rezult;
+
+      const cacheAction = "productMain";
+
+      const cacheData = {
+        obj: { ...rezult },
+      };
+
       const сache = new Cache({ cacheKey, cacheData, cacheAction });
       сache.save();
       return rezult;

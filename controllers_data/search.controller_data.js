@@ -90,6 +90,8 @@ const getIndexProduct = async ($regex) => {
       rezult.products = await Product.find(
         {
           status: true,
+          "level1_data.level2.amount": { $gt: 0 },
+          "level1_data.level1_status": true,
           _id: { $in: product_ids },
         },
         { alias: 1 }
@@ -157,29 +159,68 @@ module.exports.searchListData = async (q) => {
   }
 };
 
-module.exports.searchFullData = async (q, arr) => {
+module.exports.searchFullData = async (q) => {
   try {
     const queryParams = getQuery(q);
     let rezult = {
       preview: queryParams.preview,
+      fetchList: [],
       list: [],
-      filter: {
-        count: 0,
-        selected: {},
-      },
     };
     if (queryParams.valid) {
       const indexProduct = await getIndexProduct(queryParams.regex);
-      if (indexProduct.status) {
-        if (arr) {
-          rezult.list = indexProduct.products.map((el) => el.alias);
-        } else {
-          rezult.list = indexProduct.products;
-        }
 
-        if (indexProduct.colorsCount) {
-          rezult.filter.count = indexProduct.colorsCount;
-          rezult.filter.selected.color = indexProduct.colors;
+      if (indexProduct.status) {
+        rezult.fetchList = indexProduct.products.map((el) => el.alias);
+
+        if (indexProduct.colorsCount && rezult.fetchList.length) {
+          //  rezult.filter.count = indexProduct.colorsCount;
+          const aggregate = await Product.aggregate([
+            {
+              $match: {
+                status: true,
+                "level1_data.level2.amount": { $gt: 0 },
+                "level1_data.level1_status": true,
+                "level1_data.level1_alias": { $in: indexProduct.colors },
+                alias: { $in: rezult.fetchList },
+              },
+            },
+            {
+              $project: {
+                _id: 0,
+                alias: 1,
+                level1_data: 1,
+              },
+            },
+            { $unwind: "$level1_data" },
+            {
+              $project: {
+                status: "$level1_data.level1_status",
+                level2: "$level1_data.level2",
+                alias: "$alias",
+                colorselect: "$level1_data.level1_alias",
+              },
+            },
+            {
+              $match: {
+                status: true,
+                "level2.amount": { $gt: 0 },
+                colorselect: { $in: indexProduct.colors },
+              },
+            },
+            {
+              $project: {
+                alias: "$alias",
+                colorselect: "$colorselect",
+              },
+            },
+          ]);
+
+          if (aggregate.length) {
+            rezult.list = aggregate;
+          } else {
+            rezult.fetchList = [];
+          }
         }
       }
     }

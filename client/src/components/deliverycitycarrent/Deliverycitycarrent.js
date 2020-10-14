@@ -8,7 +8,7 @@ import { openDelivery } from '../../redux/actions/modaldialog';
 
 const DeliveryCityCarrent = () => {
 
-    const { city } = useSelector(state => state.delivery);
+    const { city } = useSelector(state => state.app);
     const dispatch = useDispatch();
 
     const openDeliveryHandler = () => {

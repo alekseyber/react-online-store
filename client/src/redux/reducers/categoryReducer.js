@@ -4,7 +4,7 @@ const initialState = {}
 
 
 const handlers = {
-    [SET_CATEGORY]: (state, { payload }) => ({ ...state, [payload.alias]: payload.newcategoryData }),
+    [SET_CATEGORY]: (state, { payload }) => ({ ...state, [payload.alias]: payload.categoryData }),
     [SET_SORT]: (state, { payload }) => ({ ...state, [payload.alias]: { ...state[payload.alias], products: payload.products, sortValue: payload.sortValue } }),
 
     DEFAULT: state => state

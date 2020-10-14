@@ -454,7 +454,8 @@ module.exports.fetchOrderByIdData = async (id) => {
     }
     throw new NotFoundError("Заказ не найден");
   } catch (e) {
-    globalErrorCheck(e);
+    throw new NotFoundError("Заказ не найден");
+    //  globalErrorCheck(e);
   }
 };
 

@@ -3,13 +3,9 @@ import {
   OPEN_DIALOG,
   SET_LOADING_DIALOG,
   HIDE_DIALOG,
-  SET_SIZECHART,
   SET_SIZECHART_SELECT,
   SET_DIALOG_TITLE,
-  SET_OFERTA,
 } from "../constants";
-import { httpActions } from "./../../hooks/http.hook";
-import { showAlert } from "./app";
 
 // modalRootData: {
 //     open: false,
@@ -48,13 +44,6 @@ export const setDialog = (payload) => {
   };
 };
 
-const openDialog = (payload) => {
-  return {
-    type: OPEN_DIALOG,
-    payload,
-  };
-};
-
 export const hideDialog = () => {
   return {
     type: HIDE_DIALOG,
@@ -64,27 +53,6 @@ export const hideDialog = () => {
 export const setLoadingDialog = (payload = false) => {
   return {
     type: SET_LOADING_DIALOG,
-    payload,
-  };
-};
-
-const setSizeChart = (payload) => {
-  return {
-    type: SET_SIZECHART,
-    payload,
-  };
-};
-
-const setOferta = (payload) => {
-  return {
-    type: SET_OFERTA,
-    payload,
-  };
-};
-
-const setSizeChartSelect = (payload) => {
-  return {
-    type: SET_SIZECHART_SELECT,
     payload,
   };
 };
@@ -132,67 +100,28 @@ export const openPvzSelector = () => {
   };
 };
 
-export const openSizeChart = (sizesgroup_id) => async (dispatch, getState) => {
-  try {
-    const { request } = httpActions(dispatch);
-    const { modaldialog } = getState();
-    dispatch(setSizeChartSelect(sizesgroup_id));
+export const openSizeChart = (sizechart) => {
+  const modalDialogData = new ModalDataClass();
+  const payload = {
+    modalDialogData,
+    sizechart,
+  };
 
-    if (!modaldialog.sizechart[sizesgroup_id]) {
-      const { content } = await request(
-        `/api/page/getsizeschart/${sizesgroup_id}`
-      );
-
-      if (!content) {
-        dispatch(
-          showAlert(
-            "Данные с сервера не получены, повторите попытку позже",
-            "error"
-          )
-        );
-        return false;
-      }
-
-      dispatch(
-        setSizeChart({
-          sizesgroup_id,
-          content,
-        })
-      );
-    }
-
-    const modalDialogData = new ModalDataClass();
-    dispatch(openDialog(modalDialogData));
-  } catch (e) {
-    console.error(e);
-  }
+  return {
+    type: SET_SIZECHART_SELECT,
+    payload,
+  };
 };
 
-export const openOferta = () => async (dispatch, getState) => {
-  try {
-    const { request } = httpActions(dispatch);
-    const { modaldialog } = getState();
 
-    if (!modaldialog.ofertaContent) {
-      const { content } = await request("/api/page/getofertacontent");
 
-      if (!content) {
-        dispatch(
-          showAlert(
-            "Данные с сервера не получены, повторите попытку позже",
-            "error"
-          )
-        );
-        return false;
-      }
+export const openOferta = () => {
+  const payload = new ModalDataClass(5, "xl");
 
-      dispatch(setOferta(content));
-    }
-    const modalDialogData = new ModalDataClass(5, "xl");
-    dispatch(openDialog(modalDialogData));
-  } catch (e) {
-    console.error(e);
-  }
+  return {
+    type: OPEN_DIALOG,
+    payload,
+  };
 };
 
 export const openReturnCall = () => {

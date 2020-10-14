@@ -1,38 +1,84 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
-import Typography from '@material-ui/core/Typography';
-import DeliveryRezulText from '../../../components/deliveryrezulttext/DeliveryRezulText';
-import DeliverySelector from '../../../components/deliveryreselector/DeliverySelector';
+import React from "react";
+import { useSelector } from "react-redux";
+import PropTypes from "prop-types";
+import Typography from "@material-ui/core/Typography";
+import DeliveryRezulText from "../../../components/deliveryrezulttext/DeliveryRezulText";
+import DeliverySelector from "../../../components/deliveryreselector/DeliverySelector";
+import { DELIVERY_REGION_QUERY } from "../../../graphql/gqlQuery";
+import { useQueryApp } from "../../../hooks/appolloQueryApp.hook";
 
+const DeliveryRegion = ({
+  pvz_selector,
+  sel_pvz_v,
+  currSymbol,
+  textDeliveryProduct,
+}) => {
+  const { city } = useSelector((state) => state.app);
+  const cityid = city.id;
 
+  const { deliverySelect } = useSelector((state) => state.delivery);
 
+  const { data } = useQueryApp(DELIVERY_REGION_QUERY, { cityid });
 
-const DeliveryRegion = ({ pvz_selector, sel_pvz_v }) => {
+  if (!data) {
+    return null;
+  }
 
-    const { courier, pvz, deliverySelect } = useSelector(state => state.delivery);
-    const { currSymbol, textDeliveryProduct } = useSelector(state => state.start.paramsData);
-    const courierVisible = (((pvz_selector && deliverySelect === 0) || !pvz_selector) && courier);
-    const pvzVisible = (((pvz_selector && deliverySelect === 1) || !pvz_selector) && courier);
+  const { courier, pvz } = data.deliveryData;
 
-    return (
-        <>
-            {pvz_selector && <DeliverySelector pvz_price={pvz.priceByCurrency} courier_price={courier.priceByCurrency} deliverySelect={deliverySelect} currSymbol={currSymbol} />}
-            {courierVisible && <DeliveryRezulText price={courier.priceByCurrency} dateMax={courier.deliveryDateMax} currSymbol={currSymbol} />}
-            {pvzVisible && <DeliveryRezulText pvz={true} price={pvz.priceByCurrency} dateMax={pvz.deliveryDateMax} currSymbol={currSymbol} sel_pvz_v={sel_pvz_v} />}
-            {textDeliveryProduct && <Typography variant="subtitle1" component="div" className="font-weight-black">{textDeliveryProduct}</Typography>}
-        </>
-    )
+  const courierVisible =
+    ((pvz_selector && deliverySelect === 0) || !pvz_selector) && courier;
+  const pvzVisible =
+    ((pvz_selector && deliverySelect === 1) || !pvz_selector) && courier;
 
-}
+  return (
+    <>
+      {pvz_selector && (
+        <DeliverySelector
+          pvz_price={pvz.priceByCurrency}
+          courier_price={courier.priceByCurrency}
+          deliverySelect={deliverySelect}
+          currSymbol={currSymbol}
+        />
+      )}
+      {courierVisible && (
+        <DeliveryRezulText
+          price={courier.priceByCurrency}
+          dateMax={courier.deliveryDateMax}
+          currSymbol={currSymbol}
+        />
+      )}
+      {pvzVisible && (
+        <DeliveryRezulText
+          pvz={true}
+          price={pvz.priceByCurrency}
+          dateMax={pvz.deliveryDateMax}
+          currSymbol={currSymbol}
+          sel_pvz_v={sel_pvz_v}
+        />
+      )}
+      {textDeliveryProduct && (
+        <Typography
+          variant="subtitle1"
+          component="div"
+          className="font-weight-black"
+        >
+          {textDeliveryProduct}
+        </Typography>
+      )}
+    </>
+  );
+};
 DeliveryRegion.defaultProps = {
-    pvz_selector: false,
-    sel_pvz_v: true
+  pvz_selector: false,
+  sel_pvz_v: true,
 };
 
 DeliveryRegion.propTypes = {
-    pvz_selector: PropTypes.bool,
-    sel_pvz_v: PropTypes.bool,
+  pvz_selector: PropTypes.bool,
+  sel_pvz_v: PropTypes.bool,
+  currSymbol: PropTypes.string.isRequired,
+  textDeliveryProduct: PropTypes.string.isRequired,
 };
 
 export default DeliveryRegion;

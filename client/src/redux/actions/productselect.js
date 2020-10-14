@@ -33,7 +33,7 @@ export const setColorAndSizeProduct = (alias, level1, level2) => {
   };
 };
 
-export const setColorProductAction = ({ alias, color }) => (
+export const setColorProductAction = (alias, color, level2) => (
   dispatch,
   getState
 ) => {
@@ -44,15 +44,10 @@ export const setColorProductAction = ({ alias, color }) => (
   const selectSize = productselect.size[alias];
 
   if (selectSize) {
-    const { products } = getState();
-    const { level1_data } = products[alias];
-    const level1 = level1_data;
-    if (level1) {
-      const level2 = level1.findIndex((el) => el.level2_alias === selectSize);
+    const indexLevel2 = level2.findIndex((el) => el.alias === selectSize);
 
-      if (level2 === -1) {
-        resetSize = true;
-      }
+    if (indexLevel2 === -1) {
+      resetSize = true;
     }
   }
 

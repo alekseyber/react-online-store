@@ -25,10 +25,11 @@ const cacheSchema = new Schema({
 cacheSchema.pre("save", async function (next) {
   try {
     const cacheKey = this.cacheKey;
-    const doc = await this.constructor.findOne({ cacheKey }, { _id: 1 });
-    if (doc) {
-      await this.constructor.deleteOne({ cacheKey });
-    }
+    await this.constructor.deleteMany({ cacheKey });
+    // const doc = await this.constructor.findOne({ cacheKey }, { _id: 1 });
+    // if (doc) {
+    //   await this.constructor.deleteMany({ cacheKey });
+    // }
 
     next();
   } catch (e) {

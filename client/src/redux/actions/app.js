@@ -7,11 +7,35 @@ import {
   TOGGLE_COLUMN,
   ADD_RECENTLY_VIEWED,
   SET_ERROR_APP,
+  SET_CITY_APP,
+  SET_START_APP,
+  SET_SORT_VALUE_APP,
 } from "../constants";
 
 export const hideAlert = () => {
   return {
     type: HIDE_ALERT,
+  };
+};
+
+export const setCity = (city) => {
+  return {
+    type: SET_CITY_APP,
+    payload: city,
+  };
+};
+
+export const setSortValueApp = (sortValue) => {
+  return {
+    type: SET_SORT_VALUE_APP,
+    payload: sortValue,
+  };
+};
+
+export const setStartApp = (payload) => {
+  return {
+    type: SET_START_APP,
+    payload,
   };
 };
 
@@ -67,19 +91,21 @@ export const addRecentlyViewed = (alias) => (dispatch, getState) => {
   }
 };
 
-export const setErrorApp = (error, func, dispOn = true) => {
+export const setErrorApp = (error, func, dispOn = false) => {
   //  if (e.response.status === 404) {
 
   let title = "Ой, что-то пошло не так...";
   let text = "Проверьте интернет и попробуйте еще раз...";
 
-  if (error.response) {
-    if (error.response.status === 503) {
-      // title = "На сервере проводятся технические работы";
-      title = error.response.data;
-      text = "Повторите попытку позже.";
-    }
-  }
+  console.log("setErrorApp", error.message);
+
+  // if (error.response) {
+  //   if (error.response.status === 503) {
+  //     // title = "На сервере проводятся технические работы";
+  //     title = error.response.data;
+  //     text = "Повторите попытку позже.";
+  //   }
+  // }
 
   const payload = {
     title,

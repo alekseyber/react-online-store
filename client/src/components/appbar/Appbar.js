@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-//import config from 'react-global-configuration';
 import { useSelector } from "react-redux";
 import withWidth, { isWidthDown, isWidthUp } from "@material-ui/core/withWidth";
 import AppBar from "@material-ui/core/AppBar";
@@ -11,18 +10,14 @@ import DrawerApp from "./drawer/Drawer";
 import MenuItemBtn from "./menuitem/MenuItem";
 import SmallCart from "./smallcart/SmallCart";
 import Search from "./search/Search";
+import { APP_BAR_QUERY } from "../../graphql/gqlQuery";
+import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1,
-  },
-  rootBar: {
     backgroundColor: theme.palette.background.default,
     color: theme.palette.primary.dark,
   },
-  // menuButton: {
-  //     marginRight: theme.spacing(2),
-  // },
   tollger: {
     flexGrow: "0.1",
   },
@@ -46,7 +41,6 @@ const useStyles = makeStyles((theme) => ({
   search: {
     flexGrow: 0.6,
     display: "block",
-    // justifyContent: "center",
   },
   smalcart: {
     flexGrow: 0.1,
@@ -61,62 +55,62 @@ const options = {
   threshold: 10,
 };
 
-const AppBarAppF = (props) => {
-  const { paramsData, categorytreeData, baseUrl } = useSelector(
-    (state) => state.start
-  );
+const AppBarAppF = ({ width }) => {
+  const { data } = useQueryApp(APP_BAR_QUERY); //loading,
+  const { baseUrl } = useSelector((state) => state.start);
+
   const classes = useStyles();
   const trigger = useScrollTrigger(options);
 
-  if (!paramsData.select) return null;
+  if (!data) return null;
 
-  const imgStartPatch = baseUrl + paramsData.categoryImgProperty;
+  const { categoryTree, paramsData } = data;
+
+  const { categoryImgProperty, shop_name_rus, topLinks, logoimg } = paramsData;
+
+  const imgStartPatch = baseUrl + categoryImgProperty;
 
   return (
-    <div className={classes.root}>
-      <AppBar
-        position={trigger ? "fixed" : "static"}
-        className={classes.rootBar}
-      >
-        <Toolbar>
-          {isWidthDown("sm", props.width) && (
-            <div className={classes.tollger}>
-              <DrawerApp
-                paramsData={paramsData}
-                categorytreeData={categorytreeData}
-              />
-            </div>
-          )}
-          <Link to="/" className={classes.logo}>
-            <img
-              src={baseUrl + paramsData.logoimg}
-              className={classes.logoImg}
-              alt={paramsData.shop_name_rus}
-            ></img>
-          </Link>
-          {isWidthUp("md", props.width) && (
-            <div className={classes.topMenu}>
-              <MenuItemBtn item={categorytreeData} root={true} />
-              {categorytreeData.childs.map((item) => (
-                <MenuItemBtn
-                  item={item}
-                  imgStartPatch={imgStartPatch}
-                  key={item._id}
-                />
-              ))}
-            </div>
-          )}
-          {isWidthUp("md", props.width) && (
-            <div className={classes.search}>
-              <Search />
-            </div>
-          )}
-          <div className={classes.smalcart}>
-            <SmallCart />
+    <AppBar position={trigger ? "fixed" : "static"} className={classes.root}>
+      <Toolbar>
+        {isWidthDown("sm", width) && (
+          <div className={classes.tollger}>
+            <DrawerApp
+              shop_name_rus={shop_name_rus}
+              categorytreeData={categoryTree}
+              topLinks={topLinks}
+            />
           </div>
-        </Toolbar>
-      </AppBar>
-    </div>
+        )}
+        <Link to="/" className={classes.logo}>
+          <img
+            src={baseUrl + logoimg}
+            className={classes.logoImg}
+            alt={shop_name_rus}
+          ></img>
+        </Link>
+        {isWidthUp("md", width) && (
+          <div className={classes.topMenu}>
+            <MenuItemBtn item={categoryTree} root={true} />
+            {categoryTree.childs.map((item) => (
+              <MenuItemBtn
+                item={item}
+                imgStartPatch={imgStartPatch}
+                key={item.alias}
+              />
+            ))}
+          </div>
+        )}
+        {isWidthUp("md", width) && (
+          <div className={classes.search}>
+            <Search />
+          </div>
+        )}
+        <div className={classes.smalcart}>
+          <SmallCart />
+        </div>
+      </Toolbar>
+    </AppBar>
   );
 };
 

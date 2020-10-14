@@ -17,20 +17,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SizeSelector = ({ index, level2_cart, levels2, sizes }) => {
+const SizeSelector = ({ index, level2Cart, levels2 }) => {
   const classes = useStyles();
 
   const dispatch = useDispatch();
 
-  const handleSetSize = (size) => {
-    const selected = level2_cart === size;
+  const handleSetSize = (level2) => {
+    const selected = level2Cart === level2.alias;
     if (!selected) {
-      dispatch(cartEditItem(index, null, size));
+      dispatch(cartEditItem(index, null, level2.alias));
     }
   };
   const captionText = levels2.length > 1 ? "Изменить размер:" : "Размер:";
+
   const SizeItem = ({ item }) => {
-    const variant = level2_cart === item ? "contained" : "outlined";
+    const variant = level2Cart === item.alias ? "contained" : "outlined";
 
     return (
       <Button
@@ -39,9 +40,13 @@ const SizeSelector = ({ index, level2_cart, levels2, sizes }) => {
         onClick={() => handleSetSize(item)}
         size="small"
       >
-        {sizes[item].title}
+        {item.sizeItem.title}
       </Button>
     );
+  };
+
+  SizeItem.propTypes = {
+    item: PropTypes.object.isRequired,
   };
 
   return (
@@ -55,7 +60,7 @@ const SizeSelector = ({ index, level2_cart, levels2, sizes }) => {
       </Typography>
       <div className={classes.btns}>
         {levels2.map((itemsize) => (
-          <SizeItem key={itemsize} item={itemsize} />
+          <SizeItem key={itemsize.alias} item={itemsize} />
         ))}
       </div>
     </>
@@ -64,9 +69,8 @@ const SizeSelector = ({ index, level2_cart, levels2, sizes }) => {
 
 SizeSelector.propTypes = {
   index: PropTypes.number.isRequired,
-  level2_cart: PropTypes.string.isRequired,
+  level2Cart: PropTypes.string.isRequired,
   levels2: PropTypes.array.isRequired,
-  sizes: PropTypes.object.isRequired,
 };
 
 export default SizeSelector;

@@ -4,7 +4,7 @@ import { routerMiddleware } from "react-router-redux";
 import { createBrowserHistory } from "history";
 import { rootReducer } from "../reducers/rootReducer";
 import { cartMiddleware } from "../middleware/cartMiddleware";
-import { productMiddleware } from "../middleware/productMiddleware";
+//import { productMiddleware } from "../middleware/productMiddleware";
 
 export const history = createBrowserHistory();
 
@@ -24,8 +24,8 @@ const enhancer = composeEnhancers(
   applyMiddleware(
     thunk,
     routerMiddleware(history),
-    cartMiddleware,
-    productMiddleware
+    cartMiddleware
+    // productMiddleware
   )
 );
 

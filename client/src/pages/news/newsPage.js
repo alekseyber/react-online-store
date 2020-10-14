@@ -1,23 +1,27 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { newsFetch } from "../../redux/actions/page";
+import React from "react";
 import LoaderPage from "../../components/loaderpage/LoaderPage";
 import { useRouter } from "../../hooks/router.hook";
 import { PageBase } from "../../hoc/PageBase";
 import PageContent from "../../components/pagecontent/PageContent";
+import ErrorContent from "../../components/errorcontent/ErrorContent";
+import { NEWS_PAGE_QUERY } from "../../graphql/gqlQuery";
+import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 
 export default () => {
   const { params } = useRouter();
   const { alias } = params;
 
-  const pageData = useSelector((state) => state.page.newsContent[alias]);
-  const dispatch = useDispatch();
+  const { data, loading, error } = useQueryApp(
+    NEWS_PAGE_QUERY,
+    { alias },
+    false,
+    true
+  );
 
-  useEffect(() => {
-    dispatch(newsFetch(alias));
-  }, [dispatch, alias]);
+  if (loading) return <LoaderPage />;
+  if (error) return <ErrorContent />;
 
-  if (!pageData) return <LoaderPage />;
+  const pageData = data.news;
 
   const bind = {
     name_page: pageData.meta_title,

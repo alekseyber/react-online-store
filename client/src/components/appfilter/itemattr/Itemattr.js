@@ -10,9 +10,10 @@ import { useDispatch } from 'react-redux';
 import { setFilterSelect } from '../../../redux/actions/filter';
 
 
-const ItemAttr = ({ itemAttr, colorsData, sizesData, aliasGr, color, sizes, itemSelect, oneStatus }) => {
+const ItemAttr = ({ itemAttr, aliasGr, color, sizes, itemSelect, oneStatus }) => {
 
     const dispatch = useDispatch();
+    
 
     const handleChange = () => {
         dispatch(setFilterSelect(aliasGr, itemAttr.alias));
@@ -30,12 +31,16 @@ const ItemAttr = ({ itemAttr, colorsData, sizesData, aliasGr, color, sizes, item
     let title;
 
     if (color) {
-        title = colorsData[itemAttr.alias].title;
-        const style = { color: colorsData[itemAttr.alias].colorkey };
+        
+        title = itemAttr.colorGruppItem.title;
+        //title = colorsData[itemAttr.alias].title;
+        const style = { color: itemAttr.colorGruppItem.colorkey };
+      //  const style = { color: colorsData[itemAttr.alias].colorkey };
         icon = <Brightness1Icon fontSize="small" style={style} />;
         checkedIcon = <CheckCircleIcon fontSize="small" style={style} />;
-    } else if (sizes) {
-        title = sizesData[itemAttr.alias].title;
+    } else if (sizes) {        
+        //title = sizesData[itemAttr.alias].title;
+        title = itemAttr.sizeItem.title;
 
     } else {
         title = itemAttr.title;
@@ -64,8 +69,8 @@ const ItemAttr = ({ itemAttr, colorsData, sizesData, aliasGr, color, sizes, item
 
 ItemAttr.propTypes = {
     itemAttr: PropTypes.object.isRequired,
-    colorsData: PropTypes.object.isRequired,
-    sizesData: PropTypes.object.isRequired,
+   // colorsData: PropTypes.object.isRequired,
+   // sizesData: PropTypes.object.isRequired,
     aliasGr: PropTypes.string.isRequired,
     color: PropTypes.bool.isRequired,
     sizes: PropTypes.bool.isRequired,

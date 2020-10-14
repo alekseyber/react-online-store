@@ -11,7 +11,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import Typography from '@material-ui/core/Typography';
 import axios from '../../axios/axios-store';
 import useDebounce from '../../hooks/use-debounce.hook';
-import { deliveryFetch } from '../../redux/actions/delivery';
+import { setCity } from '../../redux/actions/app';
 
 
 
@@ -40,7 +40,7 @@ const CssAutocomplete = withStyles((theme) => ({
 const DeliveryCityInput = ({ variant }) => {
     const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
-    const { cityName } = useSelector(state => state.delivery.city)
+    const { cityName } = useSelector(state => state.app.city)
 
     const [searchTerm, setSearchTerm] = useState(cityName);
     const [options, setOptions] = useState([]);
@@ -49,7 +49,7 @@ const DeliveryCityInput = ({ variant }) => {
     const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
     const handleSelect = newValue => {
-        dispatch(deliveryFetch(newValue));
+        dispatch(setCity(newValue));
     }
 
     const handleInput = (e) => {

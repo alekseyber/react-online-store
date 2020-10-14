@@ -2,21 +2,21 @@ import React from "react"; //, { Suspense, lazy }
 import { Switch, Route } from "react-router-dom";
 //import { useLocation } from 'react-use';
 //import { animated, useTransition } from 'react-spring';
-import MainPage from "../pages/main/mainPage";
-import CategoryPage from "../pages/category/categoryPage";
-import ProductPage from "../pages/product/productPage";
-import CartPage from "../pages/cart/cartPage";
-import DeliveryPage from "../pages/delivery/devileryPage";
-import OrderDonePage from "../pages/order/orderDonePage";
-import OrderPage from "../pages/order/orderPage";
-import AddCartPage from "../pages/addcart/addCardPage";
-import PagePage from "../pages/page/pagePage";
-import PageFoundPage from "../pages/pagefound/pageFoundPage";
-import ReturnProductPage from "../pages/returnproduct/returnProductPage";
-import SearchPage from "../pages/search/searchPage";
-import CommentPage from "../pages/comment/commentPage";
-import IndexNewsPage from "../pages/news/indexNewsPage";
-import MewsPage from "../pages/news/newsPage";
+import MainPage from "../pages/main/MainPage";
+import CategoryPage from "../pages/category/CategoryPage";
+import ProductPage from "../pages/product/ProductPage";
+import CartPage from "../pages/cart/CartPage";
+import DeliveryPage from "../pages/delivery/DeliveryPage";
+import OrderDonePage from "../pages/order/OrderDonePage";
+import OrderPage from "../pages/order/OrderPage";
+import AddCartPage from "../pages/addcart/AddCartPage";
+import PagePage from "../pages/page/PagePage";
+import PageFoundPage from "../pages/pagefound/PageFoundPage";
+import ReturnProductPage from "../pages/returnproduct/ReturnProductPage";
+import SearchPage from "../pages/search/SearchPage";
+import CommentPage from "../pages/comment/CommentPage";
+import IndexNewsPage from "../pages/news/IndexNewsPage";
+import NewsPage from "../pages/news/NewsPage";
 
 //import ErrorBoundary from '../hoc/ErrorBoundary';
 
@@ -64,7 +64,7 @@ export const useRoutes = () => {
         <CommentPage />
       </Route>
       <Route path="/news/:alias" exact>
-        <MewsPage />
+        <NewsPage />
       </Route>
       <Route path="/news" exact>
         <IndexNewsPage />

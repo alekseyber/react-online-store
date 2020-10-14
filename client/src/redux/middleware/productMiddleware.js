@@ -1,5 +1,5 @@
-import { SET_PRODUCTS } from "../constants";
-import { checkCart } from "../actions/start";
+// import { SET_PRODUCTS } from "../constants";
+// import { checkCart } from "../actions/start";
 
 export const productMiddleware = ({ getState, dispatch }) => {
   return (next) => (action) => {
@@ -8,11 +8,11 @@ export const productMiddleware = ({ getState, dispatch }) => {
 
     const returnValue = next(action);
 
-    if (type === SET_PRODUCTS) {
-      const { cart, products } = getState();
-      checkCart(cart.cartData, products, dispatch, false);
-      // console.log("state after dispatch", cart.cartData);
-    }
+    // if (type === SET_PRODUCTS) {
+    // //  const { cart, products } = getState();
+    //  // checkCart(cart.cartData, products, dispatch, false);
+    //   // console.log("state after dispatch", cart.cartData);
+    // }
 
     return returnValue;
   };

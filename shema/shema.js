@@ -31,6 +31,7 @@ const {
 
 const {
   getProductsForCategoryData,
+  getProductsForCategoryOnlyPorducts,
 } = require("../controllers_data/category.controller_data");
 
 const {
@@ -192,7 +193,7 @@ const typeDefs = gql`
     rustitle: String!
     colorkey: String!
   }
-  # ----colors---
+  # ----Size---
   type Size {
     alias: ID!
     tags: String
@@ -208,19 +209,19 @@ const typeDefs = gql`
   }
 
   type SortData {
-    _id: ID!
+    # _id: ID!
     sortValue: String!
     sortList: [SortList]!
   }
   # ----Brand---
   type Brand {
-    _id: ID!
+    brand_id: ID!
     title: String!
     img: String!
   }
   # ----Bagde---
   type Bagde {
-    _id: ID!
+    bagde_id: ID!
     colorkey: String
     title: String
   }
@@ -250,12 +251,29 @@ const typeDefs = gql`
     tags: String
   }
 
+  type FAttrs {
+    title: String!
+    alias: ID!
+    tags: String
+  }
+
+  type FColorAttrs {
+    alias: ID!
+    colorGruppItem: ColorGrupp
+  }
+  type FSizesAttrs {
+    alias: ID!
+    sizeItem: Size
+  }
+
+  union FilterAttrsUnion = FAttrs | FColorAttrs | FSizesAttrs
+
   type FilterGrupp {
     alias: String!
     title: String!
     color: Boolean
     sizes: Boolean
-    attrs: [FilterAttrs!]!
+    attrs: [FilterAttrsUnion!]!
   }
 
   type Filter {
@@ -271,7 +289,17 @@ const typeDefs = gql`
     oblName: String
   }
 
-  type DeliveryInf {
+  type DeliveryInfCourier {
+    price: String
+    deliveryPeriodMin: Int
+    deliveryPeriodMax: Int
+    deliveryDateMin: String
+    deliveryDateMax: String
+    tariffId: Int
+    priceByCurrency: Int
+    currency: String
+  }
+  type DeliveryInfPvz {
     price: String
     deliveryPeriodMin: Int
     deliveryPeriodMax: Int
@@ -283,29 +311,45 @@ const typeDefs = gql`
   }
 
   type DeliveryData {
-    cityid: ID!
+    cityid: Int!
     status: Boolean
     errMsg: String
     city: City
-    pvz: DeliveryInf
-    courier: DeliveryInf
+    pvz: DeliveryInfPvz
+    courier: DeliveryInfCourier
   }
 
   type PvzList {
-    cityid: ID!
+    cityid: Int!
     pvz: [JSON]
   }
+  # ----DeliveryStart---
+  type DeliveryStart {
+    city: City
+  }
   # ----getTextReturnProduct, oferta---
-  type Content {
+  type OfertaContent {
     content: String
   }
+  type ReturnProductContent {
+    content: String!
+  }
   # ----products---
+
+  type ProductLevel2 {
+    alias: ID!
+    sizeItem: Size
+  }
+
   type ProductLevel1 {
-    level1_alias: ID!
+    alias: ID!
     price: Int
     old_price: Int
     img: String
-    level2: [String]!
+    level2: [ProductLevel2]!
+    bagde_id: String
+    bagdeItem: Bagde
+    colorItem: Color
   }
 
   type Product {
@@ -315,8 +359,9 @@ const typeDefs = gql`
     sku: String!
     price: Int!
     old_price: Int
-    sizesgroupId: String!
+    sizesgroup_id: String!
     brand_id: String
+    brandItem: Brand
     gender: String!
     color_default: String!
     level1Arr: [ProductLevel1]!
@@ -329,7 +374,7 @@ const typeDefs = gql`
     cartpr2: [String]
   }
 
-  type Breadcrumb {
+  type BreadcrumbProduct {
     text: String!
     disabled: Boolean!
     href: String!
@@ -338,10 +383,10 @@ const typeDefs = gql`
 
   type ProductGal {
     imgs: [String]!
-    level1_alias: ID!
+    alias: ID!
   }
 
-  type Meta {
+  type MetaProduct {
     title: String
     description: String
     keywords: String
@@ -351,12 +396,11 @@ const typeDefs = gql`
     alias: ID!
     content: String
     related: String
-    filterContent: ProductFilterContent
-    breadcrumbs: [Breadcrumb]
-    level1: [ProductGal]
-    meta: Meta
+    filter: ProductFilterContent
+    breadcrumbsparrent: [BreadcrumbProduct]!
+    level1GalArr: [ProductGal]!
+    meta: MetaProduct!
   }
-
   # ----productCartItem---
 
   type ProductForCart {
@@ -368,6 +412,13 @@ const typeDefs = gql`
 
   # ----Category---
 
+  type CategoryBreadcrumb {
+    text: String!
+    disabled: Boolean!
+    href: String!
+    level: Int!
+  }
+
   type CategoryContData {
     meta_title: String
     meta_description: String
@@ -376,7 +427,12 @@ const typeDefs = gql`
     htitle: String
     promo: String
     content: String
-    breadcrumbs: [Breadcrumb]
+    breadcrumbs: [CategoryBreadcrumb]
+  }
+
+  type CategoryProductLevelFilter {
+    level1: JSON
+    level2: JSON
   }
 
   type CategoryProduct {
@@ -385,21 +441,25 @@ const typeDefs = gql`
     title: String
     update_at: Int
     price: Int
-    filter: JSON
-    level1: JSON
-    level2: JSON
+    filterFilter: JSON
+    level1Filter: CategoryProductLevelFilter
+  }
+
+  type ProductsCategory {
+    alias: ID!
+    sortValue: String!
+    productsList: [CategoryProduct]
   }
 
   type CategoryProductsData {
     colors: JSON
     level2: JSON
     filter: JSON
-    sortValue: String
+    sortValue: String!
     minPrice: Int
     maxPrice: Int
     countModif: Int
     countProduct: Int
-    products: [CategoryProduct]
     productsFetch: [String]
   }
 
@@ -407,6 +467,7 @@ const typeDefs = gql`
     alias: ID!
     contData: CategoryContData
     productsData: CategoryProductsData
+    productsCategory(alias: ID, sortValue: String): ProductsCategory
     products: [Product]
   }
 
@@ -444,18 +505,22 @@ const typeDefs = gql`
     imgBacgr: String
   }
 
+  type MainPageMeta {
+    title: String
+    description: String
+    keywords: String
+  }
   type MainPage {
-    #id: String
     hitvisible: Boolean
-    hitcount: Int
+    hitcount: Int!
     hittitle: String
     topslidervisible: Boolean
     maincatalogvisible: Boolean
     maincatalogprefix: String
     maincatalogcount: Int
     promo: String
-    content: String
-    meta: Meta
+    content: String!
+    meta: MainPageMeta!
     maincatalog: [Maincatalog]
     topSlider: TopSlider
     mainBanner: MainBanner
@@ -471,17 +536,21 @@ const typeDefs = gql`
     content: String
   }
   # ----sizesChart---
-  type ContentId {
-    id: ID
+  type SizesChartContent {
+    sizesgroupId: ID!
     content: String
   }
   # ----News---
-  type NewsItem {
+  type NewsAnnonce {
     alias: String!
     img: String
     wtitle: Boolean
     annonce: String
     title: String!
+  }
+
+  type NewsList {
+    list: [NewsAnnonce]!
   }
 
   type News {
@@ -508,16 +577,15 @@ const typeDefs = gql`
     color: [String]
   }
 
-  type SearchFullFilter {
-    count: Int
-    selected: SearchFullFilterSelected
+  type SearchFullProduct {
+    alias: String!
+    colorselect: String
   }
 
   type SearchFull {
     preview: String
-    filter: SearchFullFilter
-    list: [String]
-    products: [Product]
+    fetchList: [String]!
+    list: [SearchFullProduct]!
   }
   # ----Comment---
   type Comment {
@@ -529,6 +597,10 @@ const typeDefs = gql`
     date: String
     id: String
   }
+  type CommentList {
+    list: [Comment]!
+  }
+
   # ----getOrder---
   type OrderCartItem {
     title: String
@@ -570,6 +642,16 @@ const typeDefs = gql`
     products: [Product]
   }
 
+  type CitySaerchItem {
+    id: Int!
+    cityName: String!
+    oblName: String
+  }
+
+  # enum KeyRoot {
+  #   MAIN
+  # }
+
   type Query {
     paramsData: ParamsData
     colorGrupp: [ColorGrupp]
@@ -580,33 +662,35 @@ const typeDefs = gql`
     sizeItem(alias: ID!): Size
     sortData: SortData
     brand: [Brand]
-    brandItem(id: ID!): Brand
+    brandItem(brand_id: ID!): Brand
     bagde: [Bagde]
-    bagdeItem(id: ID!): Bagde
+    bagdeItem(bagde_id: ID!): Bagde
     recomacces: Recomacces
     categoryTree: CategoryTree
     filterData: Filter
-    deliveryData(cityid: Int): DeliveryData
-    citySaerch(q: String!): [City]
+    deliveryData(cityid: Int!): DeliveryData
+    deliveryStart: DeliveryStart
+    citySaerch(q: String!): [CitySaerchItem]!
     getPvz(cityid: Int!): PvzList
-    textReturnProduct: Content
+    textReturnProduct: ReturnProductContent!
     product(alias: ID!): Product
-    products(ids: [ID!]!): [Product]
+    products(ids: [ID]!): [Product]
     productMain(alias: ID!): ProductMain
     productCartItem(id: String!): ProductForCart
     category(alias: ID!, sortValue: String): Category
-    hitData(count: Int): [String]
+    hitData(count: Int!): [String]
     mainPage: MainPage
-    page(alias: ID!): Page
-    oferta: Content
-    sizesChart(sizesgroupId: ID!): ContentId
-    newsList: [NewsItem]
-    news(alias: ID!): News
-    searchList(q: String!): SearchListData
-    searchFull(q: String!): SearchFull
-    comments: [Comment]!
-    getOrder(id: ID!): Order
+    page(alias: ID!): Page!
+    oferta: OfertaContent
+    sizesChart(sizesgroupId: ID!): SizesChartContent
+    newsList: NewsList!
+    news(alias: ID!): News!
+    searchList(q: String): SearchListData
+    searchFull(q: String): SearchFull
+    comments: CommentList!
+    order(id: ID!): Order
     getCupon(cuponText: String!): Cupon
+    productsCategory(alias: ID!, sortValue: String!): ProductsCategory
   }
   #==============Mutation===================
   input AddCommentMutationInput {
@@ -733,12 +817,69 @@ const resolvers = {
   MainPage: {
     hitData: (parent) => getProductsHitData(parent.hitcount, true),
   },
-  SearchFull: {
-    products: (parent) => getProductsByIdsData("", true, true, parent.list),
-  },
+  // SearchFull: {
+  //   products: (parent) => getProductsByIdsData("", true, true, parent.list),
+  // },
   Recomacces: {
     products: (parent) => getProductsByIdsData("", true, true, parent.list),
   },
+  FilterAttrsUnion: {
+    __resolveType(obj) {
+      if (obj.title) {
+        return "FAttrs";
+      }
+      if (obj.color) {
+        return "FColorAttrs";
+      }
+
+      return "FSizesAttrs";
+    },
+  },
+  // Size: {
+  //   __resolveType(obj) {
+  //     if (obj.alias) {
+  //       return "Size";
+  //     }
+
+  //     return null;
+  //   },
+  // },
+  // Color: {
+  //   __resolveType(obj) {
+  //     if (obj.alias) {
+  //       return "Color";
+  //     }
+
+  //     return null;
+  //   },
+  // },
+  // ColorGrupp: {
+  //   __resolveType(obj) {
+  //     if (obj.alias) {
+  //       return "Color";
+  //     }
+
+  //     return null;
+  //   },
+  // },
+  // Brand: {
+  //   __resolveType(obj) {
+  //     if (obj.brand_id) {
+  //       return "Color";
+  //     }
+
+  //     return null;
+  //   },
+  // },
+  // Bagde: {
+  //   __resolveType(obj) {
+  //     if (obj.bagde_id) {
+  //       return "Bagde";
+  //     }
+
+  //     return null;
+  //   },
+  // },
   Query: {
     paramsData: () => getParamsData(),
     colorGrupp: () => getColorGrupp(),
@@ -756,6 +897,7 @@ const resolvers = {
     categoryTree: () => getCategoryTree(),
     filterData: () => getFilter(),
     deliveryData: (_, { cityid }, { ip }) => getDeliveryData(cityid, ip),
+    deliveryStart: (_, __, { ip }) => getDeliveryData(0, ip, true),
     citySaerch: (_, { q }) => getCityData(q),
     getPvz: (_, { cityid }) => getPvzListData(cityid),
     textReturnProduct: () => getTextReturnProduct(),
@@ -773,10 +915,12 @@ const resolvers = {
     newsList: () => getAllNewsData(),
     news: (_, { alias }) => getNewsByAliasData(alias, true),
     searchList: (_, { q }) => searchListData(q),
-    searchFull: (_, { q }) => searchFullData(q, true),
+    searchFull: (_, { q }) => searchFullData(q),
     comments: () => getCommentAllData(),
-    getOrder: (_, { id }) => fetchOrderByIdData(id),
+    order: (_, { id }) => fetchOrderByIdData(id),
     getCupon: (_, { cuponText }) => getCuponData(cuponText),
+    productsCategory: (_, { alias, sortValue }) =>
+      getProductsForCategoryOnlyPorducts(alias, sortValue),
   },
 };
 

@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-const ItemGrupp = ({ itemGr, colorsData, sizesData, filterSelect }) => {
+const ItemGrupp = ({ itemGr, filterSelect }) => {
 
     const classes = useStyles();
 
@@ -108,8 +108,8 @@ const ItemGrupp = ({ itemGr, colorsData, sizesData, filterSelect }) => {
                             aliasGr={aliasGr}
                             color={color}
                             sizes={sizes}
-                            colorsData={colorsData}
-                            sizesData={sizesData}
+                          //  colorsData={colorsData}
+                          //  sizesData={sizesData}
                             itemSelect={itemSelect}
                             oneStatus={oneStatus}
                         />
@@ -123,8 +123,8 @@ const ItemGrupp = ({ itemGr, colorsData, sizesData, filterSelect }) => {
 
 ItemGrupp.propTypes = {
     itemGr: PropTypes.object.isRequired,
-    colorsData: PropTypes.object.isRequired,
-    sizesData: PropTypes.object.isRequired,
+   // colorsData: PropTypes.object.isRequired,
+   // sizesData: PropTypes.object.isRequired,
     filterSelect: PropTypes.object.isRequired,
 };
 

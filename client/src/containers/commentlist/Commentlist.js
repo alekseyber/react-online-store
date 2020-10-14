@@ -1,20 +1,29 @@
-import React, { useEffect } from "react";
+import React, { useMemo } from "react";
 import PropTypes from "prop-types";
-import { useDispatch, useSelector } from "react-redux";
 import CommentGrid from "../commentgrid/CommentGrid";
 import LoaderContent from "../../components/loadercontent/LoaderContent";
-import { commentListFetch } from "../../redux/actions/page";
 import NullPageContent from "../../components/nullpagecontent/NullPageContent";
+import { COMMENT_LIST_QUERY } from "../../graphql/gqlQuery";
+import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 
 const CommentList = ({ page }) => {
-  const dispatch = useDispatch();
-  const { endTime, list } = useSelector((state) => state.page.commentList);
+  const { data, loading } = useQueryApp(COMMENT_LIST_QUERY);
 
-  useEffect(() => {
-    dispatch(commentListFetch());
-  }, [dispatch]);
+  const { list, countPage } = useMemo(() => {
+    const rezult = {
+      list: [],
+      countPage: 10,
+    };
 
-  if (!endTime) {
+    if (data) {
+      rezult.list = data.comments.list;
+      rezult.countPage = data.paramsData.count_page_comment;
+    }
+
+    return rezult;
+  }, [data]);
+
+  if (loading) {
     return <LoaderContent />;
   }
 
@@ -27,7 +36,7 @@ const CommentList = ({ page }) => {
     );
   }
 
-  return <CommentGrid comments={list} page={page} />;
+  return <CommentGrid comments={list} page={page} countPage={countPage} />;
 };
 
 CommentList.defaultProps = {

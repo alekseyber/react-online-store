@@ -105,8 +105,12 @@ module.exports.getCityMidel = async (citySaerch) => {
   return rezult;
 };
 
-module.exports.getDeliveryMidel = async (cityid, ip) => {
+module.exports.getDeliveryMidel = async (cityid, ip, start = false) => {
   try {
+    if (start) {
+      return await getGeoCityId(ip);
+    }
+
     let city = { id: 0, cityName: "" };
     let receiverCityId = Number(cityid);
 

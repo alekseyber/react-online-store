@@ -224,12 +224,12 @@ productSchema.virtual("level1Arr").get((value, virtual, doc) => {
       const level2 = [];
       el.level2.forEach((itemlevel2) => {
         if (itemlevel2.amount > 0) {
-          level2.push(itemlevel2.level2_alias);
+          level2.push({ alias: itemlevel2.level2_alias });
         }
       });
       if (level2.length && el.level1_status) {
         rezult.push({
-          level1_alias: el.level1_alias,
+          alias: el.level1_alias,
           price: el.price,
           old_price: el.old_price,
           bagde_id: el.bagde_id,
@@ -257,7 +257,7 @@ productSchema.virtual("level1_gal").get((value, virtual, doc) => {
   return rezult;
 });
 
-productSchema.virtual("level1_gal_arr").get((value, virtual, doc) => {
+productSchema.virtual("level1GalArr").get((value, virtual, doc) => {
   const rezult = [];
   doc.level1_data.forEach((el) => {
     if (el.level1_status) {
@@ -267,7 +267,7 @@ productSchema.virtual("level1_gal_arr").get((value, virtual, doc) => {
       });
 
       rezult.push({
-        level1_alias: el.level1_alias,
+        alias: el.level1_alias,
         imgs,
       });
     }
@@ -275,38 +275,38 @@ productSchema.virtual("level1_gal_arr").get((value, virtual, doc) => {
   return rezult;
 });
 
-productSchema.virtual("level1_filter").get((value, virtual, doc) => {
+productSchema.virtual("level1Filter").get((value, virtual, doc) => {
   const rezult = {
     level1: {},
     colors: {},
     level2: {},
   };
   doc.level1_data.forEach((el) => {
-    if (el.level1_status === true) {
+    if (el.level1_status) {
       const level2 = {};
       el.level2.forEach((itemlevel2) => {
         if (itemlevel2.amount > 0) {
           level2[itemlevel2.level2_alias] = itemlevel2.level2_alias;
 
-          if (rezult.level2[itemlevel2.level2_alias] === undefined) {
+          if (!rezult.level2[itemlevel2.level2_alias]) {
             rezult.level2[itemlevel2.level2_alias] = itemlevel2.level2_alias;
           }
         }
       });
 
-      if (level2.length !== {}) {
+      if (Object.keys(level2).length) {
         rezult.level1[el.level1_alias] = level2;
         rezult.colors[el.level1_alias] = el.level1_alias;
       }
     }
   });
-  if (rezult.level2.length === 0) {
+  if (!Object.keys(rezult.level2).length) {
     return null;
   }
   return rezult;
 });
 
-productSchema.virtual("filter_filter").get((value, virtual, doc) => {
+productSchema.virtual("filterFilter").get((value, virtual, doc) => {
   const rezult = {};
   doc.filter.forEach((el) => {
     rezult[el] = el;

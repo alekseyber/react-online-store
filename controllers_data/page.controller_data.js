@@ -51,10 +51,10 @@ module.exports.getSizesChartData = async (sizesgroup_id) => {
       throw new NotFoundError("Документ не найден");
     }
     const rezult = {
-      id: content._id,
+      sizesgroupId: content._id,
       content: content.content,
     };
-    return content;
+    return rezult;
   } catch (e) {
     globalErrorCheck(e);
   }

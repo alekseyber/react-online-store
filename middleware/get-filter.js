@@ -193,6 +193,7 @@ const getFilter = async () => {
             alias: "$alias",
           },
         },
+        { $addFields: { color: 1 } },       
       ]);
 
       if (colors_aggregate.length > 0) {
@@ -229,7 +230,7 @@ const getFilter = async () => {
 
         if (grupp.color) {
           if (rezult.colors.length > 0) {
-            attrs = rezult.colors;
+            attrs = rezult.colors;            
           }
         } else if (grupp.sizes) {
           if (rezult.sizes.length > 0) {

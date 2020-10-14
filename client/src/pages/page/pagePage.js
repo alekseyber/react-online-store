@@ -1,23 +1,30 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { pageFetch } from "../../redux/actions/page";
+import React from "react";
 import LoaderPage from "../../components/loaderpage/LoaderPage";
 import { useRouter } from "../../hooks/router.hook";
 import { PageBase } from "../../hoc/PageBase";
 import PageContent from "../../components/pagecontent/PageContent";
+import ErrorContent from "../../components/errorcontent/ErrorContent";
+import { PAGE_PAGE_QUERY } from "../../graphql/gqlQuery";
+import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 
 export default () => {
   const { params } = useRouter();
   const { alias } = params;
 
-  const pageData = useSelector((state) => state.page.pageContent[alias]);
-  const dispatch = useDispatch();
+  const { data, loading, error } = useQueryApp(
+    PAGE_PAGE_QUERY,
+    { alias },
+    false,
+    true
+  );
 
-  useEffect(() => {
-    dispatch(pageFetch(alias));
-  }, [dispatch, alias]);
+  if (loading) return <LoaderPage />;
+  if (error) return <ErrorContent />;
 
-  if (!pageData) return <LoaderPage />;
+
+
+  const pageData = data.page;
+
 
   const bind = {
     name_page: pageData.meta_title,

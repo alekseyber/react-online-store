@@ -4,10 +4,12 @@ const { DbError, NotFoundError, globalErrorCheck } = require("./errors.class");
 
 module.exports.getAllNewsData = async () => {
   try {
-    return await News.find(
+    const list = await News.find(
       { status: true },
       { _id: 0, alias: 1, title: 1, wtitle: 1, annonce: 1, img: 1 }
     ).sort({ update_at: -1 });
+
+    return { list };
   } catch (e) {
     throw new DbError(e.message);
   }

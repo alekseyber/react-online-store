@@ -1,7 +1,6 @@
 import { batch } from "react-redux";
 import { SET_CATEGORY, SET_SORT } from "../constants";
 import { httpActions } from "./../../hooks/http.hook";
-import { updateProducts } from "./products";
 import { getEndTime, checkEndTime } from "./start";
 
 const setCategoryData = (payload) => {
@@ -33,25 +32,11 @@ export const categoryFetch = (alias) => async (dispatch, getState) => {
       `/api/category/getproductsforcategory/${alias}`,
       { sortValue: start.sortData.sortValue }
     );
-    const newcategoryData = {};
-    newcategoryData.endTime = getEndTime(getState(), "category");
-    newcategoryData.productsData = {};
-    newcategoryData.productsData.colors = categoryData.productsData.colors;
-    newcategoryData.productsData.countModif =
-      categoryData.productsData.countModif;
-    newcategoryData.productsData.countProduct =
-      categoryData.productsData.countProduct;
-    newcategoryData.productsData.filter = categoryData.productsData.filter;
-    newcategoryData.productsData.level2 = categoryData.productsData.level2;
-    newcategoryData.productsData.maxPrice = categoryData.productsData.maxPrice;
-    newcategoryData.productsData.minPrice = categoryData.productsData.minPrice;
-    newcategoryData.contData = categoryData.contData;
-    newcategoryData.products = categoryData.productsData.products;
-    newcategoryData.sortValue = categoryData.productsData.sortValue;
 
-    batch(() => {
-      dispatch(updateProducts(categoryData.productsData.products));
-      dispatch(setCategoryData({ alias, newcategoryData }));
+    categoryData.endTime = getEndTime(getState(), "category");
+
+    batch(() => {      
+      dispatch(setCategoryData({ alias, categoryData }));
     });
   } catch (e) {
     //  console.error(e)

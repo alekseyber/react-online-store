@@ -1,10 +1,10 @@
 import { batch } from "react-redux";
 import { SET_START, SET_APP_SORT } from "../constants";
 import { httpActions } from "./../../hooks/http.hook";
-import { updateProducts } from "./products";
-import { cartUpdate } from "./cart";
+// import { updateProducts } from "./products";
+// import { cartUpdate } from "./cart";
 import { setDelivery } from "./delivery";
-import { setErrorApp } from "./app";
+//import { setErrorApp } from "./app";
 
 export const getEndTime = (state, key) => {
   const cacheTimeObj = state.start.paramsData.cacheTime ?? null;
@@ -40,50 +40,50 @@ export const setSortValue = (payload) => {
   };
 };
 
-export const checkCart = (cartData, products, dispatch, nulled = true) => {
-  if (cartData.length === 0 && !nulled) {
-    return true;
-  }
-  const newCartData = cartData.filter((el) => {
-    if (el.alias in products) {
-      if (el.level1 in products[el.alias].level1) {
-        return (
-          products[el.alias].level1[el.level1].level2.findIndex(
-            (item) => el.level2 === item
-          ) > -1
-        );
-      }
-    }
-    return false;
-  });
+// export const checkCart = (cartData, products, dispatch, nulled = true) => {
+//   if (cartData.length === 0 && !nulled) {
+//     return true;
+//   }
+//   const newCartData = cartData.filter((el) => {
+//     if (el.alias in products) {
+//       if (el.level1 in products[el.alias].level1) {
+//         return (
+//           products[el.alias].level1[el.level1].level2.findIndex(
+//             (item) => el.level2 === item
+//           ) > -1
+//         );
+//       }
+//     }
+//     return false;
+//   });
 
-  dispatch(cartUpdate(newCartData));
-};
+//   dispatch(cartUpdate(newCartData));
+// };
 
-const updateStartCart = async (cart, dispatch) => {
-  const cartData = cart.cartData;
+// const updateStartCart = async (cart, dispatch) => {
+//   const cartData = cart.cartData;
 
-  if (cartData.length) {
-    const products = [];
-    const tempObj = {};
-    cartData.forEach((element) => {
-      if (element.alias) {
-        if (!tempObj[element.alias]) {
-          tempObj[element.alias] = 1;
-          products.push({
-            alias: element.alias,
-          });
-        }
-      }
-    });
-    if (products.length) {
-      dispatch(updateProducts(products, true));
-      // checkCart(cartData, rezult, dispatch);
-    } else {
-      dispatch(cartUpdate([]));
-    }
-  }
-};
+//   if (cartData.length) {
+//     const products = [];
+//     const tempObj = {};
+//     cartData.forEach((element) => {
+//       if (element.alias) {
+//         if (!tempObj[element.alias]) {
+//           tempObj[element.alias] = 1;
+//           products.push({
+//             alias: element.alias,
+//           });
+//         }
+//       }
+//     });
+//     if (products.length) {
+//       dispatch(updateProducts(products, true));
+//       // checkCart(cartData, rezult, dispatch);
+//     } else {
+//       dispatch(cartUpdate([]));
+//     }
+//   }
+// };
 
 const fetchStart = async (dispatch) => {
   try {
@@ -113,29 +113,29 @@ export const updateStart = () => (dispatch, getState) => {
   }
 };
 
-export const setStart = () => async (dispatch, getState) => {
+export const setStart = () => async (dispatch) => { //, getState
   try {
     await fetchStart(dispatch);
-    const { cart } = getState();
-    updateStartCart(cart, dispatch);
+    // const { cart } = getState();
+    // updateStartCart(cart, dispatch);
   } catch (e) {
-    dispatch(setErrorApp(e, setStart));
-    // console.error(e);
+   // dispatch(setErrorApp(e, setStart));
+     console.error(e);
   }
 };
 
-export const textReturnProductFetch = () => async (dispatch, getState) => {
-  try {
-    const { start } = getState();
+// export const textReturnProductFetch = () => async (dispatch, getState) => {
+//   try {
+//     const { start } = getState();
 
-    if (start.textReturnProduct) {
-      return null;
-    }
+//     if (start.textReturnProduct) {
+//       return null;
+//     }
 
-    const { requestNoLoader } = httpActions(dispatch);
+//     const { requestNoLoader } = httpActions(dispatch);
 
-    const { content } = await requestNoLoader("/api/start/textreturnproduct");
-    const textReturnProduct = content;
-    dispatch(setStartData({ textReturnProduct }));
-  } catch (e) {}
-};
+//     const { content } = await requestNoLoader("/api/start/textreturnproduct");
+//     const textReturnProduct = content;
+//     dispatch(setStartData({ textReturnProduct }));
+//   } catch (e) {}
+// };

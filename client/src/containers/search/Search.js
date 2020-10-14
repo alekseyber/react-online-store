@@ -1,107 +1,27 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import PropTypes from "prop-types";
-import { useDispatch, useSelector } from "react-redux";
-import { useHttp } from "../../hooks/http.hook";
 import ProductsGrid from "../../containers/productsgrid/ProductsGrid";
-import { updateProducts } from "../../redux/actions/products";
 import LoaderContent from "../../components/loadercontent/LoaderContent";
 import NullPageContent from "../../components/nullpagecontent/NullPageContent";
+import { SEARCH_FULL_QUERY } from "../../graphql/gqlQuery";
+import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 
 const Search = ({ q }) => {
-  const dispatch = useDispatch();
-  const { requestNoErrMsg } = useHttp();
-
-  const productsData = useSelector((state) => state.products);
-
-  const initial = {
-    loader: true,
-    list: [],
-    color: [],
-  };
-  const [rezult, setRezult] = useState(initial);
-
-  const { loader, list, color } = rezult;
-
-  useEffect(() => {
-    setRezult({
-      loader: true,
-      list: [],
-      color: [],
-    });
-
-    return () => {
-        setRezult({
-            loader: true,
-            list: [],
-            color: [],
-          });
-    }
-
-  }, [q]);
-
-  useEffect(() => {
-    
-    const fetchData = async () => {
-      const rez = {
-        loader: false,
-        list: [],
-        color: [],
-      };
-      try {
-        if (q.length) {
-          const { list, filter } = await requestNoErrMsg(
-            "/api/search/full",
-            "get",
-            { q }
-          );
-          rez.list = list;
-
-          if (list.length) {
-            await dispatch(updateProducts(list));
-            if (filter.count && filter.selected) {
-              rez.color = filter.selected.color ?? [];
-            }
-          }
-        }
-      } catch (e) {
-        console.error(e);
-      } finally {
-        setRezult(rez);
-      }
-    };
-
-    fetchData();
-  }, [q, dispatch, requestNoErrMsg]);
-
+  const { data, loading } = useQueryApp(SEARCH_FULL_QUERY, { q });
   const productList = useMemo(() => {
-    if (list.length === 0) {
-      return list;
+    if (data) {
+      if (data.searchFull.list.length) {
+        return data.searchFull.list;
+      }
+      if (data.searchFull.fetchList.length) {
+        return data.searchFull.fetchList;
+      }
     }
 
-    if (color.length) {
-      const productsColor = [];
-      list.forEach((item) => {
-        if (item.alias in productsData) {
-          const ptoductItem = productsData[item.alias];
-          color.forEach((itemcolor) => {
-            if (itemcolor in ptoductItem.level1) {
-              const product = {
-                alias: item.alias,
-                colorselect: itemcolor,
-              };
-              productsColor.push(product);
-            }
-          });
-        }
-      });
+    return [];
+  }, [data]);
 
-      return productsColor;
-    } else {
-      return list;
-    }
-  }, [list, color, productsData]);
-
-  if (loader) {
+  if (loading) {
     return <LoaderContent text="Поиск на сервере..." />;
   }
 

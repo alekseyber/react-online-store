@@ -1,58 +1,45 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
-import { PaginationList, usePagin } from '../../hoc/Paginationlist';
-import NewsItem from '../../components/newsitem/NewsItem';
+import React from "react";
+import PropTypes from "prop-types";
+import { PaginationList, usePagin } from "../../hoc/Paginationlist";
+import NewsItem from "../../components/newsitem/NewsItem";
 
-const NewsGrid = ({ news, page }) => {
-
-    const count_page_news = useSelector(state => state.start.paramsData.count_page_news);
-    const count_page = count_page_news ?? 10;
-
-    const ListNews = () => {
-        const paginationRezult = usePagin();        
-
-        return (
-            <>
-                {paginationRezult.map((item, index) => (
-                    <NewsItem
-                        item={item}
-                        key={index}
-                    />
-                ))
-                }
-            </>
-        )
-    }
-
-
-    const paginBind = {
-        count_page,
-        page,
-        input_list: news,
-        spacing_grid: 3
-    }
-
+const NewsGrid = ({ news, page, countPage }) => {
+  const ListNews = () => {
+    const paginationRezult = usePagin();
 
     return (
+      <>
+        {paginationRezult.map((item, index) => (
+          <NewsItem item={item} key={index} />
+        ))}
+      </>
+    );
+  };
 
-        <PaginationList {...paginBind}>
-            <ListNews />
-        </PaginationList>
-    )
+  const paginBind = {
+    countPage,
+    page,
+    inputList: news,
+    spacingGrid: 3,
+  };
 
-}
-
-NewsGrid.defaultProps = {
-    news: [],
-    page: 1,
+  return (
+    <PaginationList {...paginBind}>
+      <ListNews />
+    </PaginationList>
+  );
 };
 
-
+NewsGrid.defaultProps = {
+  news: [],
+  page: 1,
+  countPage: 10,
+};
 
 NewsGrid.propTypes = {
-    news: PropTypes.array,
-    page: PropTypes.number,
+  news: PropTypes.array,
+  page: PropTypes.number,
+  countPage: PropTypes.number,
 };
 
 export default NewsGrid;

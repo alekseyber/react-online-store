@@ -1,23 +1,28 @@
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
+import { DELIVERY_REZULT_QUERY } from "../graphql/gqlQuery";
+import { useQueryApp } from "./appolloQueryApp.hook";
 
+const useDeliveryPrice = (cityDefault) => {
+  const { city } = useSelector((state) => state.app);
+  const cityid = city.id;
+  const { data } = useQueryApp(DELIVERY_REZULT_QUERY, { cityid });
 
+  const { deliverySelect } = useSelector((state) => state.delivery);
 
-const useDeliveryPrice = () => {
+  if (!data) return 0;
 
+  const { courier, pvz, status } = data.deliveryData;
 
-    const { courier, pvz, city, status, deliverySelect } = useSelector(state => state.delivery);
-    const { cityDefault } = useSelector(state => state.start.paramsData);
+  const cityDefaultStatus = cityDefault.id === city.id;
 
-    const cityDefaultStatus = cityDefault.id === city.id;
+  if (cityDefaultStatus || !status) {
+    return 0;
+  }
 
-    if (cityDefaultStatus || !status) {
-        return 0
-    }
+  const price =
+    deliverySelect === 0 ? courier.priceByCurrency : pvz.priceByCurrency;
 
-    const price = (deliverySelect === 0) ? courier.priceByCurrency : pvz.priceByCurrency;
-
-    return price
-
-}
+  return price;
+};
 
 export { useDeliveryPrice };

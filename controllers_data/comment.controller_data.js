@@ -11,7 +11,7 @@ const {
 
 module.exports.getCommentAllData = async () => {
   try {
-    return await Comment.find(
+    const list = await Comment.find(
       { status: true },
       {
         _id: 0,
@@ -22,6 +22,7 @@ module.exports.getCommentAllData = async () => {
         htmlstatus: 1,
       }
     ).sort({ datas: -1 });
+    return { list };
   } catch (e) {
     throw new DbError();
   }

@@ -5,60 +5,69 @@ const Cache = require("../models/cache.model");
 const applyPattern = require("../middleware/apply-pattern");
 const getParrentCategory = require("../middleware/get-parrent-category");
 const md5 = require("js-md5");
-const { NotFoundError, globalErrorCheck } = require("./errors.class");
+const { NotFoundError, globalErrorCheck, DbError } = require("./errors.class");
 
-const getProductsByCategory = async (
-  category_ids = [],
-  all = true,
-  sortValueInput,
-  status = true
-) => {
-  let qwery = {};
-  const products = [];
-  const productsFetch = [];
-  let colors = {};
-  let level2 = {};
-  let filter = {};
-  let sortValue = false;
-  let minPrice = 100000000;
-  let maxPrice = 0;
-  let countProduct = 0;
-  let countModif = 0;
+const getSortObj = async (sortValueInput) => {
+  try {
+    const protection = { order: 1, field: 1 };
+    const rezult = {
+      sortValue: "not",
+      sortObj: {},
+    };
+    if (sortValueInput) {
+      const sort = await Sort.findById(sortValueInput, protection);
+      if (sort) {
+        rezult.sortValue = String(sort._id);
+        rezult.sortObj[sort.field] = sort.order ? -1 : 1;
+        return rezult;
+      }
+    }
 
-  if (status === false) {
-    qwery = all
+    const sortDefault = await Sort.findOne({ sort_default: true }, protection);
+    if (sortDefault) {
+      rezult.sortValue = String(sortDefault._id);
+      rezult.sortObj[sortDefault.field] = sortDefault.order ? -1 : 1;
+    }
+    return rezult;
+  } catch (e) {
+    throw new DbError("Ошибка обаботки сотировки");
+  }
+};
+
+const getQweryProducts = (category_ids = [], all, status = true) => {
+  if (!status) {
+    return all
       ? {}
       : {
           category_ids: { $in: category_ids },
         };
   } else {
-    qwery = all
-      ? { status: true }
-      : {
+    return all
+      ? {
           status: true,
+          "level1_data.level2.amount": { $gt: 0 },
+          "level1_data.level1_status": true,
+        }
+      : {
           category_ids: { $in: category_ids },
+          status: true,
+          "level1_data.level2.amount": { $gt: 0 },
+          "level1_data.level1_status": true,
         };
-    let sort_obj = {};
+  }
+};
 
-    let sort = null;
-    if (sortValueInput) {
-      sort = await Sort.findById(sortValueInput, { order: 1, field: 1 });
-    }
-
-    if (!sort) {
-      sort = await Sort.findOne(
-        { sort_default: true },
-        { _id: 1, order: 1, field: 1 }
-      );
-      sortValue = sort._id;
-    } else {
-      sortValue = sortValueInput;
-    }
-
-    if (sort) {
-      sort_obj[sort.field] = sort.order === true ? -1 : 1;
-    }
-
+const getProductsCategory = async (
+  alias,
+  categoryIds = [],
+  all,
+  sortValueInput,
+  status = true
+) => {
+  try {
+    const qwery = getQweryProducts(categoryIds, all, status);
+    const sort = await getSortObj(sortValueInput);
+    const sortValue = sort.sortValue;
     const docs = await Product.find(qwery, {
       _id: 1,
       alias: 1,
@@ -67,27 +76,71 @@ const getProductsByCategory = async (
       filter: 1,
       level1_data: 1,
       update_at: 1,
-    }).sort(sort_obj);
+    }).sort(sort.sortObj);
+    const rezult = {
+      alias,
+      sortValue,
+      productsList: docs,
+    };
 
-    docs.forEach((item) => {
-      if (item.level1_filter) {
+    return rezult;
+  } catch (e) {
+    globalErrorCheck(e);
+  }
+};
+
+const getProductsByCategory = async (
+  aliasCategory,
+  categoryIds = [],
+  all = true,
+  sortValueInput,
+  status = true
+) => {
+  try {
+    const products = [];
+    const productsFetch = [];
+    let colors = {};
+    let level2 = {};
+    let filter = {};
+    let minPrice = 100000000;
+    let maxPrice = 0;
+    let countProduct = 0;
+    let countModif = 0;
+
+    const productsCategory = await getProductsCategory(
+      aliasCategory,
+      categoryIds,
+      all,
+      sortValueInput,
+      status
+    );
+
+    productsCategory.productsList.forEach((item) => {
+      const level1Filter = item.level1Filter;
+      const filterFilter = item.filterFilter;
+      if (level1Filter) {
         const el = {
           alias: item.alias,
           _id: item._id,
           title: item.title,
           update_at: item.update_at_filter,
           price: item.price,
-          filter: item.filter_filter,
-          level1: item.level1_filter.level1,
-          level2: item.level1_filter.level2,
+          filterFilter, // filter
+          level1Filter: {
+            level1: level1Filter.level1,
+            level2: level1Filter.level2,
+          },
+          // level1: level1Filter.level1,
+          // level2: level1Filter.level2,
         };
+
         products.push(el);
         productsFetch.push(el.alias);
         countProduct++;
-        countModif += Object.keys(el.level1).length;
-        Object.assign(colors, item.level1_filter.colors);
-        Object.assign(level2, item.level1_filter.level2);
-        Object.assign(filter, item.filter_filter);
+        countModif += Object.keys(level1Filter.level1).length;
+        Object.assign(colors, level1Filter.colors);
+        Object.assign(level2, level1Filter.level2);
+        Object.assign(filter, filterFilter);
         if (minPrice > item.price) {
           minPrice = item.price;
         }
@@ -96,51 +149,84 @@ const getProductsByCategory = async (
         }
       }
     });
-  }
 
-  return {
-    products,
-    colors,
-    level2,
-    filter,
-    sortValue,
-    minPrice,
-    maxPrice,
-    countModif,
-    countProduct,
-    productsFetch
-  };
+    productsCategory.productsList = products;
+    const sortValue = productsCategory.sortValue;
+
+    const rezult = {
+      productsCategory,
+      productsData: {
+        colors,
+        level2,
+        filter,
+        sortValue,
+        minPrice,
+        maxPrice,
+        countModif,
+        countProduct,
+        productsFetch,
+      },
+    };
+
+    return rezult;
+  } catch (e) {
+    globalErrorCheck(e);
+  }
 };
 
 const getChildrenCategory = async (
   category_id = "",
   status = true,
-  category_ids = []
+  categoryIds = []
 ) => {
-  const qwery =
-    status === true
+  try {
+    const qwery = status
       ? { status: true, parent_id: category_id }
       : { parent_id: category_id };
-  try {
     const doc = await Category.find(qwery, { _id: 1 });
-    if (doc.length > 0) {
+    if (doc.length) {
       for (const item of doc) {
-        category_ids.push(item._id);
-        category_ids = await getChildrenCategory(
-          item._id,
-          status,
-          category_ids
-        );
+        categoryIds.push(item._id);
+        categoryIds = await getChildrenCategory(item._id, status, categoryIds);
       }
     }
+    return categoryIds;
   } catch (e) {
-    console.error(e.message);
+    throw new DbError("Ошибка обаботки дочерних категорий");
   }
-
-  return category_ids;
 };
 
-module.exports.getProductsForCategoryData = async (alias, sortValue) => {
+const getProductsForCategoryOnlyPorducts = async (alias, sortValue) => {
+  try {
+    const doc = await Category.findOne(
+      { alias },
+      {
+        parent_id: 1,
+      }
+    );
+    if (!doc) {
+      throw new NotFoundError("Категория не существует");
+    }
+    let categoryIds = [];
+    let all = true;
+
+    if (String(doc._id) !== String(doc.parent_id)) {
+      all = false;
+      categoryIds = await getChildrenCategory(doc._id, true, [doc._id]);
+    }
+
+    return await getProductsCategory(
+      aliasCategory,
+      categoryIds,
+      all,
+      sortValue
+    );
+  } catch (e) {
+    globalErrorCheck(e);
+  }
+};
+
+const getProductsForCategoryData = async (alias, sortValue) => {
   try {
     const cacheKey = md5("category_" + alias + sortValue);
     const cacheAction = "category";
@@ -169,19 +255,21 @@ module.exports.getProductsForCategoryData = async (alias, sortValue) => {
       throw new NotFoundError("Категория не существует");
     }
 
-    let category_ids = [];
+    let categoryIds = [];
     let all = true;
 
     if (String(doc._id) !== String(doc.parent_id)) {
       all = false;
-      category_ids = await getChildrenCategory(doc._id, true, [doc._id]);
+      categoryIds = await getChildrenCategory(doc._id, true, [doc._id]);
     }
 
-    const productsData = await getProductsByCategory(
-      category_ids,
+    const { productsData, productsCategory } = await getProductsByCategory(
+      alias,
+      categoryIds,
       all,
       sortValue
     );
+
     let contData = {};
     contData["meta_title"] = doc.meta.title;
     contData["meta_description"] = doc.meta.description;
@@ -209,13 +297,19 @@ module.exports.getProductsForCategoryData = async (alias, sortValue) => {
     }
     contData["breadcrumbs"] = breadcrumbs;
     const cacheData = {
-      obj: { productsData, contData, alias },
+      obj: { productsData, productsCategory, contData, alias, sortValue },
     };
 
     const сache = new Cache({ cacheKey, cacheData, cacheAction });
     сache.save();
     return cacheData.obj;
   } catch (e) {
+    console.error(e);
     globalErrorCheck(e);
   }
+};
+
+module.exports = {
+  getProductsForCategoryData,
+  getProductsForCategoryOnlyPorducts,
 };

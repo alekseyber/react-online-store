@@ -1,15 +1,12 @@
-import React from 'react';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
-import CircularProgress from '@material-ui/core/CircularProgress';
-
+import React from "react";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const ColorCircularProgress = withStyles({
   root: {
-    color: '#00695c',
+    color: "#00695c",
   },
 })(CircularProgress);
-
-
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -17,14 +14,11 @@ const useStyles = makeStyles(() => ({
     height: "60vh",
     display: "flex",
     justifyContent: "center",
-    alignItems: "center"
-  },  
+    alignItems: "center",
+  },
 }));
 
-
-
-
-export default () => {
+const LoaderPage = () => {
   const classes = useStyles();
 
   return (
@@ -32,4 +26,6 @@ export default () => {
       <ColorCircularProgress size={30} thickness={5} />
     </div>
   );
-}
+};
+
+export default LoaderPage;

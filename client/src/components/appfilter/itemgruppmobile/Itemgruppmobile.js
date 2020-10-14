@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const ItemGruppMobile = ({ itemGr, colorsData, sizesData, filterSelect }) => {
+const ItemGruppMobile = ({ itemGr, filterSelect }) => {
 
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
@@ -63,8 +63,8 @@ const ItemGruppMobile = ({ itemGr, colorsData, sizesData, filterSelect }) => {
                                 aliasGr={aliasGr}
                                 color={color}
                                 sizes={sizes}
-                                colorsData={colorsData}
-                                sizesData={sizesData}
+                              //  colorsData={colorsData}
+                              //  sizesData={sizesData}
                                 itemSelect={itemSelect}
                                 oneStatus={oneStatus}
                             />
@@ -79,8 +79,8 @@ const ItemGruppMobile = ({ itemGr, colorsData, sizesData, filterSelect }) => {
 
 ItemGruppMobile.propTypes = {
     itemGr: PropTypes.object.isRequired,
-    colorsData: PropTypes.object.isRequired,
-    sizesData: PropTypes.object.isRequired,
+   // colorsData: PropTypes.object.isRequired,
+  //  sizesData: PropTypes.object.isRequired,
     filterSelect: PropTypes.object.isRequired,
 };
 

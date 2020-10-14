@@ -198,6 +198,7 @@ const getColorGrupp = async (alias) => {
     ];
 
     if (alias) {
+      // console.log(alias)
       config = [{ $match: { alias } }, ...config];
     }
 
@@ -274,11 +275,31 @@ const getSize = async (alias) => {
 
 const getBrand = async (_id) => {
   try {
-    const $project = { title: 1, img: 1 };
+    const project = {
+      title: 1,
+      img: 1,
+    };
     if (_id) {
-      return await Brand.findById(_id, $project);
+      const doc = await Brand.findById(_id, project);
+      return {
+        brand_id: doc._id,
+        title: doc.title,
+        img: doc.img,
+      };
     }
-    return await Brand.find({}, $project).sort({ sortvalue: 1 });
+
+    return await Brand.aggregate([
+      { $project: project },
+      { $sort: { sortvalue: 1 } },
+      {
+        $project: {
+          _id: 0,
+          brand_id: "$_id",
+          title: "$title",
+          img: "$img",
+        },
+      },
+    ]);
   } catch (e) {
     DbError(e.message);
   }
@@ -286,14 +307,30 @@ const getBrand = async (_id) => {
 
 const getBagde = async (_id) => {
   try {
-    const $project = {
+    const project = {
       title: 1,
       colorkey: 1,
     };
     if (_id) {
-      return await Bagde.findOne({ _id, status: true }, $project);
+      const doc = await Bagde.findOne({ _id, status: true }, project);
+      return {
+        bagde_id: doc._id,
+        title: doc.title,
+        colorkey: doc.colorkey,
+      };
     }
-    return await Bagde.find({ status: true }, $project);
+    return await Bagde.aggregate([
+      { $match: { status: true } },
+      { $project: project },
+      {
+        $project: {
+          _id: 0,
+          bagde_id: "$_id",
+          title: "$title",
+          colorkey: "$colorkey",
+        },
+      },
+    ]);
   } catch (e) {
     DbError(e.message);
   }

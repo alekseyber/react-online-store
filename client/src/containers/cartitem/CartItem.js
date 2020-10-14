@@ -1,10 +1,9 @@
-import React from "react";
+import React, { useEffect, useCallback, useMemo } from "react";
 import {
   createMuiTheme,
   ThemeProvider,
   makeStyles,
 } from "@material-ui/core/styles"; //makeStyles,
-import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import ListItem from "@material-ui/core/ListItem";
@@ -24,11 +23,11 @@ import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
-import { useItemCartData } from "../../hooks/cart-item.hook";
 import { cartDeleteItem, cartChangeItemCount } from "../../redux/actions/cart";
 import { setColorAndSizeProduct } from "../../redux/actions/productselect";
 import SizeSelector from "./sizeselector/SizeSelector";
 import ColorSelector from "./colorselector/ColorSelector";
+import { useRouter } from "../../hooks/router.hook";
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -55,42 +54,90 @@ const theme = createMuiTheme({
 const CartItem = ({
   index,
   itemcart,
-  imgproperty,
+  productImgProperty,
   baseurl,
   currsymbol,
   divider_on,
-  colors,
-  sizes,
   handleClose,
   full,
+  product,
 }) => {
   const classes = useStyles();
-  const history = useHistory();
+  const { history } = useRouter();
   const dispatch = useDispatch();
-  const item = useItemCartData({ itemcart, imgproperty, baseurl, full });
 
-  if (!item) {
-    return null;
-  }
-
-  const productLink = `/product/${item.alias}`;
+  const handleDeletItem = useCallback(() => {
+    dispatch(cartDeleteItem(index));
+  }, [dispatch, index]);
 
   const handleOpenProduct = (event) => {
     event.preventDefault();
     event.stopPropagation();
-    dispatch(setColorAndSizeProduct(item.alias, item.level1, item.level2));
+    dispatch(
+      setColorAndSizeProduct(itemcart.alias, itemcart.level1, itemcart.level2)
+    );
     history.push(productLink);
     if (handleClose) {
       handleClose();
     }
   };
-  const handleDeletItem = () => {
-    dispatch(cartDeleteItem(index));
-  };
 
   const handleChangeQty = (event) => {
     dispatch(cartChangeItemCount(index, event.target.value));
   };
+
+  const { alias, level1, level2, qty, price } = itemcart;
+
+  // const { data, loading } = useQueryApp(CART_ITEM_QUERY, { alias });
+
+  const { deleteAction, current, level2Current } = useMemo(() => {
+    const rezult = {
+      deleteAction: false,
+      current: null,
+      level2Current: null,
+    };
+
+    if (!product) {
+      rezult.deleteAction = true;
+      return rezult;
+    }
+
+    rezult.current = product.level1Arr.find((el) => el.alias === level1);
+
+    if (!rezult.current) {
+      rezult.deleteAction = true;
+      return rezult;
+    }
+    rezult.level2Current = rezult.current.level2.find(
+      (ell2) => ell2.alias === level2
+    );
+
+    if (!rezult.level2Current) {
+      rezult.deleteAction = true;
+    }
+
+    return rezult;
+  }, [product, level1, level2]);
+
+  useEffect(() => {
+    if (deleteAction) {
+      handleDeletItem();
+    }
+  }, [deleteAction, handleDeletItem]);
+
+  if (!product) {
+    return null;
+  }
+
+  const productLink = `/product/${alias}`;
+  const level2SelectTrue =
+    product.product_model === 1 || product.product_model === 4;
+
+  const level1SelectTrue = product.product_model < 3;
+
+  const priceOld = current.old_price ? current.old_price : product.old_price;
+
+  const img = baseurl + productImgProperty[0].path + current.img;
 
   const FullElement = () => {
     if (!full) {
@@ -99,7 +146,7 @@ const CartItem = ({
 
     //    Array.apply(null, { length: N }).map((_, val) => (
 
-    const N = item.qty <= 5 ? 5 : item.qty;
+    const N = qty <= 5 ? 5 : qty;
 
     return (
       <>
@@ -113,7 +160,7 @@ const CartItem = ({
             <InputLabel id="qty-simple-select-label">Количество</InputLabel>
             <Select
               labelId="qty-simple-select-label"
-              value={item.qty}
+              value={qty}
               onChange={handleChangeQty}
             >
               {new Array(N).fill("").map((_, val) => (
@@ -133,28 +180,26 @@ const CartItem = ({
               color="textPrimary"
               className="ml-1"
             >
-              {item.summ} {currsymbol}
+              {qty * price} {currsymbol}
             </Typography>
           </div>
         </Grid>
-        {item.levels1.length > 0 && (
+        {level1SelectTrue && (
           <Box mt={1} mb={1}>
             <ColorSelector
               index={index}
-              levels1={item.levels1}
-              level1_cart={item.level1_cart}
-              level2_cart={item.level2_cart}
-              colors={colors}
+              levels1={product.level1Arr}
+              level1Cart={level1}
+              level2Cart={level2}
             />
           </Box>
         )}
-        {item.levels2.length > 0 && (
+        {level2SelectTrue && (
           <Box mt={1} mb={1}>
             <SizeSelector
               index={index}
-              levels2={item.levels2}
-              level2_cart={item.level2_cart}
-              sizes={sizes}
+              levels2={current.level2}
+              level2Cart={level2}
             />
           </Box>
         )}
@@ -170,14 +215,14 @@ const CartItem = ({
         href={productLink}
         onClick={handleOpenProduct}
       >
-        {item.title} {item.gender}
+        {product.title} {product.gender}
       </LinkUi>
     </div>
   );
   const secondaryEl = (
     <div>
       <div>
-        {item.level1 && (
+        {level1SelectTrue && (
           <>
             <Typography variant="body2" component="span" color="textSecondary">
               Цвет:
@@ -188,11 +233,11 @@ const CartItem = ({
               color="textPrimary"
               className="ml-1 mr-1 text-uppercase"
             >
-              {colors[item.level1].title}
+              {current.colorItem.title}
             </Typography>
           </>
         )}
-        {item.level2 && (
+        {level2SelectTrue && (
           <>
             <Typography variant="body2" component="span" color="textSecondary">
               Размер:
@@ -203,7 +248,7 @@ const CartItem = ({
               color="textPrimary"
               className="ml-1 mr-1"
             >
-              {sizes[item.level2].title}
+              {level2Current.sizeItem.title}
             </Typography>
           </>
         )}
@@ -218,16 +263,16 @@ const CartItem = ({
           component="span"
           className="font-weight-black ml-1"
         >
-          {item.price} {currsymbol}
+          {price} {currsymbol}
         </Typography>
-        {item.old_price > 0 && (
+        {priceOld > 0 && (
           <Typography
             variant="body2"
             color="textSecondary"
             component="span"
             className="oldrice ml-1"
           >
-            {item.old_price} {currsymbol}
+            {priceOld} {currsymbol}
           </Typography>
         )}
       </div>
@@ -240,8 +285,8 @@ const CartItem = ({
       <ListItem alignItems="flex-start">
         <ListItemAvatar>
           <Avatar
-            alt={item.title}
-            src={item.img}
+            alt={product.title}
+            src={img}
             className={classes.avatar}
             variant="square"
           />
@@ -275,14 +320,13 @@ CartItem.defaultProps = {
 CartItem.propTypes = {
   index: PropTypes.number.isRequired,
   itemcart: PropTypes.object.isRequired,
-  imgproperty: PropTypes.array.isRequired,
+  productImgProperty: PropTypes.array.isRequired,
   baseurl: PropTypes.string,
   currsymbol: PropTypes.string,
   divider_on: PropTypes.bool,
-  colors: PropTypes.object.isRequired,
-  sizes: PropTypes.object.isRequired,
   handleClose: PropTypes.func,
   full: PropTypes.bool,
+  product: PropTypes.oneOfType([PropTypes.object.isRequired, () => null]),
 };
 
 export default CartItem;

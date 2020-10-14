@@ -8,7 +8,6 @@ import {
 import { openAddedCart, openQOrder } from "./modaldialog";
 import { httpActions } from "./../../hooks/http.hook";
 import { showAlert } from "./app";
-import { updateProducts } from "./products";
 import { history } from "../store";
 
 const cartAdd = (payload) => {
@@ -150,11 +149,9 @@ export const cartAddAction = (product, qorder = false) => (
   dispatch,
   getState
 ) => {
-  //, getState
-
-  const { productselect, start, cart } = getState();
+  const { productselect, cart } = getState();
   const alias = product.alias;
-  const level1 = product.select_color;
+  const level1 = product.current.alias;
   const sizeSelectTrue =
     product.product_model === 1 || product.product_model === 4;
   let level2 = productselect.size[alias];
@@ -167,22 +164,26 @@ export const cartAddAction = (product, qorder = false) => (
     price: price,
     level1: null,
     level2: null,
-    currSymbol: start.paramsData.currSymbol,
   };
 
   if (!level2) {
     if (sizeSelectTrue) {
       return true;
     }
-    level2 = product.select_level2[0];
+    level2 = product.current.level2[0].alias;
   }
 
   if (product.product_model <= 2) {
-    lastCart.level1 = start.colorsData.colors[level1].title;
+    lastCart.level1 = product.current.colorItem.title;
   }
 
   if (sizeSelectTrue) {
-    lastCart.level2 = start.sizesData[level2].title;
+    const selectedLevel2 = product.current.level2.find(
+      (l2) => l2.alias === level2
+    );
+    if (selectedLevel2) {
+      lastCart.level2 = selectedLevel2.sizeItem.title;
+    }
   }
 
   const idItem = alias + level1 + level2;
@@ -196,7 +197,6 @@ export const cartAddAction = (product, qorder = false) => (
     dispatch(cartAddItemCount({ cartData, lastCart }));
   } else {
     const qty = 1;
-    //  const _id = product._id;
     const item = { idItem, alias, level1, level2, price, qty };
     dispatch(cartAdd({ item, lastCart }));
   }
@@ -223,8 +223,7 @@ export const cartAddPageAction = (id) => async (dispatch) => {
     const idItem = alias + level1 + level2;
     // const price = productData.price;
     const qty = 1;
-    const cartData = [{ idItem, alias, level1, level2, price, qty }];
-    await dispatch(updateProducts([{ alias }], true));
+    const cartData = [{ idItem, alias, level1, level2, price, qty }];    
     dispatch(cartUpdate(cartData));
     history.replace("/cart");
   } catch (e) {}

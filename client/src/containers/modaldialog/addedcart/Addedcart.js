@@ -1,45 +1,56 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
-import { useHistory } from "react-router-dom";
-import Button from '@material-ui/core/Button';
-import AddedCartComponent from '../../../components/addedcart/AddedCart';
-import ModalBase from '../../../hoc/ModalBase';
-
+import React from "react";
+import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
+import Button from "@material-ui/core/Button";
+import AddedCartComponent from "../../../components/addedcart/AddedCart";
+import ModalBase from "../../../hoc/ModalBase";
+import { useRouter } from "../../../hooks/router.hook";
+import { ADDED_CART_MODAL_QUERY } from "../../../graphql/gqlQuery";
+import { useQueryApp } from "../../../hooks/appolloQueryApp.hook";
+import LoaderContent from "../../../components/loadercontent/LoaderContent";
 
 const AddedCart = ({ handleClose }) => {
+  const { history } = useRouter();
 
-    const history = useHistory();
+  const lastCart = useSelector((state) => state.cart.lastCart);
+  const { data, loading } = useQueryApp(ADDED_CART_MODAL_QUERY);
+  const handleOpenOrder = () => {
+    history.push("/cart");
+    handleClose();
+  };
+  let currSymbol = "";
+  if (data) {
+    currSymbol = data.paramsData.currSymbol;
+  }
 
-    const lastCart = useSelector(state => state.cart.lastCart);
+  const actionsNode = (
+    <>
+      <Button onClick={handleClose} variant="outlined" color="primary">
+        Продолжить покупки
+      </Button>
+      <Button onClick={handleOpenOrder} variant="contained" color="primary">
+        Оформить заказ
+      </Button>
+    </>
+  );
 
-    const handleOpenOrder = () => {
-        history.push('/cart');
-        handleClose();
-    }
-
-
-    const actionsNode = (
-        <>
-            <Button onClick={handleClose} variant="outlined" color="primary">Продолжить покупки</Button>
-            <Button onClick={handleOpenOrder} variant="contained" color="primary">Оформить заказ</Button>
-        </>
-    )
-
-
-
-
-    return (
-
-        <ModalBase handleClose={handleClose} title='Добавлено в корзину' actionsNode={actionsNode}>
-            <AddedCartComponent lastCart={lastCart} />
-        </ModalBase>
-    )
-
-}
+  return (
+    <ModalBase
+      handleClose={handleClose}
+      title="Добавлено в корзину"
+      actionsNode={actionsNode}
+    >
+      {loading === true ? (
+        <LoaderContent />
+      ) : (
+        <AddedCartComponent lastCart={lastCart} currSymbol={currSymbol} />
+      )}
+    </ModalBase>
+  );
+};
 
 AddedCart.propTypes = {
-    handleClose: PropTypes.func.isRequired,
+  handleClose: PropTypes.func.isRequired,
 };
 
 export default AddedCart;

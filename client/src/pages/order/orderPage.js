@@ -1,47 +1,48 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { useSelector } from "react-redux";
 import { PageBase } from "../../hoc/PageBase";
 import { useRouter } from "../../hooks/router.hook";
-import { useHttp } from "../../hooks/http.hook";
 import OrderInfPage from "../../components/orderinfpage/OrderInfPage";
 import LoaderPage from "../../components/loaderpage/LoaderPage";
+import { ORDER_PAGE_QUERY } from "../../graphql/gqlQuery";
+import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 
 export default () => {
-  const [data, setData] = useState(null);
   const { params } = useRouter();
-  const { requestRedirect } = useHttp();
- 
   const id = params.id;
-  
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const order = await requestRedirect(`/api/order/${id}`);
-        
-        setData(order);
-      } catch (e) {
-        console.error(e);
-      }
-    };
-    fetchData();
-
-    return () => {
-      setData(null);
-    };
-  }, [id, requestRedirect]);
-
-  if (!data) return <LoaderPage />;
-
-  const bind = {
-    name_page: `Заказ № ${data.orderNum}`,
-    action_page: `Заказ № ${data.orderNum}`,
-    link_page: "/order",
-    title: `Заказ № ${data.orderNum}.`,
-    filter_on: true,
-  };
-
-  return (
-    <PageBase {...bind}>
-      <OrderInfPage data={data} />
-    </PageBase>
+  const baseUrl = useSelector((state) => state.start.baseUrl);
+  const { data, loading, error } = useQueryApp(
+    ORDER_PAGE_QUERY,
+    { id },
+    false,
+    true
   );
+
+  if (loading) return <LoaderPage />;
+
+  if (data && !error) {
+    const { currSymbol } = data.paramsData;
+
+    const bind = {
+      name_page: `Заказ № ${data.order.orderNum}`,
+      action_page: `Заказ № ${data.order.orderNum}`,
+      link_page: "/order",
+      title: `Заказ № ${data.order.orderNum}.`,
+      filter_on: true,
+    };
+
+    return (
+      <PageBase {...bind}>
+        <OrderInfPage
+          data={data.order}
+          currSymbol={currSymbol}
+          baseUrl={baseUrl}
+        />
+      </PageBase>
+    );
+  }
+  if (error) {
+    return <PageBase error={true}></PageBase>;
+  }
+  return null;
 };

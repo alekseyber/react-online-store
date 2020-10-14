@@ -35,7 +35,7 @@ const server = new ApolloServer({
   context: ({ req }) => ({
     ip: req.ip,
   }),
-  debug: !process.env.NODE_ENV === "production",
+  debug: process.env.NODE_ENV !== "production",
   plugins: [responseCachePlugin()],
   cacheControl: {
     defaultMaxAge: 3600,

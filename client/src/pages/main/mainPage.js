@@ -1,16 +1,18 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { useSelector } from "react-redux";
 import MetaTags from "react-meta-tags";
 import Container from "@material-ui/core/Container";
 import { Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { mainFetch } from "../../redux/actions/main";
 import MainSlider from "../../components/mainslider/MainSlider";
 import MainCatalog from "../../components/maincatalog/MainCatalog";
 import MainBanner from "../../components/mainbanner/MainBanner";
 import LoaderPage from "../../components/loaderpage/LoaderPage";
 import PageContent from "../../components/pagecontent/PageContent";
 import ProductsGrid from "../../containers/productsgrid/ProductsGrid";
+import { MAIN_PAGE_QUERY } from "../../graphql/gqlQuery";
+import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
+import ErrorContent from "../../components/errorcontent/ErrorContent";
 
 const useStyles = makeStyles((theme) => ({
   hits: {
@@ -25,16 +27,18 @@ const useStyles = makeStyles((theme) => ({
 
 export default () => {
   const classes = useStyles();
-  const mainData = useSelector((state) => state.main);
   const baseUrl = useSelector((state) => state.start.baseUrl);
-  const loading = useSelector((state) => state.app.pageloading);
-  const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(mainFetch());
-  }, [dispatch]);
+  const { data, loading, error } = useQueryApp(MAIN_PAGE_QUERY);
 
   if (loading) return <LoaderPage />;
+  if (error) {
+    return <ErrorContent />;
+  }
+
+  const { categoryImgProperty } = data.paramsData;
+  const categoryImgBase = baseUrl + categoryImgProperty;
+  const mainData = data.mainPage;
 
   return (
     <>
@@ -54,7 +58,7 @@ export default () => {
             maincatalog={mainData.maincatalog}
             maincatalogcount={mainData.maincatalogcount}
             maincatalogprefix={mainData.maincatalogprefix}
-            baseUrl={baseUrl}
+            categoryImgBase={categoryImgBase}
           />
         )}
         {mainData.mainBanner && (

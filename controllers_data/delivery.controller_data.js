@@ -14,11 +14,17 @@ module.exports.getCityData = async (citySaerch) => {
   }
 };
 
-module.exports.getDeliveryData = async (cityid, ip) => {
+module.exports.getDeliveryData = async (cityid, ip, start = false) => {
   try {
-    return await getDeliveryMidel(cityid, ip);
+    const rezult = await getDeliveryMidel(cityid, ip, start);
+    if (start) {
+      return {
+        city: rezult,
+      };
+    }
+    return rezult;
   } catch (e) {
-    if (cityid) {
+    if (!start || cityid) {
       throw new DeliveryError(e.message);
     }
     return {
