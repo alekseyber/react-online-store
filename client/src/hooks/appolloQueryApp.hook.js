@@ -8,14 +8,24 @@ const useQueryApp = (
   QUERY,
   variables = {},
   global = false,
-  redirect = false
+  redirect = false,
+  fetchPolicy,
+  onCompleted
 ) => {
   const options = {};
   if (Object.keys(variables).length) {
     options.variables = variables;
   }
 
-  const { loading, data, error, refetch } = useQuery(QUERY, options);
+  if (fetchPolicy) {
+    options.fetchPolicy = fetchPolicy;
+  }
+
+  if (onCompleted) {
+    options.onCompleted = onCompleted;
+  }
+
+  const { loading, data, error, refetch, fetchMore } = useQuery(QUERY, options);
 
   const dispatch = useDispatch();
   const { replace } = useRouter();
@@ -50,6 +60,7 @@ const useQueryApp = (
     loading,
     data,
     error,
+    fetchMore,
   };
 };
 

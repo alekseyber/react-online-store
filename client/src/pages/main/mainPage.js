@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default () => {
   const classes = useStyles();
-  const baseUrl = useSelector((state) => state.start.baseUrl);
+  const baseApiUrl = useSelector((state) => state.app.baseApiUrl);
 
   const { data, loading, error } = useQueryApp(MAIN_PAGE_QUERY);
 
@@ -37,7 +37,7 @@ export default () => {
   }
 
   const { categoryImgProperty } = data.paramsData;
-  const categoryImgBase = baseUrl + categoryImgProperty;
+  const categoryImgBase = baseApiUrl + categoryImgProperty;
   const mainData = data.mainPage;
 
   return (
@@ -49,9 +49,7 @@ export default () => {
         <meta property="og:title" content={mainData.meta.title} />
         {/* <meta property="og:image" content="path/to/image.jpg" /> */}
       </MetaTags>
-      {mainData.topslidervisible && (
-        <MainSlider topSlider={mainData.topSlider} baseUrl={baseUrl} />
-      )}
+      {mainData.topslidervisible && <MainSlider topSlider={mainData.topSlider} baseApiUrl={baseApiUrl}/> }
       <Container fixed>
         {mainData.maincatalogvisible && (
           <MainCatalog
@@ -62,7 +60,7 @@ export default () => {
           />
         )}
         {mainData.mainBanner && (
-          <MainBanner mainBanner={mainData.mainBanner} baseUrl={baseUrl} />
+          <MainBanner mainBanner={mainData.mainBanner} baseApiUrl={baseApiUrl}/>
         )}
         {mainData.hitData.length > 0 && (
           <div className={classes.hits}>

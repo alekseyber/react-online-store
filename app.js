@@ -85,6 +85,7 @@ app.use("/api/satispdf", satispdfRoutes);
 app.use("/api/cronoswork", cronosworkRoutes);
 
 app.use(express.static(path.join(__dirname, "static")));
+app.use(express.static(path.join(__dirname, "staticroot")));
 
 if (process.env.NODE_ENV === "production") {
   app.use("/", express.static(path.join(__dirname, "client", "build")));

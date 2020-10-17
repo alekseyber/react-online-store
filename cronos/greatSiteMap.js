@@ -160,7 +160,7 @@ module.exports = async () => {
         objectActions.news = await News.find({ status: true }, { _id: 0, alias: 1, update_at: 1 });
         objectActions.page = await Page.find({ status: true }, { _id: 0, alias: 1, update_at: 1 });
         objectActions.category = await Category.find({ status: true }, { _id: 0, alias: 1, update_at: 1 });
-        const filePath = path.resolve(__dirname, '../..', 'static', 'sitemap.xml');
+        const filePath = path.resolve(__dirname, '../..', 'static', 'static', 'sitemap.xml');
         
         const smStream = new SitemapStream({
             hostname: params.baseUrl

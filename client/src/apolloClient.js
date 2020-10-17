@@ -1,4 +1,13 @@
 import { ApolloClient, InMemoryCache } from "@apollo/client";
+import {
+  sortValueVar,
+  cityСurrentVar,
+  pvzSelectVar,
+  deliverySelectVar,
+  googleReKeyVar,
+  yaMapKeyVar,
+  baseApiUrlVar,
+} from "./graphql/localVars";
 
 const baseApiUrl = () => {
   if (process.env.REACT_APP_API_URL) {
@@ -11,7 +20,7 @@ const BASE_API_URL = baseApiUrl();
 
 const uri = `${BASE_API_URL}/api/graphql`;
 
-const cache = new InMemoryCache({
+export const cache = new InMemoryCache({
   possibleTypes: {
     ParamsData: [
       "BannersProduct",
@@ -39,13 +48,9 @@ const cache = new InMemoryCache({
       "ProductGal",
       "MetaProduct",
     ],
-    Category: [
-      "CategoryContData",
-      "CategoryProductsData",
-      "ProductsCategory",
-      "Product",
-    ],
-    ProductsCategory: ["CategoryProduct"],
+    CategoryProductList: ["CategoryProduct"], //Category
+    CategoryProduct: ["CategoryProductLevelFilter"], //Category
+    Category: ["CategoryContData", "CategoryProductsData"], //Category
     CategoryContData: ["CategoryBreadcrumb"],
     MainPage: ["Maincatalog", "TopSlider", "MainBanner", "MainPageMeta"],
     SearchListData: ["SearchProductsList"],
@@ -57,8 +62,21 @@ const cache = new InMemoryCache({
     FSizesAttrs: ["Size"],
     CommentList: ["Comment"],
     NewsList: ["NewsAnnonce"],
+    PvzList: ["PvzListItem"],
+    PvzListItem: [
+      "PvzListItemLocation",
+      "WorkTimeList",
+      "OfficeImageList",
+      "PvzListItemPhones",
+    ],
   },
   typePolicies: {
+    CategoryProductList: {
+      keyFields: ["alias", "sortValue"],
+    },
+    Category: {
+      keyFields: ["alias"],
+    },
     ParamsData: {
       keyFields: [],
     },
@@ -160,9 +178,6 @@ const cache = new InMemoryCache({
     Bagde: {
       keyFields: ["bagde_id"],
     },
-    ProductsCategory: {
-      keyFields: ["alias", "sortValue"],
-    },
     Order: {
       keyFields: ["id"],
     },
@@ -171,9 +186,66 @@ const cache = new InMemoryCache({
     },
     Query: {
       fields: {
+        deliverySelect: {
+          read() {
+            return deliverySelectVar();
+          },
+        },
+        pvzSelect: {
+          read() {
+            const pvzSelect = pvzSelectVar();
+            const cityСurrent = cityСurrentVar();
+            if (pvzSelect && cityСurrent) {
+              if (pvzSelect.cityid === cityСurrent.id) {
+                return pvzSelect;
+              }
+            }
+            return null;
+          },
+        },
+        googleReKey: {
+          read() {
+            return googleReKeyVar();
+          },
+        },
+        yaMapKey: {
+          read() {
+            return yaMapKeyVar();
+          },
+        },
+        baseApiUrl: {
+          read() {
+            return baseApiUrlVar();
+          },
+        },
+        sortValue: {
+          read() {
+            return sortValueVar();
+          },
+        },
+        cityNameCurrent: {
+          read() {
+            const cityСurrent = cityСurrentVar();
+            if (cityСurrent.cityName) return cityСurrent.cityName;
+            return "Москва";
+          },
+        },
+        cityIdCurrent: {
+          read() {
+            const cityСurrent = cityСurrentVar();
+            if (cityСurrent.id) return cityСurrent.id;
+            return 44;
+          },
+        },
         product(_, { args, toReference }) {
           return toReference({
             __typename: "Product",
+            alias: args.alias,
+          });
+        },
+        category(_, { args, toReference }) {
+          return toReference({
+            __typename: "Category",
             alias: args.alias,
           });
         },
@@ -185,19 +257,7 @@ const cache = new InMemoryCache({
         // },
         productsCategory(_, { args, toReference }) {
           return toReference({
-            __typename: "ProductsCategory",
-            alias: args.alias,
-            sortValue: args.sortValue,
-          });
-        },
-      },
-    },
-    Category: {
-      keyFields: ["alias"],
-      fields: {
-        productsCategory(_, { args, toReference }) {
-          return toReference({
-            __typename: "ProductsCategory",
+            __typename: "CategoryProductList",
             alias: args.alias,
             sortValue: args.sortValue,
           });

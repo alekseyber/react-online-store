@@ -69,13 +69,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const AppFooterF = ({ width }) => {
-  // const {
-  //   shop_fullname_rus,
-  //   phone,
-  //   shop_email,
-  //   streetAddress,
-  //   bottomLinks,
-  // } = useSelector((state) => state.start.paramsData);
   const { data } = useQueryApp(APP_FOOTER_QUERY);
   const dispatch = useDispatch();
   const classes = useStyles();

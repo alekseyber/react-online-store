@@ -152,6 +152,20 @@ const CategoryPage = {
       }
       ${FilterBaseFragment.fragments.filterData}
     `,
+    productsCategory: gql`
+      fragment ProductsCategoryFragment on CategoryProductList {
+        alias
+        sortValue
+        productsList {
+          alias
+          filterFilter
+          level1Filter {
+            level1
+            level2
+          }
+        }
+      }
+    `,
   },
 };
 
@@ -434,6 +448,7 @@ export const APP_BAR_QUERY = gql`
 
 export const TOP_BAR_QUERY = gql`
   query TopBar {
+    cityNameCurrent @client
     paramsData @client {
       ...TopBarFragment
     }
@@ -460,12 +475,40 @@ export const PAGE_BASE_QUERY = gql`
 `;
 
 export const CATEGORY_PAGE_QUERY = gql`
-  query CategoryPage {
-    filterData @client {
+  query CategoryPage($alias: ID!, $sortValue: String) {
+    filterData {
       ...CategoryPageFilterDataFragment
+    }
+    sortValue @client @export(as: "sortValue")
+    category(alias: $alias) {
+      alias
+      contCategoryData {
+        meta_title
+        meta_description
+        meta_keywords
+        title
+        htitle
+        # promo
+        content
+        breadcrumbs {
+          text
+          disabled
+          level
+          href
+        }
+      }
+      productsCategoryData {
+        colors
+        level2
+        filter
+      }
+    }
+    productsCategory(alias: $alias, sortValue: $sortValue) {
+      ...ProductsCategoryFragment
     }
   }
   ${CategoryPage.fragments.filterData}
+  ${CategoryPage.fragments.productsCategory}
 `;
 
 export const FILTER_QUERY = gql`
@@ -804,31 +847,6 @@ export const DELIVERY_BANNERS_QUERY = gql`
   ${DeliveryBanners.fragments.paramsData}
 `;
 
-const DeliveryRegion = {
-  fragments: {
-    deliveryData: gql`
-      fragment DeliveryRegionDeliveryDataFragment on DeliveryData {
-        pvz {
-          price
-          deliveryPeriodMax
-          deliveryPeriodMin
-          deliveryDateMin
-          deliveryDateMax
-          priceByCurrency
-        }
-        courier {
-          price
-          deliveryPeriodMax
-          deliveryPeriodMin
-          deliveryDateMin
-          deliveryDateMax
-          priceByCurrency
-        }
-      }
-    `,
-  },
-};
-
 const DeliveryRezult = {
   fragments: {
     paramsData: gql`
@@ -850,9 +868,23 @@ const DeliveryRezult = {
         cityid
         status
         errMsg
-        ...DeliveryRegionDeliveryDataFragment
+        pvz {
+          price
+          deliveryPeriodMax
+          deliveryPeriodMin
+          deliveryDateMin
+          deliveryDateMax
+          priceByCurrency
+        }
+        courier {
+          price
+          deliveryPeriodMax
+          deliveryPeriodMin
+          deliveryDateMin
+          deliveryDateMax
+          priceByCurrency
+        }
       }
-      ${DeliveryRegion.fragments.deliveryData}
     `,
   },
 };
@@ -862,10 +894,42 @@ export const DELIVERY_REZULT_QUERY = gql`
     paramsData {
       ...DeliveryRezultFragment
     }
+    cityIdCurrent @client @export(as: "cityid")
     deliveryData(cityid: $cityid) {
       ...DeliveryRezultDeliveryDataFragment
     }
   }
   ${DeliveryRezult.fragments.paramsData}
   ${DeliveryRezult.fragments.deliveryData}
+`;
+
+export const DELIVERY_PVZ_SEL_COMP_QUERY = gql`
+  query DeliveryPvzSelComp {
+    pvzSelect @client    
+  }
+`;
+
+export const DELIVERY_PVZ_SELECTOR_QUERY = gql`
+  query DeliveryPvzSelector($cityid: Int!) {
+    yaMapKey @client
+    cityIdCurrent @client @export(as: "cityid")
+    getPvz(cityid: $cityid) {
+      cityid
+      list {
+        code
+        name
+        nearest_station
+        location {
+          address
+          longitude
+          latitude
+        }
+        work_time
+        type
+        phones {
+          number
+        }
+      }
+    }
+  }
 `;

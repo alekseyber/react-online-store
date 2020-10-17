@@ -59,7 +59,7 @@ export const MainBanner = (props) => {
     const classes = useStyles();
 
     const mainBanner = props.mainBanner;
-    const baseUrl = props.baseUrl;
+    const baseApiUrl = props.baseApiUrl;
 
     if (!mainBanner.visible) {
         return null
@@ -70,7 +70,7 @@ export const MainBanner = (props) => {
         <div className={classes.root}>
             <CardMedia
                 className={classes.media}
-                image={baseUrl + mainBanner.imgBacgr}
+                image={baseApiUrl + mainBanner.imgBacgr}
             >
                 <div className={classes.mediain}>
                     <div className={classes.banwrap}>
@@ -89,7 +89,7 @@ export const MainBanner = (props) => {
 
 MainBanner.propTypes = {
     mainBanner: PropTypes.object,
-    baseUrl: PropTypes.string,
+    baseApiUrl: PropTypes.string,
 };
 
 

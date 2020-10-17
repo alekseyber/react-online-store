@@ -32,7 +32,7 @@ const ProductContetnt = ({
 }) => {
   const classes = useStyles();
   const contentReact = useHtml(productContetntData.content);
-  const baseUrl = useSelector((state) => state.start.baseUrl);
+  const baseApiUrl = useSelector((state) => state.app.baseApiUrl);
 
   return (
     <Card className={classes.root}>
@@ -42,7 +42,7 @@ const ProductContetnt = ({
             <Grid container spacing={2}>
               {bannersProduct.map((item, i) => (
                 <Grid item xs={6} md={3} key={i} className={classes.prbanner}>
-                  <img src={baseUrl + item.img} alt={item.title} />
+                  <img src={baseApiUrl + item.img} alt={item.title} />
                   <Typography
                     variant="subtitle2"
                     component="div"

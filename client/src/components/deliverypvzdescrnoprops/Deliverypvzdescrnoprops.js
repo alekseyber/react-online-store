@@ -8,8 +8,7 @@ import DeliveryPvzDescr from "../deliverypvzdescr/DeliveryPvzDescr";
 import { openPvzSelector } from "../../redux/actions/modaldialog";
 
 const DeliveryPvzDescrNoProps = () => {
-  const { pvzSelect } = useSelector((state) => state.delivery);
-  const { city } = useSelector((state) => state.app);
+  const { pvzSelect, city } = useSelector((state) => state.app);  
   const dispatch = useDispatch();
 
   const openPvzSelectorHandler = () => {

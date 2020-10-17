@@ -10,6 +10,8 @@ import {
   SET_CITY_APP,
   SET_START_APP,
   SET_SORT_VALUE_APP,
+  SET_PVZ_SELECT_APP,
+  SET_DELIVERY_SELECT_APP,
 } from "../constants";
 
 export const hideAlert = () => {
@@ -22,6 +24,20 @@ export const setCity = (city) => {
   return {
     type: SET_CITY_APP,
     payload: city,
+  };
+};
+
+export const setPVZSelect = (payload) => {
+  return {
+    type: SET_PVZ_SELECT_APP,
+    payload,
+  };
+};
+
+export const setDeliveryApp = (payload) => {
+  return {
+    type: SET_DELIVERY_SELECT_APP,
+    payload,
   };
 };
 

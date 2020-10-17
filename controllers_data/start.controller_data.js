@@ -11,6 +11,10 @@ const Bparams = require("../models/bparams.model");
 const { getFilter } = require("../middleware/get-filter");
 const { getDeliveryMidel } = require("../middleware/delivery");
 
+//const { getPvzListByCityId } = require("../middleware/service-cdek");
+
+//const News = require("../models/news.model");
+
 const { getBrands } = require("../middleware/product-params");
 const {
   getColors,
@@ -352,6 +356,13 @@ const getTextReturnProduct = async () => {
   }
 };
 
+//const Page = require("../models/page.model");
+// const SizesGroup = require("../models/sizesgroup.model");
+
+// const {
+//   getCategoryProductsData,
+// } = require("../controllers_data/category.controller_data");
+
 const getStartTest = async (ip) => {
   try {
     // const paramsData = await getParamsData();
@@ -372,8 +383,25 @@ const getStartTest = async (ip) => {
     //jeremy-scott-polusapogi
     //classic-mini-ii-polusapogi
     //fetchOrderByIdData('5e56c83a10f15016c4dc7eff')
-
+    // return await getPvzListByCityId(561);
     // return await getCuponData("test1234");
+
+    // const regex = new RegExp('src="/');
+    // const newSubStr = 'src="/static/';
+    // const $project = { content: 1 };
+
+    // const fields = Object.keys($project);
+
+    // const docs = await SizesGroup.find({}, $project);
+    // docs.forEach((doc) => {
+    //   fields.forEach((field) => {
+    //     doc[field] = String(doc[field]).replace(regex, newSubStr);
+    //   });
+    //   doc.save();
+    // });
+
+  //  return await getCategoryProductsData();
+
     return {};
   } catch (e) {
     globalErrorCheck(e);

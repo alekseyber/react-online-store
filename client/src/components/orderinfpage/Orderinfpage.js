@@ -27,7 +27,7 @@ const useStyles = makeStyles({
   },
 });
 
-const OrderInfPage = ({ data, currSymbol, baseUrl }) => {
+const OrderInfPage = ({ data, currSymbol, baseApiUrl }) => {
   const classes = useStyles();
 
   return (
@@ -116,7 +116,7 @@ const OrderInfPage = ({ data, currSymbol, baseUrl }) => {
               {data.cart.map((row, i) => (
                 <TableRow key={i}>
                   <TableCell align="center" className={classes.img}>
-                    <img alt="img" src={baseUrl + row.img} />
+                    <img alt="img" src={baseApiUrl + row.img} />
                   </TableCell>
                   {/* component="th" scope="row" */}
                   <TableCell>
@@ -140,7 +140,7 @@ const OrderInfPage = ({ data, currSymbol, baseUrl }) => {
 OrderInfPage.propTypes = {
   data: PropTypes.object.isRequired,
   currSymbol: PropTypes.string.isRequired,
-  baseUrl: PropTypes.string.isRequired,
+  baseApiUrl: PropTypes.string.isRequired,
 };
 
 export default OrderInfPage;

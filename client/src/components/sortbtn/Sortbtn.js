@@ -3,11 +3,10 @@ import SortIcon from "@material-ui/icons/Sort";
 import IconButton from "@material-ui/core/IconButton";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
-import { useSelector, useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
-import { setSortValueApp } from "../../redux/actions/app";
 import { SORT_BTN_QUERY } from "../../graphql/gqlQuery";
 import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
+import { sortValueVar } from "../../graphql/localVars";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,12 +19,10 @@ const useStyles = makeStyles((theme) => ({
 
 const SortBtn = () => {
   const { data } = useQueryApp(SORT_BTN_QUERY);
-  const sortValue = useSelector((state) => state.app.sortValue);
   const classes = useStyles();
-  const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-
+  const sortValue = sortValueVar();
   if (!data) {
     return null;
   }
@@ -39,8 +36,7 @@ const SortBtn = () => {
   };
 
   const handleSetItem = (value) => {
-    dispatch(setSortValueApp(value));
-
+    sortValueVar(value);
     setAnchorEl(null);
   };
 
@@ -69,7 +65,7 @@ const SortBtn = () => {
           <MenuItem
             key={index}
             onClick={() => handleSetItem(item._id)}
-            selected={String(item._id) === String(sortValue)}
+            selected={item._id === sortValue}
             dense
           >
             {item.text}

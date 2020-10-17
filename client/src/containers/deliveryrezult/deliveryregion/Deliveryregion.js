@@ -14,7 +14,7 @@ const DeliveryRegion = ({
   textDeliveryProduct,
   deliveryData,
 }) => {
-  const { deliverySelect } = useSelector((state) => state.delivery);
+  const { deliverySelect } = useSelector((state) => state.app);
 
   const { courier, pvz } = deliveryData;
 

@@ -21,7 +21,7 @@ export default () => {
     true
   );
 
-  const { baseUrl } = useSelector((state) => state.start);
+  const { baseApiUrl } = useSelector((state) => state.app);
 
   const dispatch = useDispatch();
 
@@ -64,7 +64,7 @@ export default () => {
       currSymbol,
       bannersProduct,
       bannersProductOn,
-      baseUrl,
+      baseApiUrl,
       color: colors,
     };
 

@@ -1,10 +1,8 @@
 const Category = require("../models/category.model");
 const Product = require("../models/product.model");
 const Sort = require("../models/sort.model");
-const Cache = require("../models/cache.model");
 const applyPattern = require("../middleware/apply-pattern");
 const getParrentCategory = require("../middleware/get-parrent-category");
-const md5 = require("js-md5");
 const { NotFoundError, globalErrorCheck, DbError } = require("./errors.class");
 
 const getSortObj = async (sortValueInput) => {
@@ -34,144 +32,19 @@ const getSortObj = async (sortValueInput) => {
   }
 };
 
-const getQweryProducts = (category_ids = [], all, status = true) => {
-  if (!status) {
-    return all
-      ? {}
-      : {
-          category_ids: { $in: category_ids },
-        };
-  } else {
-    return all
-      ? {
-          status: true,
-          "level1_data.level2.amount": { $gt: 0 },
-          "level1_data.level1_status": true,
-        }
-      : {
-          category_ids: { $in: category_ids },
-          status: true,
-          "level1_data.level2.amount": { $gt: 0 },
-          "level1_data.level1_status": true,
-        };
+const getQweryProducts = (categoryIds = [], all = false, status = true) => {
+  const qwery = {};
+
+  if (status) {
+    qwery.status = true;
+    qwery["level1_data.level2.amount"] = { $gt: 0 };
+    qwery["level1_data.level1_status"] = true;
   }
-};
 
-const getProductsCategory = async (
-  alias,
-  categoryIds = [],
-  all,
-  sortValueInput,
-  status = true
-) => {
-  try {
-    const qwery = getQweryProducts(categoryIds, all, status);
-    const sort = await getSortObj(sortValueInput);
-    const sortValue = sort.sortValue;
-    const docs = await Product.find(qwery, {
-      _id: 1,
-      alias: 1,
-      title: 1,
-      price: 1,
-      filter: 1,
-      level1_data: 1,
-      update_at: 1,
-    }).sort(sort.sortObj);
-    const rezult = {
-      alias,
-      sortValue,
-      productsList: docs,
-    };
-
-    return rezult;
-  } catch (e) {
-    globalErrorCheck(e);
+  if (!all) {
+    qwery.category_ids = { $in: categoryIds };
   }
-};
-
-const getProductsByCategory = async (
-  aliasCategory,
-  categoryIds = [],
-  all = true,
-  sortValueInput,
-  status = true
-) => {
-  try {
-    const products = [];
-    const productsFetch = [];
-    let colors = {};
-    let level2 = {};
-    let filter = {};
-    let minPrice = 100000000;
-    let maxPrice = 0;
-    let countProduct = 0;
-    let countModif = 0;
-
-    const productsCategory = await getProductsCategory(
-      aliasCategory,
-      categoryIds,
-      all,
-      sortValueInput,
-      status
-    );
-
-    productsCategory.productsList.forEach((item) => {
-      const level1Filter = item.level1Filter;
-      const filterFilter = item.filterFilter;
-      if (level1Filter) {
-        const el = {
-          alias: item.alias,
-          _id: item._id,
-          title: item.title,
-          update_at: item.update_at_filter,
-          price: item.price,
-          filterFilter, // filter
-          level1Filter: {
-            level1: level1Filter.level1,
-            level2: level1Filter.level2,
-          },
-          // level1: level1Filter.level1,
-          // level2: level1Filter.level2,
-        };
-
-        products.push(el);
-        productsFetch.push(el.alias);
-        countProduct++;
-        countModif += Object.keys(level1Filter.level1).length;
-        Object.assign(colors, level1Filter.colors);
-        Object.assign(level2, level1Filter.level2);
-        Object.assign(filter, filterFilter);
-        if (minPrice > item.price) {
-          minPrice = item.price;
-        }
-        if (maxPrice < item.price) {
-          maxPrice = item.price;
-        }
-      }
-    });
-
-    productsCategory.productsList = products;
-    const sortValue = productsCategory.sortValue;
-
-    const rezult = {
-      productsCategory,
-      productsData: {
-        colors,
-        level2,
-        filter,
-        sortValue,
-        minPrice,
-        maxPrice,
-        countModif,
-        countProduct,
-        productsFetch,
-      },
-    };
-
-    return rezult;
-  } catch (e) {
-    globalErrorCheck(e);
-  }
+  return qwery;
 };
 
 const getChildrenCategory = async (
@@ -196,7 +69,7 @@ const getChildrenCategory = async (
   }
 };
 
-const getProductsForCategoryOnlyPorducts = async (alias, sortValue) => {
+const getProductsForCategory = async (alias, sortValue) => {
   try {
     const doc = await Category.findOne(
       { alias },
@@ -215,30 +88,161 @@ const getProductsForCategoryOnlyPorducts = async (alias, sortValue) => {
       categoryIds = await getChildrenCategory(doc._id, true, [doc._id]);
     }
 
-    return await getProductsCategory(
-      aliasCategory,
-      categoryIds,
-      all,
-      sortValue
-    );
+    const qwery = getQweryProducts(categoryIds, all, true);
+    const sort = await getSortObj(sortValue);
+    const productsList = await Product.find(qwery, {
+      _id: 0,
+      alias: 1,
+      title: 1,
+      price: 1,
+      filter: 1,
+      level1_data: 1,
+      update_at: 1,
+    }).sort(sort.sortObj);
+
+    const rezult = {
+      productsList,
+      alias,
+      sortValue,
+    };
+
+    return rezult;
   } catch (e) {
     globalErrorCheck(e);
   }
 };
 
-const getProductsForCategoryData = async (alias, sortValue) => {
-  try {
-    const cacheKey = md5("category_" + alias + sortValue);
-    const cacheAction = "category";
-    const cacheDataRezult = await Cache.findOne(
-      { cacheKey },
-      { _id: 0, cacheData: 1 }
-    );
+const arrayToObject = (array = []) => {
+  const obj = {};
+  array.forEach((element) => {
+    if (!obj[element]) {
+      obj[element] = element;
+    }
+  });
+  return obj;
+};
 
-    if (cacheDataRezult) {
-      return cacheDataRezult.cacheData.get("obj");
+const getCategoryProductsData = async (categoryIds = [], all = true) => {
+  try {
+    const $match = {
+      status: true,
+      "level1_data.level2.amount": { $gt: 0 },
+      "level1_data.level1_status": true,
+    };
+
+    if (!all) {
+      $match.category_ids = { $in: categoryIds };
     }
 
+    const aggregate = await Product.aggregate([
+      { $match },
+      {
+        $project: {
+          price: 1,
+          filter: 1,
+          level1_data: 1,
+        },
+      },
+      {
+        $addFields: {
+          values: {
+            $reduce: {
+              input: "$filter",
+              initialValue: "",
+              in: {
+                $cond: {
+                  if: { $eq: [{ $indexOfArray: ["$filter", "$$this"] }, 0] },
+                  then: { $concat: ["$$value", "$$this"] },
+                  else: { $concat: ["$$value", "_", "$$this"] },
+                },
+              },
+            },
+          },
+        },
+      },
+      { $unwind: "$level1_data" },
+      {
+        $project: {
+          _id: "$_id",
+          price: "$price",
+          values: "$values",
+          level1_alias: "$level1_data.level1_alias",
+          level1_id: "$level1_data._id",
+          level2: "$level1_data.level2",
+          level1_status: "$level1_data.level1_status",
+        },
+      },
+      {
+        $match: {
+          level1_status: true,
+        },
+      },
+      { $unwind: "$level2" },
+      {
+        $project: {
+          _id: "$_id",
+          price: "$price",
+          values: "$values",
+          level1_id: "$level1_id",
+          level1_alias: "$level1_alias",
+          level2_alias: "$level2.level2_alias",
+          amount: "$level2.amount",
+        },
+      },
+      {
+        $match: {
+          amount: { $gt: 0 },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          minPrice: { $min: "$price" },
+          maxPrice: { $max: "$price" },
+          productsIds: { $addToSet: "$_id" },
+          modifIds: { $addToSet: "$level1_id" },
+          level1Alias: { $addToSet: "$level1_alias" },
+          level2Alias: { $addToSet: "$level2_alias" },
+          values: { $addToSet: "$values" },
+        },
+      },
+    ]);
+
+    const rezult = {
+      colors: {},
+      level2: {},
+      filter: {},
+      minPrice: 0,
+      maxPrice: 0,
+      countModif: 0,
+      countProduct: 0,
+    };
+    if (aggregate) {
+      rezult.minPrice = aggregate[0].minPrice;
+      rezult.maxPrice = aggregate[0].maxPrice;
+      rezult.countModif = aggregate[0].modifIds.length;
+      rezult.countProduct = aggregate[0].productsIds.length;
+      rezult.colors = arrayToObject(aggregate[0].level1Alias);
+      rezult.level2 = arrayToObject(aggregate[0].level2Alias);
+
+      const filterArr = aggregate[0].values.reduce(
+        (accumulator, currentValue) => {
+          const arr = currentValue.split("_");
+          return [...accumulator, ...arr];
+        },
+        []
+      );
+      rezult.filter = arrayToObject(filterArr);
+    }
+
+    return rezult;
+  } catch (e) {
+    globalErrorCheck(e);
+  }
+};
+
+const getCategoryData = async (alias) => {
+  try {
     const doc = await Category.findOne(
       { alias },
       {
@@ -263,11 +267,9 @@ const getProductsForCategoryData = async (alias, sortValue) => {
       categoryIds = await getChildrenCategory(doc._id, true, [doc._id]);
     }
 
-    const { productsData, productsCategory } = await getProductsByCategory(
-      alias,
+    const productsCategoryData = await getCategoryProductsData(
       categoryIds,
-      all,
-      sortValue
+      all
     );
 
     let contData = {};
@@ -279,10 +281,10 @@ const getProductsForCategoryData = async (alias, sortValue) => {
     contData["promo"] = doc.promo;
     contData["content"] = doc.content;
     let patternData = {};
-    patternData["price_pricefr"] = "от " + productsData.minPrice;
-    patternData["price_priceto"] = "до " + productsData.maxPrice;
-    patternData["count_modif"] = productsData.countModif;
-    patternData["count_product"] = productsData.countProduct;
+    patternData["price_pricefr"] = "от " + productsCategoryData.minPrice;
+    patternData["price_priceto"] = "до " + productsCategoryData.maxPrice;
+    patternData["count_modif"] = productsCategoryData.countModif;
+    patternData["count_product"] = productsCategoryData.countProduct;
 
     contData = await applyPattern(contData, patternData);
 
@@ -296,13 +298,14 @@ const getProductsForCategoryData = async (alias, sortValue) => {
       }
     }
     contData["breadcrumbs"] = breadcrumbs;
-    const cacheData = {
-      obj: { productsData, productsCategory, contData, alias, sortValue },
+
+    const rezult = {
+      contCategoryData: contData,
+      productsCategoryData,
+      alias,
     };
 
-    const сache = new Cache({ cacheKey, cacheData, cacheAction });
-    сache.save();
-    return cacheData.obj;
+    return rezult;
   } catch (e) {
     console.error(e);
     globalErrorCheck(e);
@@ -310,6 +313,7 @@ const getProductsForCategoryData = async (alias, sortValue) => {
 };
 
 module.exports = {
-  getProductsForCategoryData,
-  getProductsForCategoryOnlyPorducts,
+  getCategoryData,
+  getProductsForCategory,
+  getCategoryProductsData,
 };

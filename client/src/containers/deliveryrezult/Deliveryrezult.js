@@ -1,6 +1,5 @@
-import React, { useMemo } from "react";
+import React from "react";
 import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
 import Typography from "@material-ui/core/Typography";
 import DefaultDeliveryText from "./defaultdeliverytext/DefaultDeliveryText";
 import DeliveryRegion from "./deliveryregion/DeliveryRegion";
@@ -9,30 +8,19 @@ import DeliveryCityCarrent from "../../components/deliverycitycarrent/DeliveryCi
 import { DELIVERY_REZULT_QUERY } from "../../graphql/gqlQuery";
 import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 import LoaderContent from "../../components/loadercontent/LoaderContent";
+import { cityСurrentVar } from "../../graphql/localVars";
 
 const DeliveryRezult = ({ pvz_selector, city_name_v, sel_pvz_v }) => {
-  const { city } = useSelector((state) => state.app);
-  const cityid = city.id;
+  const cityСurrent = cityСurrentVar();
+  const cityid = cityСurrent.id;
 
-  const { data, loading } = useQueryApp(DELIVERY_REZULT_QUERY, { cityid });
+  const { data, loading } = useQueryApp(DELIVERY_REZULT_QUERY);
 
-  const { status, maxDeliveryHourToday, cityDefaultStatus } = useMemo(() => {
-    const rezult = {
-      status: false,
-      maxDeliveryHourToday: 0,
-      cityDefaultStatus: true,
-    };
-    if (data) {
-      rezult.cityDefaultStatus = data.paramsData.cityDefault.id === cityid;
-      rezult.status = data.deliveryData.status;
-      rezult.maxDeliveryHourToday = data.paramsData.maxDeliveryHourToday;
-    }
-
-    return rezult;
-  }, [cityid, data]);
-
-  // const { status } = useSelector((state) => state.delivery);
-  // const cityDefaultStatus = cityDefault.id === city.id;
+  const status = data ? data.deliveryData.status : false;
+  const maxDeliveryHourToday = data ? data.paramsData.maxDeliveryHourToday : 0;
+  const cityDefaultStatus = data
+    ? data.paramsData.cityDefault.id === cityid
+    : true;
 
   const homeDat = useDeliveryDateHome(maxDeliveryHourToday);
 

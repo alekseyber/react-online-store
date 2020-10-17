@@ -39,11 +39,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const MainSliderF = ({ topSlider, baseUrl, width }) => {
+const MainSliderF = ({ topSlider, baseApiUrl, width }) => {
   const classes = useStyles();
 
   const imgStyle = {
-    backgroundImage: `url(${baseUrl + topSlider.imgBackground})`,
+    backgroundImage: `url(${baseApiUrl + topSlider.imgBackground})`,
     height: topSlider.maxHeightBackground,
   };
 
@@ -61,7 +61,7 @@ const MainSliderF = ({ topSlider, baseUrl, width }) => {
             <CardContent>
               <div className={classes.imgLogo}>
                 <Image
-                  src={baseUrl + topSlider.imgLogo}
+                  src={baseApiUrl + topSlider.imgLogo}
                   //   aspectRatio={(1)}
                   disableSpinner
                   color="transparent"
@@ -126,7 +126,7 @@ const MainSliderF = ({ topSlider, baseUrl, width }) => {
 
 MainSliderF.propTypes = {
   topSlider: PropTypes.object.isRequired,
-  baseUrl: PropTypes.string,
+  baseApiUrl: PropTypes.string,
   width: PropTypes.string,
 };
 

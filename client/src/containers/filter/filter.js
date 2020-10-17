@@ -35,8 +35,6 @@ const Filter = ({ filterInputRezult, category, width, sortBtnStatus }) => {
     return null;
   }
 
-  // const filterData = useSelector((state) => state.start.filterData);
-
   const rootCategory = "/category/" + data.categoryTree.alias;
   const rezult = filterInputRezult
     ? filterInputRezult

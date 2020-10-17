@@ -6,7 +6,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import ProductsGrid from "../productsgrid/ProductsGrid";
 import PageContent from "../../components/pagecontent/PageContent";
-//import { categoryUpdateSort } from '../../redux/actions/category';
 import { useFilterProduct } from "../../hooks/filterproduct.hook";
 import { removeFilterSelect } from "../../redux/actions/filter";
 import { PageBase } from "../../hoc/PageBase";
@@ -38,15 +37,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Category = ({ categoryData, alias, filterData }) => {
+const Category = ({ data, alias }) => {
   const classes = useStyles();
   const page = useGetQueryPage();
 
-  const content = categoryData.contData.content;
-  const contData = categoryData.contData;
-  const products = categoryData.productsCategory.productsList;
-  //  const sortValue = categoryData.sortValue;
-  const { colors, filter, level2 } = categoryData.productsData;
+  const {
+    filterData,
+    category,    
+    productsCategory,
+  } = data;
+
+
+  const {contCategoryData, productsCategoryData} = category;
+
+  //  const content = categoryData.contData.content;
+  // const contData = categoryData.contData;
+  const products = productsCategory.productsList;
+  const { colors, filter, level2 } = productsCategoryData;
   const productsData = useFilterProduct({
     colors,
     filter,
@@ -63,28 +70,18 @@ const Category = ({ categoryData, alias, filterData }) => {
     dispatch(removeFilterSelect());
   };
 
-  // useEffect(() => {
-
-  //     if (sortValueApp) {
-  //         if (String(sortValue) !== String(sortValueApp)) {
-  //             dispatch(categoryUpdateSort(alias, sortValueApp));
-  //         }
-  //     }
-
-  // }, [dispatch, sortValue, sortValueApp, alias]);
-
   const bind = {
-    name_page: contData.meta_title,
-    action_page: contData.meta_description,
-    meta_key: contData.meta_keywords,
+    name_page: contCategoryData.meta_title,
+    action_page: contCategoryData.meta_description,
+    meta_key: contCategoryData.meta_keywords,
     link_page: canonical,
-    title: contData.htitle,
+    title: contCategoryData.htitle,
     filter_on: true,
     meta_full: true,
     canonical_on: true,
     breadcrumbs_add: false,
     filterInputRezult: productsData.filterRezult,
-    breadcrumbs_data: contData.breadcrumbs,
+    breadcrumbs_data: contCategoryData.breadcrumbs,
     page,
   };
 
@@ -126,15 +123,14 @@ const Category = ({ categoryData, alias, filterData }) => {
           )}
         </div>
       )}
-      {page === 1 && <PageContent content={content} />}
+      {page === 1 && <PageContent content={contCategoryData.content} />}
     </PageBase>
   );
 };
 
 Category.propTypes = {
-  categoryData: PropTypes.object.isRequired,
+  data: PropTypes.object.isRequired,
   alias: PropTypes.string.isRequired,
-  filterData: PropTypes.object.isRequired,
 };
 
 export default Category;

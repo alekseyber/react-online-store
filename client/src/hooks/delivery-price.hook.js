@@ -3,11 +3,9 @@ import { DELIVERY_REZULT_QUERY } from "../graphql/gqlQuery";
 import { useQueryApp } from "./appolloQueryApp.hook";
 
 const useDeliveryPrice = (cityDefault) => {
-  const { city } = useSelector((state) => state.app);
+  const { city, deliverySelect } = useSelector((state) => state.app);
   const cityid = city.id;
   const { data } = useQueryApp(DELIVERY_REZULT_QUERY, { cityid });
-
-  const { deliverySelect } = useSelector((state) => state.delivery);
 
   if (!data) return 0;
 

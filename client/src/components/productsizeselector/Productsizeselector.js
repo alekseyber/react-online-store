@@ -24,7 +24,6 @@ const ProductSizeSelector = ({
 }) => {
   const classes = useStyles();
 
-  //  const sizesData = useSelector(state => state.start.sizesData);
   const selectSize = useSelector((state) => state.productselect.size[alias]);
 
   const dispatch = useDispatch();

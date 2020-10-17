@@ -89,10 +89,16 @@ sw.*
 # Mac OSX
 .DS_Store
 
-static/images/
-static/files/
-static/video/
-static/sitemap.xml
-static/price.xml
 keys/keys.dev.js
-static/robots.txt
+
+static/static/images/
+static/static/files/
+static/static/video/
+static/static/sitemap.xml
+static/static/price.xml
+static/static/sitemap.xml
+static/static/price.xml
+staticroot/robots.txt
+#staticroot/favicon.ico
+#staticroot/icon.png
+

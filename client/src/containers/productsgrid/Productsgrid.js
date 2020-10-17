@@ -14,7 +14,7 @@ const ListProduct = ({
   productImgProperty,
   qualityproductImg,
   currSymbol,
-  baseUrl,
+  baseApiUrl,
 }) => {
   const paginationRezult = usePagin();
 
@@ -39,13 +39,9 @@ const ListProduct = ({
       {paginationRezult.map((item, index) => (
         <ProductItem
           item={item}
-          //   alias={item.alias}
-          //   colorselect={item.colorselect}
           imgproperty={productImgProperty}
-          baseurl={baseUrl}
+          baseurl={baseApiUrl}
           quality={qualityproductImg}
-          //  colors={colorsData.colors}
-          //  bagdes={bagdesData}
           currsymbol={currSymbol}
           key={index}
         />
@@ -55,7 +51,7 @@ const ListProduct = ({
 };
 
 const ProductsGrid = ({ products, page }) => {
-  const { baseUrl } = useSelector((state) => state.start); //colorsData, bagdesData,
+  const { baseApiUrl } = useSelector((state) => state.app);
 
   const { data, loading } = useQueryApp(PRODUCTS_GRID_QUERY);
 
@@ -85,7 +81,7 @@ const ProductsGrid = ({ products, page }) => {
     productImgProperty,
     qualityproductImg,
     currSymbol,
-    baseUrl,
+    baseApiUrl,
   };
 
   return (
@@ -104,7 +100,7 @@ ListProduct.propTypes = {
   productImgProperty: PropTypes.array.isRequired,
   qualityproductImg: PropTypes.number.isRequired,
   currSymbol: PropTypes.string.isRequired,
-  baseUrl: PropTypes.string.isRequired,
+  baseApiUrl: PropTypes.string.isRequired,
 };
 
 ProductsGrid.propTypes = {

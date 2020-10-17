@@ -39,8 +39,8 @@ const AppForm = ({ handleInputSubmit, fullOrder, variant, ofertaOn, commentOn, b
     const dispatch = useDispatch();
     const [checked, setChecked] = useState(true);
     const [value, setValue] = useState(0);
-    const deliverySelect = useSelector(state => state.delivery.deliverySelect);
-    const googleReKey = useSelector(state => state.start.googleReKey);
+    const deliverySelect = useSelector(state => state.app.deliverySelect);
+    const googleReKey = useSelector(state => state.app.googleReKey);
     const recaptchaRef = useRef();
 
     const { register, handleSubmit, errors, control } = useForm(); //, watch

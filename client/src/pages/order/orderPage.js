@@ -10,7 +10,7 @@ import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 export default () => {
   const { params } = useRouter();
   const id = params.id;
-  const baseUrl = useSelector((state) => state.start.baseUrl);
+  const baseApiUrl = useSelector((state) => state.app.baseApiUrl);
   const { data, loading, error } = useQueryApp(
     ORDER_PAGE_QUERY,
     { id },
@@ -36,7 +36,7 @@ export default () => {
         <OrderInfPage
           data={data.order}
           currSymbol={currSymbol}
-          baseUrl={baseUrl}
+          baseApiUrl={baseApiUrl}
         />
       </PageBase>
     );

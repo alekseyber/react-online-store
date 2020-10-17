@@ -1,10 +1,10 @@
 const Product = require("../models/product.model");
 const Bparams = require("../models/bparams.model");
-const Cache = require("../models/cache.model");
+//const Cache = require("../models/cache.model");
 const applyPattern = require("../middleware/apply-pattern");
 const { getProductPatternData } = require("../middleware/product-params");
 const getParrentCategory = require("../middleware/get-parrent-category");
-const md5 = require("js-md5");
+//const md5 = require("js-md5");
 const { Types } = require("mongoose");
 const { NotFoundError, globalErrorCheck } = require("./errors.class");
 
@@ -199,8 +199,7 @@ module.exports.getProductsHitData = async (countHitsInput, small = false) => {
 
 module.exports.getProductContentData = async (alias, arr = false) => {
   try {
-    const cacheKey = md5("productmain_" + alias + arr.toString());
-
+    
     const where = {
       alias,
       status: true,
@@ -208,19 +207,19 @@ module.exports.getProductContentData = async (alias, arr = false) => {
       "level1_data.level1_status": true,
     };
 
-    const count = await Product.countDocuments(where);
-    if (!count) {
-      throw new NotFoundError("Продукт не найден");
-    }
+    // const count = await Product.countDocuments(where);
+    // if (!count) {
+    //   throw new NotFoundError("Продукт не найден");
+    // }
 
-    const cacheDataRezult = await Cache.findOne(
-      { cacheKey },
-      { _id: 0, cacheData: 1 }
-    );
+    // const cacheDataRezult = await Cache.findOne(
+    //   { cacheKey },
+    //   { _id: 0, cacheData: 1 }
+    // );
 
-    if (cacheDataRezult) {
-      return cacheDataRezult.cacheData.get("obj");
-    }
+    // if (cacheDataRezult) {
+    //   return cacheDataRezult.cacheData.get("obj");
+    // }
 
     const doc = await Product.findOne(where, {
       _id: 0,
@@ -238,6 +237,11 @@ module.exports.getProductContentData = async (alias, arr = false) => {
       filter: 1,
       related_id: 1,
     }).populate({ path: "related_id", select: { _id: 0, alias: 1 } });
+
+    if (!doc) {
+      throw new NotFoundError("Продукт не найден");
+    }
+
     if (doc) {
       const rezult = {};
       rezult.alias = doc.alias;
@@ -303,14 +307,14 @@ module.exports.getProductContentData = async (alias, arr = false) => {
       rezult.meta.keywords = contData.meta_keywords;
       rezult.content = contData.content;
 
-      const cacheAction = "productMain";
+      // const cacheAction = "productMain";
 
-      const cacheData = {
-        obj: { ...rezult },
-      };
+      // const cacheData = {
+      //   obj: { ...rezult },
+      // };
 
-      const сache = new Cache({ cacheKey, cacheData, cacheAction });
-      сache.save();
+      // const сache = new Cache({ cacheKey, cacheData, cacheAction });
+      // сache.save();
       return rezult;
     }
     throw new NotFoundError("Продукт не найден");

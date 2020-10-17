@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -68,10 +68,8 @@ const useStyles = makeStyles((theme) => ({
 
 const TopBarAppF = (props) => {
   const dispatch = useDispatch();
-  // const { phone, topLinks } = useSelector((state) => state.start.paramsData);
-  const { data } = useQueryApp(TOP_BAR_QUERY);
 
-  const { cityName } = useSelector((state) => state.app.city);
+  const { data } = useQueryApp(TOP_BAR_QUERY);
 
   const classes = useStyles();
 
@@ -108,7 +106,7 @@ const TopBarAppF = (props) => {
               className={classes.divid}
               flexItem
             />
-            <Button onClick={deliveryBtnHandler}>{cityName}</Button>
+            <Button onClick={deliveryBtnHandler}>{data.cityNameCurrent}</Button>
           </Grid>
           {isWidthUp("md", props.width) && (
             <Grid

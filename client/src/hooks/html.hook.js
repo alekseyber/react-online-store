@@ -12,8 +12,8 @@ export const useHtml = (htmlInput) => {
 
 
   const [html, setHtml] = useState(null);
-  const baseUrl = useSelector(state => state.start.baseUrl);
-  //const baseUrl = config.get('baseUrl');
+  const baseApiUrl = useSelector(state => state.app.baseApiUrl);
+  //const baseApiUrl = config.get('baseApiUrl');
 
 
   useEffect(
@@ -35,7 +35,7 @@ export const useHtml = (htmlInput) => {
 
             const attrs = {
               key: index,
-              src: baseUrl + node.attribs.src,
+              src: baseApiUrl + node.attribs.src,
             }
             if (node.attribs.class) {
               attrs.className = node.attribs.class
@@ -80,7 +80,7 @@ export const useHtml = (htmlInput) => {
 
         const processingInstructions = [];
 
-        if (baseUrl.length) {
+        if (baseApiUrl.length) {
           processingInstructions.push(processImg);
         }
 

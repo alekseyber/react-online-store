@@ -38,7 +38,7 @@ const CartList = ({ full, handleClose }) => {
     return Object.keys(cartIdsObj);
   }, [cartData]);
 
-  const { baseUrl } = useSelector((state) => state.start);
+  const { baseApiUrl } = useSelector((state) => state.app);
 
   const count = cartData.length;
 
@@ -94,7 +94,7 @@ const CartList = ({ full, handleClose }) => {
           divider_on={count - 1 !== index}
           productImgProperty={productImgProperty}
           currsymbol={currSymbol}
-          baseurl={baseUrl}
+          baseurl={baseApiUrl}
           index={index}
           full={full}
           handleClose={handleClose}

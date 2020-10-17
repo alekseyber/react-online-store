@@ -22,7 +22,7 @@ const useStyles = makeStyles({
 export default () => {
 
     const classes = useStyles();
-    const baseUrl = useSelector(state => state.start.baseUrl);
+    const baseApiUrl = useSelector(state => state.app.baseApiUrl);
 
     const bind = {
         name_page: 'Страница не найдена',
@@ -42,7 +42,7 @@ export default () => {
                     component="img"
                     alt="Страница не найдена"
                     //height="140"
-                    image={baseUrl + "/images/404.png"}
+                    image={baseApiUrl + "/images/404.png"}
                 />
                 <CardContent>
                     <Typography variant="body1" component="p">

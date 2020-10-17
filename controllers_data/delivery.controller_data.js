@@ -3,6 +3,8 @@ const {
   getDeliveryMidel,
   getPvzListMidel,
 } = require("../middleware/delivery");
+
+const { getPvzListByCityId } = require("../middleware/service-cdek");
 const { NotFoundError, DeliveryError } = require("./errors.class");
 
 module.exports.getCityData = async (citySaerch) => {
@@ -39,6 +41,17 @@ module.exports.getDeliveryData = async (cityid, ip, start = false) => {
         oblName: "Москва",
       },
     };
+  }
+};
+
+module.exports.getPvzListV2 = async (cityid) => {
+  try {
+    const list = await getPvzListByCityId(cityid);
+
+    return { cityid, list };
+  } catch (e) {
+    //console.error(e.message);
+    throw new NotFoundError(e.message);
   }
 };
 

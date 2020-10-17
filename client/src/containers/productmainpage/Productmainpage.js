@@ -25,7 +25,7 @@ const ProductMainPage = ({
   currSymbol,
   bannersProduct,
   bannersProductOn,
-  baseUrl,
+  baseApiUrl,
 }) => {
   const classes = useStyles();
 
@@ -101,7 +101,7 @@ const ProductMainPage = ({
       <div className={classes.root}>
         <ProductMainCard
           imgproperty={productImgProperty}
-          baseurl={baseUrl}
+          baseurl={baseApiUrl}
           qualityproductImg={qualityproductImg}
           currsymbol={currSymbol}
           productData={productData}
@@ -120,7 +120,7 @@ const ProductMainPage = ({
               <ProductItem
                 item={related}             
                 imgproperty={productImgProperty}
-                baseurl={baseUrl}
+                baseurl={baseApiUrl}
                 quality={qualityproductImg}            
                 currsymbol={currSymbol}
                 related={true}
@@ -131,7 +131,7 @@ const ProductMainPage = ({
         <RecentlyViewed
           alias={productData.product.alias}         
           imgproperty={productImgProperty}
-          baseurl={baseUrl}
+          baseurl={baseApiUrl}
           quality={qualityproductImg}         
           currsymbol={currSymbol}
         />
@@ -148,7 +148,7 @@ ProductMainPage.propTypes = {
   currSymbol: PropTypes.string.isRequired,
   bannersProduct: PropTypes.array.isRequired,
   bannersProductOn: PropTypes.bool,
-  baseUrl: PropTypes.string.isRequired,
+  baseApiUrl: PropTypes.string.isRequired,
 };
 
 export default ProductMainPage;

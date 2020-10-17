@@ -43,7 +43,7 @@ export default () => {
 
   const { data, loading, error } = useQueryApp(ORDER_DONE_PAGE_QUERY);
 
-  const baseUrlApp = useSelector((state) => state.start.baseUrl);
+  const baseUrlApp = useSelector((state) => state.app.baseApiUrl);
   const linkOrder = `/order/${orderId}`;
 
   const copyHandler = () => {
@@ -100,7 +100,7 @@ export default () => {
           <div className={classes.imgwr}>
             <img
               alt={bind.title}
-              src={`${baseUrlApp}/images/rabbit.png`}
+              src={`${baseUrlApp}/static/images/rabbit.png`}
               title={bind.title}
             />
           </div>

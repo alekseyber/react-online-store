@@ -5,6 +5,7 @@ const Deliverysettings = require("../models/deliverysettings.model");
 const City = require("../models/city.model");
 const Region = require("../models/region.model");
 const formatDateStr = require("./format-date-str");
+const { getPvzListByCityId } = require("./service-cdek");
 
 const getGeoCityId = async (ip) => {
   let rezult = { id: 44, cityName: "Москва", oblName: "Москва" };
@@ -250,6 +251,14 @@ module.exports.getDeliveryMidel = async (cityid, ip, start = false) => {
       return rezult;
     }
     throw new Error(rezult.errMsg);
+  } catch (e) {
+    throw new Error(e.message);
+  }
+};
+
+module.exports.getPvzListV2 = async (cityid) => {
+  try {
+    return await getPvzListByCityId(cityid);
   } catch (e) {
     throw new Error(e.message);
   }

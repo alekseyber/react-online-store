@@ -57,7 +57,7 @@ const options = {
 
 const AppBarAppF = ({ width }) => {
   const { data } = useQueryApp(APP_BAR_QUERY); //loading,
-  const { baseUrl } = useSelector((state) => state.start);
+  const { baseApiUrl } = useSelector((state) => state.app);
 
   const classes = useStyles();
   const trigger = useScrollTrigger(options);
@@ -68,7 +68,7 @@ const AppBarAppF = ({ width }) => {
 
   const { categoryImgProperty, shop_name_rus, topLinks, logoimg } = paramsData;
 
-  const imgStartPatch = baseUrl + categoryImgProperty;
+  const imgStartPatch = baseApiUrl + categoryImgProperty;
 
   return (
     <AppBar position={trigger ? "fixed" : "static"} className={classes.root}>
@@ -84,7 +84,7 @@ const AppBarAppF = ({ width }) => {
         )}
         <Link to="/" className={classes.logo}>
           <img
-            src={baseUrl + logoimg}
+            src={baseApiUrl + logoimg}
             className={classes.logoImg}
             alt={shop_name_rus}
           ></img>

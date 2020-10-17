@@ -17,7 +17,7 @@ const {
 
 const {
   getCityData,
-  getPvzListData,
+  getPvzListV2,
   getDeliveryData,
 } = require("../controllers_data/delivery.controller_data");
 
@@ -30,8 +30,8 @@ const {
 } = require("../controllers_data/products.controller_data");
 
 const {
-  getProductsForCategoryData,
-  getProductsForCategoryOnlyPorducts,
+  getCategoryData,
+  getProductsForCategory,
 } = require("../controllers_data/category.controller_data");
 
 const {
@@ -208,8 +208,7 @@ const typeDefs = gql`
     field: String!
   }
 
-  type SortData {
-    # _id: ID!
+  type SortData {    
     sortValue: String!
     sortList: [SortList]!
   }
@@ -318,10 +317,57 @@ const typeDefs = gql`
     pvz: DeliveryInfPvz
     courier: DeliveryInfCourier
   }
+  # ----PVZ List---
+
+  type PvzListItemLocation {
+    country_code: String
+    region_code: Int
+    region: String
+    city_code: Int
+    city: String
+    postal_code: String
+    longitude: Float
+    latitude: Float
+    address: String
+    address_full: String
+  }
+
+  type WorkTimeList {
+    day: Int
+    time: String
+  }
+
+  type OfficeImageList {
+    url: String
+  }
+
+  type PvzListItemPhones {
+    number: String
+  }
+
+  type PvzListItem {
+    code: String
+    name: String
+    nearest_station: String
+    work_time: String
+    email: String
+    type: String
+    take_only: Boolean
+    is_dressing_room: Boolean
+    have_cashless: Boolean
+    have_cash: Boolean
+    allowed_cod: Boolean
+    owner_ode: String
+    fulfillment: Boolean
+    location: PvzListItemLocation
+    work_time_list: [WorkTimeList]
+    office_image_list: [OfficeImageList]
+    phones: [PvzListItemPhones]
+  }
 
   type PvzList {
     cityid: Int!
-    pvz: [JSON]
+    list: [PvzListItem]!
   }
   # ----DeliveryStart---
   type DeliveryStart {
@@ -419,7 +465,7 @@ const typeDefs = gql`
     level: Int!
   }
 
-  type CategoryContData {
+  type CategoryContData {    
     meta_title: String
     meta_description: String
     meta_keywords: String
@@ -428,16 +474,33 @@ const typeDefs = gql`
     promo: String
     content: String
     breadcrumbs: [CategoryBreadcrumb]
+  }  
+
+
+  type CategoryProductsData {    
+    colors: JSON
+    level2: JSON
+    filter: JSON    
+    minPrice: Int
+    maxPrice: Int
+    countModif: Int
+    countProduct: Int   
   }
+ 
+
+  type Category {
+    alias: ID!
+    contCategoryData: CategoryContData
+    productsCategoryData: CategoryProductsData      
+  }
+  # ----CategoryProductList---
 
   type CategoryProductLevelFilter {
     level1: JSON
     level2: JSON
   }
-
   type CategoryProduct {
     alias: String!
-    # _id: String
     title: String
     update_at: Int
     price: Int
@@ -445,30 +508,10 @@ const typeDefs = gql`
     level1Filter: CategoryProductLevelFilter
   }
 
-  type ProductsCategory {
+  type CategoryProductList {
     alias: ID!
-    sortValue: String!
-    productsList: [CategoryProduct]
-  }
-
-  type CategoryProductsData {
-    colors: JSON
-    level2: JSON
-    filter: JSON
-    sortValue: String!
-    minPrice: Int
-    maxPrice: Int
-    countModif: Int
-    countProduct: Int
-    productsFetch: [String]
-  }
-
-  type Category {
-    alias: ID!
-    contData: CategoryContData
-    productsData: CategoryProductsData
-    productsCategory(alias: ID, sortValue: String): ProductsCategory
-    products: [Product]
+    sortValue: ID!
+    productsList: [CategoryProduct]!
   }
 
   # ----MainPage---
@@ -677,7 +720,6 @@ const typeDefs = gql`
     products(ids: [ID]!): [Product]
     productMain(alias: ID!): ProductMain
     productCartItem(id: String!): ProductForCart
-    category(alias: ID!, sortValue: String): Category
     hitData(count: Int!): [String]
     mainPage: MainPage
     page(alias: ID!): Page!
@@ -690,7 +732,8 @@ const typeDefs = gql`
     comments: CommentList!
     order(id: ID!): Order
     getCupon(cuponText: String!): Cupon
-    productsCategory(alias: ID!, sortValue: String!): ProductsCategory
+    category(alias: ID!): Category
+    productsCategory(alias: ID!, sortValue: String): CategoryProductList
   }
   #==============Mutation===================
   input AddCommentMutationInput {
@@ -810,10 +853,10 @@ const resolvers = {
     },
   },
   JSON: GraphQLJSON,
-  Category: {
-    products: (parent) =>
-      getProductsByIdsData("", true, true, parent.productsData.productsFetch),
-  },
+  // Category: {
+  //   products: (parent) =>
+  //     getProductsByIdsData("", true, true, parent.productsData.productsFetch),
+  // },
   MainPage: {
     hitData: (parent) => getProductsHitData(parent.hitcount, true),
   },
@@ -835,51 +878,7 @@ const resolvers = {
       return "FSizesAttrs";
     },
   },
-  // Size: {
-  //   __resolveType(obj) {
-  //     if (obj.alias) {
-  //       return "Size";
-  //     }
 
-  //     return null;
-  //   },
-  // },
-  // Color: {
-  //   __resolveType(obj) {
-  //     if (obj.alias) {
-  //       return "Color";
-  //     }
-
-  //     return null;
-  //   },
-  // },
-  // ColorGrupp: {
-  //   __resolveType(obj) {
-  //     if (obj.alias) {
-  //       return "Color";
-  //     }
-
-  //     return null;
-  //   },
-  // },
-  // Brand: {
-  //   __resolveType(obj) {
-  //     if (obj.brand_id) {
-  //       return "Color";
-  //     }
-
-  //     return null;
-  //   },
-  // },
-  // Bagde: {
-  //   __resolveType(obj) {
-  //     if (obj.bagde_id) {
-  //       return "Bagde";
-  //     }
-
-  //     return null;
-  //   },
-  // },
   Query: {
     paramsData: () => getParamsData(),
     colorGrupp: () => getColorGrupp(),
@@ -899,14 +898,12 @@ const resolvers = {
     deliveryData: (_, { cityid }, { ip }) => getDeliveryData(cityid, ip),
     deliveryStart: (_, __, { ip }) => getDeliveryData(0, ip, true),
     citySaerch: (_, { q }) => getCityData(q),
-    getPvz: (_, { cityid }) => getPvzListData(cityid),
+    getPvz: (_, { cityid }) => getPvzListV2(cityid),
     textReturnProduct: () => getTextReturnProduct(),
     product: (_, { alias }) => getProductByAliasData(alias),
     products: (_, { ids }) => getProductsByIdsData("", true, true, ids),
     productMain: (_, { alias }) => getProductContentData(alias, true),
     productCartItem: (_, { id }) => getProductByLevelTooData(id),
-    category: (_, { alias, sortValue }) =>
-      getProductsForCategoryData(alias, sortValue),
     hitData: (_, { count }) => getProductsHitData(count, true),
     mainPage: () => getMainPageData(),
     page: (_, { alias }) => getPageByAlias(alias),
@@ -920,7 +917,8 @@ const resolvers = {
     order: (_, { id }) => fetchOrderByIdData(id),
     getCupon: (_, { cuponText }) => getCuponData(cuponText),
     productsCategory: (_, { alias, sortValue }) =>
-      getProductsForCategoryOnlyPorducts(alias, sortValue),
+      getProductsForCategory(alias, sortValue),
+    category: (_, { alias }) => getCategoryData(alias),
   },
 };
 
