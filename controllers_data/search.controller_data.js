@@ -115,10 +115,12 @@ const getIndexProduct = async ($regex) => {
 module.exports.searchListData = async (q) => {
   try {
     const queryParams = getQuery(q);
-    const rezult = {
-      products: [],
-      searchAll: "/search",
-    };
+
+    const products = [];
+    // const rezult = {
+    //   products: [],
+    //   searchAll: "/search",
+    // };
 
     if (queryParams.valid) {
       const query = {
@@ -143,8 +145,9 @@ module.exports.searchListData = async (q) => {
             title: doc.title,
             link: doc.link,
           };
-          rezult.products.push(item);
+          products.push(item);
         }
+
         // if (product_ids.length === 2) {
         //   rezult.searchAll = "/search"; //encodeURI('/search?q=' + queryParams.preview);
         // }
@@ -152,8 +155,16 @@ module.exports.searchListData = async (q) => {
           break;
         }
       }
+      if (products.length > 5) {
+        const itemAll = {
+          title: "Показать все",
+          link: "/search?q=" + queryParams.preview,
+        };
+        products.push(itemAll);
+      }
     }
-    return rezult;
+
+    return products;
   } catch (e) {
     globalErrorCheck(e);
   }

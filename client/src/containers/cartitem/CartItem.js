@@ -191,6 +191,7 @@ const CartItem = ({
               levels1={product.level1Arr}
               level1Cart={level1}
               level2Cart={level2}
+              product={product}
             />
           </Box>
         )}

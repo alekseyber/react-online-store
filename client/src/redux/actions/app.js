@@ -7,11 +7,6 @@ import {
   TOGGLE_COLUMN,
   ADD_RECENTLY_VIEWED,
   SET_ERROR_APP,
-  SET_CITY_APP,
-  SET_START_APP,
-  SET_SORT_VALUE_APP,
-  SET_PVZ_SELECT_APP,
-  SET_DELIVERY_SELECT_APP,
 } from "../constants";
 
 export const hideAlert = () => {
@@ -20,40 +15,40 @@ export const hideAlert = () => {
   };
 };
 
-export const setCity = (city) => {
-  return {
-    type: SET_CITY_APP,
-    payload: city,
-  };
-};
+// export const setCity = (city) => {
+//   return {
+//     type: SET_CITY_APP,
+//     payload: city,
+//   };
+// };
 
-export const setPVZSelect = (payload) => {
-  return {
-    type: SET_PVZ_SELECT_APP,
-    payload,
-  };
-};
+// export const setPVZSelect = (payload) => {
+//   return {
+//     type: SET_PVZ_SELECT_APP,
+//     payload,
+//   };
+// };
 
-export const setDeliveryApp = (payload) => {
-  return {
-    type: SET_DELIVERY_SELECT_APP,
-    payload,
-  };
-};
+// export const setDeliveryApp = (payload) => {
+//   return {
+//     type: SET_DELIVERY_SELECT_APP,
+//     payload,
+//   };
+// };
 
-export const setSortValueApp = (sortValue) => {
-  return {
-    type: SET_SORT_VALUE_APP,
-    payload: sortValue,
-  };
-};
+// export const setSortValueApp = (sortValue) => {
+//   return {
+//     type: SET_SORT_VALUE_APP,
+//     payload: sortValue,
+//   };
+// };
 
-export const setStartApp = (payload) => {
-  return {
-    type: SET_START_APP,
-    payload,
-  };
-};
+// export const setStartApp = (payload) => {
+//   return {
+//     type: SET_START_APP,
+//     payload,
+//   };
+// };
 
 export const showAlert = (text, type = "success") => (dispatch, getState) => {
   dispatch({

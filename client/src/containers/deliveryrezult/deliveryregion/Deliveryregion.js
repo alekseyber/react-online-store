@@ -1,11 +1,8 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import Typography from "@material-ui/core/Typography";
 import DeliveryRezulText from "../../../components/deliveryrezulttext/DeliveryRezulText";
 import DeliverySelector from "../../../components/deliveryreselector/DeliverySelector";
-// import { DELIVERY_REGION_QUERY } from "../../../graphql/gqlQuery";
-// import { useQueryApp } from "../../../hooks/appolloQueryApp.hook";
 
 const DeliveryRegion = ({
   pvz_selector,
@@ -13,9 +10,8 @@ const DeliveryRegion = ({
   currSymbol,
   textDeliveryProduct,
   deliveryData,
+  deliverySelect,
 }) => {
-  const { deliverySelect } = useSelector((state) => state.app);
-
   const { courier, pvz } = deliveryData;
 
   const courierVisible =
@@ -64,6 +60,7 @@ const DeliveryRegion = ({
 DeliveryRegion.defaultProps = {
   pvz_selector: false,
   sel_pvz_v: true,
+  deliverySelect: 0,
 };
 
 DeliveryRegion.propTypes = {
@@ -72,6 +69,7 @@ DeliveryRegion.propTypes = {
   currSymbol: PropTypes.string.isRequired,
   textDeliveryProduct: PropTypes.string.isRequired,
   deliveryData: PropTypes.object.isRequired,
+  deliverySelect: PropTypes.number,
 };
 
 export default DeliveryRegion;

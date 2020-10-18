@@ -70,10 +70,10 @@ export const cache = new InMemoryCache({
       "PvzListItemPhones",
     ],
   },
-  typePolicies: {
+  typePolicies: {    
     CategoryProductList: {
       keyFields: ["alias", "sortValue"],
-    },
+    },    
     Category: {
       keyFields: ["alias"],
     },
@@ -223,6 +223,11 @@ export const cache = new InMemoryCache({
             return sortValueVar();
           },
         },
+        // cityCurrent: {
+        //   read() {
+        //     return cityСurrentVar();
+        //   },
+        // },
         cityNameCurrent: {
           read() {
             const cityСurrent = cityСurrentVar();

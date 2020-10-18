@@ -25,24 +25,21 @@ export default () => {
 
   const dispatch = useDispatch();
 
+  const product = data ? data.product : null;
+
   useEffect(() => {
-    if (!loading && data && colors) {
-      const status = data.productMain.level1GalArr.findeIndex(
-        (el) => colors === el.alias
+    if (product && colors) {
+      const level1 = product.level1Arr.find(
+        (element) => element.alias === colors
       );
 
-      if (status > -1) {
-        dispatch(
-          setColorProductAction({
-            alias,
-            color: colors,
-          })
-        );
+      if (level1) {
+        dispatch(setColorProductAction(product.alias, colors, level1.level2));
       } else {
         replace("/404");
       }
     }
-  }, [dispatch, data, colors, loading, alias, replace]);
+  }, [dispatch, product, colors, replace]);
 
   if (loading) return <LoaderPage />;
 

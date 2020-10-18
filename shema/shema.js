@@ -208,7 +208,7 @@ const typeDefs = gql`
     field: String!
   }
 
-  type SortData {    
+  type SortData {
     sortValue: String!
     sortList: [SortList]!
   }
@@ -465,7 +465,7 @@ const typeDefs = gql`
     level: Int!
   }
 
-  type CategoryContData {    
+  type CategoryContData {
     meta_title: String
     meta_description: String
     meta_keywords: String
@@ -474,24 +474,22 @@ const typeDefs = gql`
     promo: String
     content: String
     breadcrumbs: [CategoryBreadcrumb]
-  }  
+  }
 
-
-  type CategoryProductsData {    
+  type CategoryProductsData {
     colors: JSON
     level2: JSON
-    filter: JSON    
+    filter: JSON
     minPrice: Int
     maxPrice: Int
     countModif: Int
-    countProduct: Int   
+    countProduct: Int
   }
- 
 
   type Category {
     alias: ID!
     contCategoryData: CategoryContData
-    productsCategoryData: CategoryProductsData      
+    productsCategoryData: CategoryProductsData
   }
   # ----CategoryProductList---
 
@@ -611,10 +609,10 @@ const typeDefs = gql`
     link: String!
   }
 
-  type SearchListData {
-    searchAll: String!
-    products: [SearchProductsList]
-  }
+  # type SearchListData {
+  #   searchAll: String!
+  #   products: [SearchProductsList]
+  # }
   # ----searchFull---
   type SearchFullFilterSelected {
     color: [String]
@@ -727,7 +725,7 @@ const typeDefs = gql`
     sizesChart(sizesgroupId: ID!): SizesChartContent
     newsList: NewsList!
     news(alias: ID!): News!
-    searchList(q: String): SearchListData
+    searchList(q: String!): [SearchProductsList]!
     searchFull(q: String): SearchFull
     comments: CommentList!
     order(id: ID!): Order

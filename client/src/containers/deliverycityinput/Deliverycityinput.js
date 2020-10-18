@@ -8,39 +8,46 @@ import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Typography from "@material-ui/core/Typography";
-import axios from "../../axios/axios-store";
 import useDebounce from "../../hooks/use-debounce.hook";
 import { cityСurrentVar } from "../../graphql/localVars";
+import { DELIVERY_CITY_INPUT_QUERY } from "../../graphql/gqlQuery";
+import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 
 const CssAutocomplete = withStyles((theme) => ({
   root: {
     maxWidth: 280,
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
-    // '& .MuiInputBase-root': {
-    //    // paddingRight: "22px!important",
-    // },
     "& .MuiAutocomplete-inputRoot": {
-      // padding: "3px 5px !important ",
       paddingRight: `${theme.spacing(0.3)}px !important`,
     },
   },
   listbox: {
-    maxHeight: "46vh!important",    
+    maxHeight: "46vh!important",
   },
 }))(Autocomplete);
 
 const DeliveryCityInput = ({ variant }) => {
-  const [open, setOpen] = useState(false);
-
   const cityСurrent = cityСurrentVar();
   const { cityName } = cityСurrent;
 
   const [searchTerm, setSearchTerm] = useState(cityName);
-  const [options, setOptions] = useState([]);
-  const [loading, setLoading] = useState(false);
 
-  const debouncedSearchTerm = useDebounce(searchTerm, 500);
+  const q = useDebounce(searchTerm, 500);
+
+  const skip = cityName === q;
+
+  const { data, loading } = useQueryApp(
+    DELIVERY_CITY_INPUT_QUERY,
+    { q },
+    false,
+    false,
+    "no-cache",
+    null,
+    skip
+  );
+
+  const options = data ? data.citySaerch : [];
 
   const handleSelect = (newValue) => {
     cityСurrentVar(newValue);
@@ -64,50 +71,9 @@ const DeliveryCityInput = ({ variant }) => {
     setSearchTerm(cityName);
   }, [cityName]);
 
-  useEffect(() => {
-    if (debouncedSearchTerm < 3 || cityName === debouncedSearchTerm) {
-      if (cityName === debouncedSearchTerm) {
-        setOpen(false);
-      } else {
-        setOptions([]);
-      }
-
-      return undefined;
-    }
-
-    (async () => {
-      try {
-        setLoading(true);
-        setOpen(true);
-
-        const { data } = await axios(`/api/delivery/getcity`, {
-          params: { citySaerch: debouncedSearchTerm },
-        });
-
-        if (data.length > 0) {
-          setOptions(data);
-        } else {
-          setOptions([]);
-        }
-      } catch (e) {
-        // console.error(e)
-      } finally {
-        setLoading(false);
-      }
-    })();
-
-    return () => {
-      setOptions([]);
-    };
-  }, [debouncedSearchTerm, cityName]);
-
   return (
     <CssAutocomplete
-      open={open}
-      onChange={(e, newValue) => handleSelect(newValue)}
-      onClose={() => {
-        setOpen(false);
-      }}
+      onChange={(_, newValue) => handleSelect(newValue)}
       getOptionLabel={(option) => option.cityName}
       renderOption={(option) => (
         <div>
@@ -129,22 +95,12 @@ const DeliveryCityInput = ({ variant }) => {
       noOptionsText="К сожалению ни чего не найдено"
       onInputChange={handleInput}
       inputValue={searchTerm}
-      // filterOptions={(options, params) => {
-      //     const rezult = options;
-      //     if (params.inputValue !== '') {
-      //         return rezult;
-      //     }
-
-      //     return [];
-      // }}
       renderInput={(params) => (
         <TextField
           {...params}
           placeholder="Начните ввод..."
           label="Город"
-          //defaultValue={cityName}
           variant={variant}
-          //  autoComplete="off"
           InputProps={{
             ...params.InputProps,
             endAdornment: (

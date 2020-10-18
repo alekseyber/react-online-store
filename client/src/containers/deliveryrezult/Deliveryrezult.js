@@ -8,19 +8,17 @@ import DeliveryCityCarrent from "../../components/deliverycitycarrent/DeliveryCi
 import { DELIVERY_REZULT_QUERY } from "../../graphql/gqlQuery";
 import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 import LoaderContent from "../../components/loadercontent/LoaderContent";
-import { cityСurrentVar } from "../../graphql/localVars";
 
 const DeliveryRezult = ({ pvz_selector, city_name_v, sel_pvz_v }) => {
-  const cityСurrent = cityСurrentVar();
-  const cityid = cityСurrent.id;
-
   const { data, loading } = useQueryApp(DELIVERY_REZULT_QUERY);
 
+  const cityIdCurrent = data ? data.cityIdCurrent : 44;
   const status = data ? data.deliveryData.status : false;
   const maxDeliveryHourToday = data ? data.paramsData.maxDeliveryHourToday : 0;
   const cityDefaultStatus = data
-    ? data.paramsData.cityDefault.id === cityid
+    ? data.paramsData.cityDefault.id === cityIdCurrent
     : true;
+  const deliverySelect = data ? data.deliverySelect : 0;
 
   const homeDat = useDeliveryDateHome(maxDeliveryHourToday);
 
@@ -42,6 +40,7 @@ const DeliveryRezult = ({ pvz_selector, city_name_v, sel_pvz_v }) => {
     pvz_selector,
     sel_pvz_v,
     deliveryData,
+    deliverySelect
   };
 
   const RezultBody = () => {

@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ColorSelector = ({ index, level1Cart, level2Cart, levels1 }) => {
+const ColorSelector = ({ index, level1Cart, level2Cart, levels1, product }) => {
   const classes = useStyles();
 
   const captionText = levels1.length > 1 ? "Изменить цвет:" : "Цвет:";
@@ -26,12 +26,11 @@ const ColorSelector = ({ index, level1Cart, level2Cart, levels1 }) => {
   const handleSetColor = (level1) => {
     const selected = level1Cart === level1.alias;
     if (!selected) {
-      dispatch(cartEditItem(index, level1.alias, level2Cart));
+      dispatch(cartEditItem(index, level1.alias, level2Cart, product));
     }
   };
 
   const ColorItem = ({ itemLevel1 }) => {
-
     const style = {
       backgroundColor: "#" + itemLevel1.colorItem.colorkey,
     };
@@ -72,6 +71,7 @@ ColorSelector.propTypes = {
   level1Cart: PropTypes.string.isRequired,
   level2Cart: PropTypes.string.isRequired,
   levels1: PropTypes.array.isRequired,
+  product: PropTypes.object.isRequired,
 };
 
 export default ColorSelector;

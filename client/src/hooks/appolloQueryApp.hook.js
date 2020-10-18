@@ -10,7 +10,8 @@ const useQueryApp = (
   global = false,
   redirect = false,
   fetchPolicy,
-  onCompleted
+  onCompleted,
+  skip = false
 ) => {
   const options = {};
   if (Object.keys(variables).length) {
@@ -23,6 +24,10 @@ const useQueryApp = (
 
   if (onCompleted) {
     options.onCompleted = onCompleted;
+  }
+
+  if (skip) {
+    options.skip = true;
   }
 
   const { loading, data, error, refetch, fetchMore } = useQuery(QUERY, options);

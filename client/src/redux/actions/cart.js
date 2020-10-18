@@ -96,7 +96,7 @@ export const cartChangeItemCount = (index, qty) => (dispatch, getState) => {
   }
 };
 
-export const cartEditItem = (index, level1 = null, level2 = null) => (
+export const cartEditItem = (index, level1 = null, level2 = null, product) => (
   dispatch,
   getState
 ) => {
@@ -106,13 +106,15 @@ export const cartEditItem = (index, level1 = null, level2 = null) => (
   let edit = false;
 
   if (level1) {
-    const { products } = getState();
-    const product = products[alias];
     if (product) {
-      cartData[index].price =
-        product.level1[level1].price > 0
-          ? product.level1[level1].price
-          : product.price;
+      const currentProduct = product.level1Arr.find(
+        (el) => el.alias === level1
+      );
+      if (currentProduct) {
+        if (currentProduct.price > 0) {
+          cartData[index].price = currentProduct.price;
+        }
+      }
     }
     if (cartData[index].level1 !== level1) {
       cartData[index].level1 = level1;
@@ -223,7 +225,7 @@ export const cartAddPageAction = (id) => async (dispatch) => {
     const idItem = alias + level1 + level2;
     // const price = productData.price;
     const qty = 1;
-    const cartData = [{ idItem, alias, level1, level2, price, qty }];    
+    const cartData = [{ idItem, alias, level1, level2, price, qty }];
     dispatch(cartUpdate(cartData));
     history.replace("/cart");
   } catch (e) {}

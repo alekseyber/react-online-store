@@ -797,6 +797,15 @@ export const SEARCH_FULL_QUERY = gql`
   }
 `;
 
+export const SEARCH_QUERY = gql`
+  query Search($q: String!) {
+    searchList(q: $q) {
+      title
+      link
+    }
+  }
+`;
+
 export const NEWS_PAGE_QUERY = gql`
   query NewsPage($alias: ID!) {
     news(alias: $alias) {
@@ -889,11 +898,47 @@ const DeliveryRezult = {
   },
 };
 
+export const APP_FORM_QUERY = gql`
+  query AppForm {
+    deliverySelect @client
+    googleReKey @client
+  }
+`;
+
+export const DELIVERY_CITY_CARRENT_QUERY = gql`
+  query DeliveryCityCarrent {
+    cityNameCurrent @client
+  }
+`;
+
+export const DELIVERY_REGION_QUERY = gql`
+  query DeliveryRegion {
+    cityNameCurrent @client
+  }
+`;
+
+export const DELIVERY_PVZ_DESCR_NO_PROPS_QUERY = gql`
+  query DeliveryPvzDescrNoProps {
+    pvzSelect @client
+  }
+`;
+
+export const DELIVERY_CITY_INPUT_QUERY = gql`
+  query DeliveryCityInput($q: String!) {
+    citySaerch(q: $q) {
+      id
+      cityName
+      oblName
+    }
+  }
+`;
+
 export const DELIVERY_REZULT_QUERY = gql`
   query DeliveryRezult($cityid: Int!) {
     paramsData {
       ...DeliveryRezultFragment
     }
+    deliverySelect @client
     cityIdCurrent @client @export(as: "cityid")
     deliveryData(cityid: $cityid) {
       ...DeliveryRezultDeliveryDataFragment
@@ -905,7 +950,7 @@ export const DELIVERY_REZULT_QUERY = gql`
 
 export const DELIVERY_PVZ_SEL_COMP_QUERY = gql`
   query DeliveryPvzSelComp {
-    pvzSelect @client    
+    pvzSelect @client
   }
 `;
 
