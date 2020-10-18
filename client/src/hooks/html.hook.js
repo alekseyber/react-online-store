@@ -1,110 +1,98 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useSelector } from 'react-redux';
-import LinkUi from '@material-ui/core/Link';
-//import ReactDOMServer from 'react-dom/server';
-//import config from 'react-global-configuration';
-import HtmlToReact, { Parser } from 'html-to-react'; //HtmlToReact, 
-
+import LinkUi from "@material-ui/core/Link";
+import HtmlToReact, { Parser } from "html-to-react"; //HtmlToReact,
+import { BASE_API_URL_QUERY } from "../graphql/gqlQuery";
+import { useQueryApp } from "./appolloQueryApp.hook";
 
 // Наш хук
 export const useHtml = (htmlInput) => {
-
-
   const [html, setHtml] = useState(null);
-  const baseApiUrl = useSelector(state => state.app.baseApiUrl);
-  //const baseApiUrl = config.get('baseApiUrl');
 
+  const { data } = useQueryApp(BASE_API_URL_QUERY);
+  const baseApiUrl = data ? data.baseApiUrl : "";
 
-  useEffect(
-    () => {
+  useEffect(() => {
+    if (htmlInput) {
+      const isValidNode = () => true;
+      const processNodeDefinitions = new HtmlToReact.ProcessNodeDefinitions(
+        React
+      );
+      const processEnd = {
+        shouldProcessNode: () => true,
+        processNode: processNodeDefinitions.processDefaultNode,
+      };
 
-      if (htmlInput) {
-
-        const isValidNode = () => true;
-        const processNodeDefinitions = new HtmlToReact.ProcessNodeDefinitions(React);
-        const processEnd = {
-          shouldProcessNode: () => true,
-          processNode: processNodeDefinitions.processDefaultNode
-        }
-
-        const processImg = {
-
-          shouldProcessNode: (node) => node && node.name === 'img',
-          processNode: (node, children, index) => {
-
-            const attrs = {
-              key: index,
-              src: baseApiUrl + node.attribs.src,
-            }
-            if (node.attribs.class) {
-              attrs.className = node.attribs.class
-            }
-
-            if (node.attribs.alt) {
-              attrs.alt = node.attribs.alt
-            }
-
-            return React.createElement('img', attrs);
-
+      const processImg = {
+        shouldProcessNode: (node) => node && node.name === "img",
+        processNode: (node, children, index) => {
+          const attrs = {
+            key: index,
+            src: baseApiUrl + node.attribs.src,
+          };
+          if (node.attribs.class) {
+            attrs.className = node.attribs.class;
           }
-        }
 
-        const processLink = {
-
-          shouldProcessNode: (node) => node && node.name === 'a',
-          processNode: (node, children, index) => {
-
-            const props = {
-              key: index,
-              to: node.attribs.href,
-              component: Link
-            }
-            let className = '';
-            if (node.attribs.class) {
-              className = node.attribs.class
-            }
-
-            if (!node.attribs.href) {
-              return <span className={className}>{children}</span>
-            }
-
-            if (className) {
-              props.className = className;
-            }
-
-            return <LinkUi {...props}>{children}</LinkUi>
-
+          if (node.attribs.alt) {
+            attrs.alt = node.attribs.alt;
           }
-        }
 
-        const processingInstructions = [];
+          return React.createElement("img", attrs);
+        },
+      };
 
-        if (baseApiUrl.length) {
-          processingInstructions.push(processImg);
-        }
+      const processLink = {
+        shouldProcessNode: (node) => node && node.name === "a",
+        processNode: (node, children, index) => {
+          const props = {
+            key: index,
+            to: node.attribs.href,
+            component: Link,
+          };
+          let className = "";
+          if (node.attribs.class) {
+            className = node.attribs.class;
+          }
 
-        processingInstructions.push(processLink);
-        processingInstructions.push(processEnd);
+          if (!node.attribs.href) {
+            return <span className={className}>{children}</span>;
+          }
 
+          if (className) {
+            props.className = className;
+          }
 
-        const htmlToReactParser = new Parser();
+          return <LinkUi {...props}>{children}</LinkUi>;
+        },
+      };
 
-        const reactComponent = htmlToReactParser.parseWithInstructions(htmlInput, isValidNode, processingInstructions);
+      const processingInstructions = [];
 
-        // const reactHtml = ReactDOMServer.renderToStaticMarkup(reactComponent);
-
-        setHtml(reactComponent)
+      if (baseApiUrl.length) {
+        processingInstructions.push(processImg);
       }
 
-      return () => {
-        setHtml(null)
-      };
-    },
+      processingInstructions.push(processLink);
+      processingInstructions.push(processEnd);
 
-    // eslint-disable-next-line
-    [htmlInput]
-  );
+      const htmlToReactParser = new Parser();
+
+      const reactComponent = htmlToReactParser.parseWithInstructions(
+        htmlInput,
+        isValidNode,
+        processingInstructions
+      );
+
+      // const reactHtml = ReactDOMServer.renderToStaticMarkup(reactComponent);
+
+      setHtml(reactComponent);
+    }
+
+    return () => {
+      setHtml(null);
+    };
+  }, [htmlInput, baseApiUrl]);
 
   return html;
-}
+};

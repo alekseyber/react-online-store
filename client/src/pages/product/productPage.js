@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import LoaderPage from "../../components/loaderpage/LoaderPage";
-import { setColorProductAction } from "../../redux/actions/productselect";
+import { setColorProductAction } from "../../graphql/localVarsCart";
 import ProductMainPage from "../../containers/productmainpage/ProductMainPage";
 import { useRouter } from "../../hooks/router.hook";
 import { PRODUCT_PAGE_QUERY } from "../../graphql/gqlQuery";
@@ -19,11 +18,8 @@ export default () => {
     { alias },
     false,
     true
-  );
+  ); 
 
-  const { baseApiUrl } = useSelector((state) => state.app);
-
-  const dispatch = useDispatch();
 
   const product = data ? data.product : null;
 
@@ -34,12 +30,12 @@ export default () => {
       );
 
       if (level1) {
-        dispatch(setColorProductAction(product.alias, colors, level1.level2));
+        setColorProductAction(product.alias, colors, level1.level2);
       } else {
         replace("/404");
       }
     }
-  }, [dispatch, product, colors, replace]);
+  }, [product, colors, replace]);
 
   if (loading) return <LoaderPage />;
 
@@ -53,6 +49,7 @@ export default () => {
     } = data.paramsData;
 
     const { product, productMain } = data;
+    const baseApiUrl = data.baseApiUrl
 
     const bind = {
       productData: { product, productMain },

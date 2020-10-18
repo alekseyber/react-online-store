@@ -1,11 +1,10 @@
 import React from "react";
-import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import DoneIcon from "@material-ui/icons/Done";
 import { makeStyles } from "@material-ui/core/styles";
-import { cartEditItem } from "../../../redux/actions/cart";
+import { cartEditItem } from "../../../graphql/localVarsCart";
 
 const useStyles = makeStyles((theme) => ({
   color: {
@@ -21,12 +20,11 @@ const ColorSelector = ({ index, level1Cart, level2Cart, levels1, product }) => {
 
   const captionText = levels1.length > 1 ? "Изменить цвет:" : "Цвет:";
 
-  const dispatch = useDispatch();
-
+  
   const handleSetColor = (level1) => {
     const selected = level1Cart === level1.alias;
     if (!selected) {
-      dispatch(cartEditItem(index, level1.alias, level2Cart, product));
+      cartEditItem(index, level1.alias, level2Cart, product);
     }
   };
 

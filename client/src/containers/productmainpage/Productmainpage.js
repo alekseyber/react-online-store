@@ -1,5 +1,4 @@
 import React, { useMemo } from "react";
-//import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
@@ -113,14 +112,14 @@ const ProductMainPage = ({
               productContetntData={contetntData}
               bannersProduct={bannersProduct}
               bannersProductOn={bannersProductOn}
+              baseApiUrl={baseApiUrl}
             />
           </Grid>
           {related && (
             <Grid item xs={12} md={4}>
               <ProductItem
                 item={related}             
-                imgproperty={productImgProperty}
-                baseurl={baseApiUrl}
+                imgproperty={productImgProperty}                
                 quality={qualityproductImg}            
                 currsymbol={currSymbol}
                 related={true}
@@ -130,8 +129,7 @@ const ProductMainPage = ({
         </Grid>
         <RecentlyViewed
           alias={productData.product.alias}         
-          imgproperty={productImgProperty}
-          baseurl={baseApiUrl}
+          imgproperty={productImgProperty}          
           quality={qualityproductImg}         
           currsymbol={currSymbol}
         />

@@ -1,7 +1,5 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import AlertApp from "../../components/alertapp/AlertApp";
-import Loader from "../../containers/loader/Loader";
 import TopBarApp from "../../components/topbar/TopBar";
 import AppBarApp from "../../components/appbar/AppBar";
 import ModalDialog from "../../containers/modaldialog/ModalDialog";
@@ -15,8 +13,6 @@ import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 import { sortValueVar, cityСurrentVar } from "../../graphql/localVars";
 
 export default ({ children }) => {
-  const errorState = useSelector((state) => state.app.error);
-
   const onCompleted = (dataRezult) => {
     if (dataRezult.sortData) {
       sortValueVar(dataRezult.sortData.sortValue);
@@ -26,7 +22,7 @@ export default ({ children }) => {
     }
   };
 
-  const { loading } = useQueryApp(
+  const { loading, error } = useQueryApp(
     LAYOUT_QUERY,
     {},
     true,
@@ -35,7 +31,7 @@ export default ({ children }) => {
     onCompleted
   );
 
-  if (errorState) {
+  if (error) {
     return <ErrorContent />;
   }
 
@@ -48,8 +44,7 @@ export default ({ children }) => {
       <TopBarApp />
       <AppBarApp />
       <div id="back-to-top-anchor"></div>
-      <AlertApp />
-      <Loader />
+      <AlertApp />      
       <ModalDialog />
       {children}
       <AppFooter />

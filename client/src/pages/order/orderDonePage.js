@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
@@ -10,8 +11,7 @@ import Button from "@material-ui/core/Button";
 import { PageBase } from "../../hoc/PageBase";
 import { useRouter } from "../../hooks/router.hook";
 import { setOrderValue } from "../../redux/actions/order";
-import { showAlert } from "../../redux/actions/app";
-import { CopyToClipboard } from "react-copy-to-clipboard";
+import { showAlert } from "../../graphql/localVarsApp";
 import { ORDER_DONE_PAGE_QUERY } from "../../graphql/gqlQuery";
 import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 import LoaderPage from "../../components/loaderpage/LoaderPage";
@@ -43,11 +43,10 @@ export default () => {
 
   const { data, loading, error } = useQueryApp(ORDER_DONE_PAGE_QUERY);
 
-  const baseUrlApp = useSelector((state) => state.app.baseApiUrl);
   const linkOrder = `/order/${orderId}`;
 
   const copyHandler = () => {
-    dispatch(showAlert("Ссылка скопирована"));
+    showAlert("Ссылка скопирована");
   };
 
   useEffect(() => {
@@ -64,7 +63,7 @@ export default () => {
   if (error) return <ErrorContent />;
 
   const { orderDoneText, baseUrl } = data.paramsData;
-
+  const baseApiUrl = data.baseApiUrl;
   const bind = {
     name_page: "Заказ получен",
     action_page: "Заказ получен",
@@ -100,7 +99,7 @@ export default () => {
           <div className={classes.imgwr}>
             <img
               alt={bind.title}
-              src={`${baseUrlApp}/static/images/rabbit.png`}
+              src={`${baseApiUrl}/static/images/rabbit.png`}
               title={bind.title}
             />
           </div>

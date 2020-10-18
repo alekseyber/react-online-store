@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -11,7 +10,7 @@ import Grid from "@material-ui/core/Grid";
 import Icon from "@material-ui/core/Icon";
 import withWidth, { isWidthUp } from "@material-ui/core/withWidth";
 import { HideOnScroll } from "../../hoc/HideOnScrool";
-import { openDelivery } from "../../redux/actions/modaldialog";
+import { openDelivery } from "../../graphql/localVarsModal";
 import { TOP_BAR_QUERY } from "../../graphql/gqlQuery";
 import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 
@@ -67,14 +66,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const TopBarAppF = (props) => {
-  const dispatch = useDispatch();
-
+  
   const { data } = useQueryApp(TOP_BAR_QUERY);
 
   const classes = useStyles();
 
   const deliveryBtnHandler = () => {
-    dispatch(openDelivery());
+    openDelivery();
   };
 
   if (!data) {

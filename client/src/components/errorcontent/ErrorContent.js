@@ -1,12 +1,12 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
-//import { clearErrorApp } from "../../redux/actions/app";
+import { ERROR_QUERY } from "../../graphql/gqlQuery";
+import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 
 const useStyles = makeStyles({
   root: {
@@ -31,13 +31,14 @@ const useStyles = makeStyles({
 
 const ErrorContent = () => {
   const classes = useStyles();
-  // const dispatch = useDispatch();
-  const error = useSelector((state) => state.app.error);
+  
+  const { data } = useQueryApp(ERROR_QUERY);
+  const error = data ? data.error : null;
+  
   const title = error ? error.title : "Ой, что-то пошло не так...";
   const text = error ? error.text : "Проверьте интернет и попробуйте еще раз";
 
-  const onClickHandler = () => {
-    // dispatch(clearErrorApp());
+  const onClickHandler = () => {    
     if (error.func) {
       error.func();
     }

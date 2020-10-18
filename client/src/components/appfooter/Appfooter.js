@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import LinkUi from "@material-ui/core/Link";
 import Typography from "@material-ui/core/Typography";
@@ -17,7 +16,7 @@ import AlternateEmailIcon from "@material-ui/icons/AlternateEmail";
 import RoomIcon from "@material-ui/icons/Room";
 import ChatBubbleOutlineIcon from "@material-ui/icons/ChatBubbleOutline";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
-import { openReturnCall } from "../../redux/actions/modaldialog";
+import { openReturnCall } from "../../graphql/localVarsModal";
 import { APP_FOOTER_QUERY } from "../../graphql/gqlQuery";
 import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 
@@ -70,7 +69,7 @@ const useStyles = makeStyles((theme) => ({
 
 const AppFooterF = ({ width }) => {
   const { data } = useQueryApp(APP_FOOTER_QUERY);
-  const dispatch = useDispatch();
+
   const classes = useStyles();
 
   const [state, setState] = useState({
@@ -98,7 +97,7 @@ const AppFooterF = ({ width }) => {
   //const preventDefault = (event) => event.preventDefault();
 
   const commetBtnHandler = () => {
-    dispatch(openReturnCall());
+    openReturnCall();
   };
 
   const Expand = (anchor) => {

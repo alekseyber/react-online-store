@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
@@ -29,10 +28,10 @@ const ProductContetnt = ({
   productContetntData,
   bannersProduct,
   bannersProductOn,
+  baseApiUrl,
 }) => {
   const classes = useStyles();
-  const contentReact = useHtml(productContetntData.content);
-  const baseApiUrl = useSelector((state) => state.app.baseApiUrl);
+  const contentReact = useHtml(productContetntData.content);  
 
   return (
     <Card className={classes.root}>
@@ -96,10 +95,13 @@ const ProductContetnt = ({
   );
 };
 
+
+
 ProductContetnt.propTypes = {
   productContetntData: PropTypes.object.isRequired,
   bannersProduct: PropTypes.array.isRequired,
   bannersProductOn: PropTypes.bool,
+  baseApiUrl: PropTypes.string.isRequired,
 };
 
 export default ProductContetnt;

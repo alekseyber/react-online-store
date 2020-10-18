@@ -1,8 +1,6 @@
-import React, { useMemo, useEffect } from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
-import { useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
-import { useSelector } from "react-redux";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -11,7 +9,7 @@ import CartItem from "../cartitem/CartItem";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { CART_LIST_QUERY } from "../../graphql/gqlQuery";
 import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
-import { cartUpdate } from "../../redux/actions/cart";
+import { cartClear } from "../../graphql/localVarsCart";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,32 +22,20 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const CartList = ({ full, handleClose }) => {
-  const dispatch = useDispatch();
   const classes = useStyles();
-  const cartData = useSelector((state) => state.cart.cartData);
 
-  const ids = useMemo(() => {
-    const cartIdsObj = {};
-    cartData.forEach((el) => {
-      if (!cartData[el.alias]) {
-        cartIdsObj[el.alias] = 1;
-      }
-    });
-    return Object.keys(cartIdsObj);
-  }, [cartData]);
+  const { data, loading } = useQueryApp(CART_LIST_QUERY);
 
-  const { baseApiUrl } = useSelector((state) => state.app);
-
+  const products = data ? data.products : [];
+  const baseApiUrl = data ? data.baseApiUrl : "";
+  const cartData = data ? data.cartData : [];
   const count = cartData.length;
 
-  const { data, loading } = useQueryApp(CART_LIST_QUERY, { ids });
   useEffect(() => {
-    if (data) {
-      if (data.products.length === 0) {
-        dispatch(cartUpdate([]));
-      }
+    if (!products.length && !loading) {      
+      cartClear();
     }
-  }, [data, dispatch, ids]);
+  }, [products, loading]);
 
   if (loading) {
     return (
@@ -67,8 +53,6 @@ const CartList = ({ full, handleClose }) => {
   if (!data) {
     return null;
   }
-
-  const { products } = data;
 
   const getItem = (index) => {
     if (index < products.length) {

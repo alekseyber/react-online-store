@@ -9,6 +9,17 @@ import {
   baseApiUrlVar,
 } from "./graphql/localVars";
 
+import { alertVar, recentlyViewedVar, errorVar } from "./graphql/localVarsApp";
+
+import { modalRootDataVar } from "./graphql/localVarsModal";
+
+import {
+  productSelectVar,
+  cartDataVar,
+  lastCartVar,
+  cuponDataVar,
+} from "./graphql/localVarsCart";
+
 const baseApiUrl = () => {
   if (process.env.REACT_APP_API_URL) {
     return process.env.REACT_APP_API_URL;
@@ -70,10 +81,10 @@ export const cache = new InMemoryCache({
       "PvzListItemPhones",
     ],
   },
-  typePolicies: {    
+  typePolicies: {
     CategoryProductList: {
       keyFields: ["alias", "sortValue"],
-    },    
+    },
     Category: {
       keyFields: ["alias"],
     },
@@ -157,6 +168,9 @@ export const cache = new InMemoryCache({
         },
       },
     },
+    Cupon: {
+      keyFields: [],
+    },
     News: {
       keyFields: ["alias"],
     },
@@ -186,6 +200,60 @@ export const cache = new InMemoryCache({
     },
     Query: {
       fields: {
+        cartData: {
+          read() {
+            return cartDataVar();
+          },
+        },
+        cartDataIds: {
+          read() {
+            const cartData = cartDataVar();
+            const cartIdsObj = {};
+            cartData.forEach((el) => {
+              if (!cartData[el.alias]) {
+                cartIdsObj[el.alias] = 1;
+              }
+            });
+            return Object.keys(cartIdsObj);
+          },
+        },
+        lastCart: {
+          read() {
+            return lastCartVar();
+          },
+        },
+        cuponData: {
+          read() {
+            return cuponDataVar();
+          },
+        },
+        discontcupon: {
+          read() {
+            const cuponData = cuponDataVar();
+            return cuponData.discontcupon;
+          },
+        },
+        modalRootData: {
+          read() {
+            return modalRootDataVar();
+          },
+        },
+        alert: {
+          read() {
+            return alertVar();
+          },
+        },
+        recentlyViewed: {
+          read() {
+            return recentlyViewedVar();
+          },
+        },
+        error: {
+          read() {
+            return errorVar();
+          },
+        },
+
         deliverySelect: {
           read() {
             return deliverySelectVar();
@@ -223,11 +291,6 @@ export const cache = new InMemoryCache({
             return sortValueVar();
           },
         },
-        // cityCurrent: {
-        //   read() {
-        //     return cityСurrentVar();
-        //   },
-        // },
         cityNameCurrent: {
           read() {
             const cityСurrent = cityСurrentVar();
@@ -242,12 +305,35 @@ export const cache = new InMemoryCache({
             return 44;
           },
         },
+        selectSize: {
+          read(_, { args }) {
+            const productSelect = productSelectVar();
+            if (args.alias) {
+              if (productSelect.level2[args.alias]) {
+                return productSelect.level2[args.alias];
+              }
+            }
+            return null;
+          },
+        },
+        stateSelectColor: {
+          read(_, { args }) {
+            const productSelect = productSelectVar();
+            if (args.alias) {
+              if (productSelect.level1[args.alias]) {
+                return productSelect.level1[args.alias];
+              }
+            }
+            return null;
+          },
+        },
         product(_, { args, toReference }) {
           return toReference({
             __typename: "Product",
             alias: args.alias,
           });
         },
+
         category(_, { args, toReference }) {
           return toReference({
             __typename: "Category",

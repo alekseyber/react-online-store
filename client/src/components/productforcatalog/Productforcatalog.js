@@ -1,5 +1,4 @@
 import React from "react";
-import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom"; //, useHistory
 import { makeStyles } from "@material-ui/core/styles";
@@ -10,7 +9,7 @@ import Typography from "@material-ui/core/Typography";
 import LinkUi from "@material-ui/core/Link";
 import DoneIcon from "@material-ui/icons/Done";
 import { Image } from "../image/Image";
-import { setColorProductAction } from "../../redux/actions/productselect";
+import { setColorProductAction } from "../../graphql/localVarsCart";
 import { useRouter } from "../../hooks/router.hook";
 
 const useStyles = makeStyles((theme) => ({
@@ -90,16 +89,12 @@ const ProductForCatalog = ({ product, currsymbol }) => {
   const classes = useStyles();
   const { history } = useRouter();
 
-  const dispatch = useDispatch();
-
   const handleCardClick = () => {
     if (product.current.alias !== product.stateSelectColor) {
-      dispatch(
-        setColorProductAction(
-          product.alias,
-          product.current.alias,
-          product.current.level2
-        )
+      setColorProductAction(
+        product.alias,
+        product.current.alias,
+        product.current.level2
       );
     }
     history.push(product.link);
@@ -111,9 +106,7 @@ const ProductForCatalog = ({ product, currsymbol }) => {
   };
 
   const handleColorHover = (color) => {
-    dispatch(
-      setColorProductAction(product.alias, color, product.current.level2)
-    );
+    setColorProductAction(product.alias, color, product.current.level2);
   };
 
   const badge = product.current.badgeItem ? (

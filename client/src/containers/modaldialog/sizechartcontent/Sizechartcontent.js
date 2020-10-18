@@ -1,16 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
 import ModalBase from "../../../hoc/ModalBase";
 import LoaderContent from "../../../components/loadercontent/LoaderContent";
 import { SIZE_CHART_CONTENT_QUERY } from "../../../graphql/gqlQuery";
 import { useQueryApp } from "../../../hooks/appolloQueryApp.hook";
 import { useHtml } from "../../../hooks/html.hook";
 
-const SizeChartContent = ({ handleClose }) => {
-  const sizesgroupId = useSelector(
-    (state) => state.modaldialog.sizechartSelect
-  );
+const SizeChartContent = ({ handleClose, sizesgroupId }) => {
   const { data, loading } = useQueryApp(SIZE_CHART_CONTENT_QUERY, {
     sizesgroupId,
   });
@@ -26,6 +22,7 @@ const SizeChartContent = ({ handleClose }) => {
 
 SizeChartContent.propTypes = {
   handleClose: PropTypes.func.isRequired,
+  sizesgroupId: PropTypes.string.isRequired,
 };
 
 export default SizeChartContent;

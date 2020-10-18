@@ -1,11 +1,22 @@
 import { batch } from "react-redux";
 import { SET_ORDER_VALUE, SET_ORDER, SET_COMMENT } from "../constants";
-import { httpActions } from "./../../hooks/http.hook";
-import { showAlert } from "./app";
-import { hideDialog } from "./modaldialog";
-import { cartUpdate } from "./cart";
+// import { httpActions } from "./../../hooks/http.hook";
+// import { showAlert } from "./app";
+// import { hideDialog } from "./modaldialog";
+// import { cartUpdate } from "./cart";
+
+
+
 import { history } from "../store";
 import formatDateStr from "../middleware/format-date-str";
+
+const httpActions = null
+const showAlert = null
+const hideDialog = null
+const cartUpdate = null
+
+
+
 
 export const setOrder = (payload) => {
   return {

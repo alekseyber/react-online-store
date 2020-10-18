@@ -1,10 +1,9 @@
 import React from "react";
-import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import { cartEditItem } from "../../../redux/actions/cart";
+import { cartEditItem } from "../../../graphql/localVarsCart";
 
 const useStyles = makeStyles((theme) => ({
   btns: {
@@ -20,12 +19,10 @@ const useStyles = makeStyles((theme) => ({
 const SizeSelector = ({ index, level2Cart, levels2 }) => {
   const classes = useStyles();
 
-  const dispatch = useDispatch();
-
   const handleSetSize = (level2) => {
     const selected = level2Cart === level2.alias;
     if (!selected) {
-      dispatch(cartEditItem(index, null, level2.alias));
+      cartEditItem(index, null, level2.alias);
     }
   };
   const captionText = levels2.length > 1 ? "Изменить размер:" : "Размер:";

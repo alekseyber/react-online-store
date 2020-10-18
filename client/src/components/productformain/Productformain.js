@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import {
   makeStyles,
@@ -18,8 +17,8 @@ import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import Divider from "@material-ui/core/Divider";
 import Box from "@material-ui/core/Box";
 import { green } from "@material-ui/core/colors";
-import { setColorProductAction } from "../../redux/actions/productselect";
-import { cartAddAction } from "../../redux/actions/cart";
+import { setColorProductAction } from "../../graphql/localVarsCart";
+import { cartAddAction } from "../../graphql/localVarsCart";
 import ProductSizeSelector from "../productsizeselector/ProductSizeSelector";
 import DeliveryRezult from "../../containers/deliveryrezult/DeliveryRezult";
 
@@ -76,14 +75,12 @@ const theme = createMuiTheme({
 
 const ProductForMain = ({ product, currsymbol, baseurl }) => {
   const classes = useStyles();
- 
+
   const [error, setError] = useState(false);
 
   useEffect(() => {
     setError(false);
   }, [product]);
-  
-  const dispatch = useDispatch();
 
   const sizeSelectVisible =
     product.product_model === 1 || product.product_model === 4;
@@ -96,19 +93,17 @@ const ProductForMain = ({ product, currsymbol, baseurl }) => {
   const handleColor = (event, color) => {
     preventDefault(event);
 
-    dispatch(
-      setColorProductAction(product.alias, color, product.current.level2)
-    );
+    setColorProductAction(product.alias, color, product.current.level2);
   };
 
   const handleAddCart = (qorder = false) => {
-    const err = dispatch(cartAddAction(product, qorder));
+    const err = cartAddAction(product, qorder);
     if (err) {
       setError(true);
     }
   };
 
- // console.log('current', product)
+  // console.log('current', product)
 
   const Colorlevel = () => {
     if (product.product_model > 2) return null;

@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
 import Button from "@material-ui/core/Button";
 import AddedCartComponent from "../../../components/addedcart/AddedCart";
 import ModalBase from "../../../hoc/ModalBase";
@@ -12,16 +11,18 @@ import LoaderContent from "../../../components/loadercontent/LoaderContent";
 const AddedCart = ({ handleClose }) => {
   const { history } = useRouter();
 
-  const lastCart = useSelector((state) => state.cart.lastCart);
   const { data, loading } = useQueryApp(ADDED_CART_MODAL_QUERY);
+
   const handleOpenOrder = () => {
     history.push("/cart");
     handleClose();
   };
+  const lastCart = data ? data.lastCart : null;
   let currSymbol = "";
   if (data) {
     currSymbol = data.paramsData.currSymbol;
   }
+
 
   const actionsNode = (
     <>
@@ -40,7 +41,7 @@ const AddedCart = ({ handleClose }) => {
       title="Добавлено в корзину"
       actionsNode={actionsNode}
     >
-      {loading === true ? (
+      {loading === true && data.lastCart ? (
         <LoaderContent />
       ) : (
         <AddedCartComponent lastCart={lastCart} currSymbol={currSymbol} />

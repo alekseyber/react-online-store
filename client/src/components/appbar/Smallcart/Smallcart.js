@@ -1,7 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-//import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
 import Button from "@material-ui/core/Button";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Popover from "@material-ui/core/Popover";
@@ -12,6 +10,8 @@ import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
 import CartList from "../../../containers/cartlist/CartList";
+import { CART_DATA_QUERY } from "../../../graphql/gqlQuery";
+import { useQueryApp } from "../../../hooks/appolloQueryApp.hook";
 
 const MenuButton = withStyles(() => ({
   root: {
@@ -35,7 +35,9 @@ const useStyles = makeStyles((theme) => ({
 const SmallCart = () => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const cartData = useSelector((state) => state.cart.cartData);
+
+  const { data } = useQueryApp(CART_DATA_QUERY);
+  const cartData = data ? data.cartData : [];
   const count = cartData.length;
 
   const handleClick = (event) => {

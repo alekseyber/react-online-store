@@ -1,5 +1,4 @@
 import React from "react";
-import { useDispatch } from "react-redux";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
@@ -7,16 +6,14 @@ import Divider from "@material-ui/core/Divider";
 import DeliveryPvzDescr from "../deliverypvzdescr/DeliveryPvzDescr";
 import { DELIVERY_PVZ_DESCR_NO_PROPS_QUERY } from "../../graphql/gqlQuery";
 import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
-import { openPvzSelector } from "../../redux/actions/modaldialog";
+import { openPvzSelector } from "../../graphql/localVarsModal";
 
 const DeliveryPvzDescrNoProps = () => {
-  const dispatch = useDispatch();
-
   const { data } = useQueryApp(DELIVERY_PVZ_DESCR_NO_PROPS_QUERY);
   const pvzSelect = data ? data.pvzSelect : null;
 
   const openPvzSelectorHandler = () => {
-    dispatch(openPvzSelector());
+    openPvzSelector();
   };
 
   const btnText = pvzSelect ? "Изменить ПВЗ" : "Выбрать ПВЗ";

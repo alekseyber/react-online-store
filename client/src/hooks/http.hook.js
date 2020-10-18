@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import fetchData from "./../axios/fetch-data";
-import { showAlert, setLoading, setLoadingForm } from "../redux/actions/app";
+//import { showAlert, setLoading, setLoadingForm } from "../redux/actions/app";
 import { history } from "../redux/store";
 import { useRouter } from "./router.hook";
 
@@ -17,28 +17,28 @@ const httpActions = (dispatch, replace = history.replace) => {
     formloading = false
   ) => {
     if (loader) {
-      dispatch(setLoading(true));
+     // dispatch(setLoading(true));
     }
     if (formloading) {
-      dispatch(setLoadingForm(true));
+     // dispatch(setLoadingForm(true));
     }
     try {
       const data = await fetchData(url, method, params, body);
 
       if (loader) {
-        dispatch(setLoading(false));
+      //  dispatch(setLoading(false));
       }
       if (formloading) {
-        dispatch(setLoadingForm(false));
+       // dispatch(setLoadingForm(false));
       }
 
       return data;
     } catch (e) {
       if (loader) {
-        dispatch(setLoading(false));
+      //  dispatch(setLoading(false));
       }
       if (formloading) {
-        dispatch(setLoadingForm(false));
+      //  dispatch(setLoadingForm(false));
       }
 
       if (e.response && redirect) {
@@ -50,7 +50,7 @@ const httpActions = (dispatch, replace = history.replace) => {
       }
 
       if (errormsg && !redirect) {
-        dispatch(showAlert(e.message, "error"));
+       // dispatch(showAlert(e.message, "error"));
       }
 
       throw e;

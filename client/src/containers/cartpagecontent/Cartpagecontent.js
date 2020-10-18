@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
@@ -11,6 +11,8 @@ import CartSumm from "../../components/cartsumm/CartSumm";
 import CartAddCupon from "../../components/cartaddcupon/CartAddCupon";
 import AppForm from "../../components/appform/AppForm";
 import { sendOrder } from "../../redux/actions/order";
+import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
+import { CART_DATA_QUERY } from "../../graphql/gqlQuery";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,7 +28,11 @@ const CartPageContent = ({
 }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const cartData = useSelector((state) => state.cart.cartData);
+  
+  const { data } = useQueryApp(CART_DATA_QUERY);
+  const cartData = data ? data.cartData : [];
+
+
 
   const handleSubmit = (data) => {
     dispatch(sendOrder(data));

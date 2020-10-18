@@ -347,6 +347,7 @@ const IndexNewsPage = {
 
 export const PRODUCT_PAGE_QUERY = gql`
   query ProductPage($alias: ID!) {
+    baseApiUrl @client
     paramsData {
       ...ProductPageParamsFragment
     }
@@ -360,6 +361,24 @@ export const PRODUCT_PAGE_QUERY = gql`
   ${ProductPage.fragments.paramsData}
   ${ProductPage.fragments.product}
   ${ProductPage.fragments.productMain}
+`;
+
+export const ERROR_QUERY = gql`
+  query ErrorApp {
+    error @client
+  }
+`;
+
+export const MODAL_DIALOG_QUERY = gql`
+  query ModalDialog {
+    modalRootData @client
+  }
+`;
+
+export const RECENTLY_VIEWED_QUERY = gql`
+  query RecentlyViewed {
+    recentlyViewed @client
+  }
 `;
 
 export const LAYOUT_QUERY = gql`
@@ -435,6 +454,7 @@ export const LAYOUT_QUERY = gql`
 
 export const APP_BAR_QUERY = gql`
   query AppBar {
+    baseApiUrl @client
     paramsData @client {
       ...AppBarFragment
     }
@@ -548,6 +568,7 @@ export const CART_PAGE_QUERY = gql`
 
 export const ORDER_PAGE_QUERY = gql`
   query OrderPage($id: ID!) {
+    baseApiUrl @client
     paramsData @client {
       currSymbol
     }
@@ -583,6 +604,7 @@ const MainPage = {
 
 export const MAIN_PAGE_QUERY = gql`
   query MainPage {
+    baseApiUrl @client
     paramsData @client {
       ...MainPageFragment
     }
@@ -679,6 +701,7 @@ const OrderDonePage = {
 
 export const ORDER_DONE_PAGE_QUERY = gql`
   query OrderDonePage {
+    baseApiUrl @client
     paramsData {
       ...OrderDonePageFragment
     }
@@ -731,6 +754,8 @@ export const LIST_PRODUCT_QUERY = gql`
 
 export const PRODUCT_ITEM_QUERY = gql`
   query Product($alias: ID!) {
+    baseApiUrl @client
+    stateSelectColor(alias: $alias) @client
     product(alias: $alias) {
       ...ProductFragment
     }
@@ -740,6 +765,9 @@ export const PRODUCT_ITEM_QUERY = gql`
 
 export const CART_LIST_QUERY = gql`
   query CartList($ids: [ID]!) {
+    baseApiUrl @client
+    cartData @client
+    cartDataIds @client @export(as: "ids")
     paramsData @client {
       ...CartListParamsDataFragment
     }
@@ -761,10 +789,45 @@ export const CART_ITEM_QUERY = gql`
 `;
 
 export const ADDED_CART_MODAL_QUERY = gql`
-  query ProductsGrid {
+  query AddedCart {
+    lastCart @client
     paramsData {
       currSymbol
     }
+  }
+`;
+
+export const CART_DATA_QUERY = gql`
+  query CartData {
+    cartData @client
+  }
+`;
+
+export const USE_CART_SUMM_QUERY = gql`
+  query useCartSumm {
+    cartData @client
+    discontcupon @client
+  }
+`;
+
+export const CART_ADD_CUPON_QUERY = gql`
+  query GetCupon($cuponText: String!) {
+    getCupon(cuponText: $cuponText) {
+      value
+      cuponId
+    }
+  }
+`;
+
+export const SELECT_SIZE_QUERY = gql`
+  query SelectSize($alias: String!) {
+    selectSize(alias: $alias) @client
+  }
+`;
+
+export const SELECT_COLOR_QUERY = gql`
+  query SelectColor($alias: String!) {
+    stateSelectColor(alias: $alias) @client
   }
 `;
 
@@ -775,6 +838,18 @@ export const OFERTA_CONTENT_MODAL_QUERY = gql`
     }
   }
 `;
+
+export const CART_ADD_PAGE_QUERY = gql`
+  query CartAddPage($id: String!) {
+    productCartItem(id: $id) {
+      alias
+      level1
+      level2
+      price
+    }
+  }
+`;
+
 export const SIZE_CHART_CONTENT_QUERY = gql`
   query SizeChartContent($sizesgroupId: ID!) {
     sizesChart(sizesgroupId: $sizesgroupId) {
@@ -951,6 +1026,17 @@ export const DELIVERY_REZULT_QUERY = gql`
 export const DELIVERY_PVZ_SEL_COMP_QUERY = gql`
   query DeliveryPvzSelComp {
     pvzSelect @client
+  }
+`;
+
+export const BASE_API_URL_QUERY = gql`
+  query BaseApiUrl {
+    baseApiUrl @client
+  }
+`;
+export const ALERT_QUERY = gql`
+  query Alert {
+    alert @client
   }
 `;
 

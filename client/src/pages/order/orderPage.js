@@ -1,5 +1,4 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import { PageBase } from "../../hoc/PageBase";
 import { useRouter } from "../../hooks/router.hook";
 import OrderInfPage from "../../components/orderinfpage/OrderInfPage";
@@ -10,7 +9,7 @@ import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 export default () => {
   const { params } = useRouter();
   const id = params.id;
-  const baseApiUrl = useSelector((state) => state.app.baseApiUrl);
+
   const { data, loading, error } = useQueryApp(
     ORDER_PAGE_QUERY,
     { id },
@@ -22,6 +21,7 @@ export default () => {
 
   if (data && !error) {
     const { currSymbol } = data.paramsData;
+    const baseApiUrl = data.baseApiUrl;
 
     const bind = {
       name_page: `Заказ № ${data.order.orderNum}`,

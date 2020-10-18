@@ -1,10 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
 import Grid from "@material-ui/core/Grid";
 import { useProductDataRender } from "../../hooks/useProductDataRender.hook";
 import ProductImgCarusel from "../../components/productimgcarusel/ProductImgCarusel";
 import ProductForMain from "../../components/productformain/ProductForMain";
+import { SELECT_COLOR_QUERY } from "../../graphql/gqlQuery";
+import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 
 const ProductMainCard = ({
   productData,
@@ -13,9 +14,9 @@ const ProductMainCard = ({
   qualityproductImg,
   currsymbol,
 }) => {
-  const stateSelectColor = useSelector(
-    (state) => state.productselect.color[productData.product.alias]
-  );
+  const alias = productData.product.alias;
+  const { data } = useQueryApp(SELECT_COLOR_QUERY, { alias });
+  const stateSelectColor = data ? data.stateSelectColor : null;
 
   const productDataRender = useProductDataRender({
     imgproperty,

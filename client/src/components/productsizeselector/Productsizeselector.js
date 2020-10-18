@@ -1,11 +1,12 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import { setSizeProduct } from "../../redux/actions/productselect";
-import { openSizeChart } from "../../redux/actions/modaldialog";
+import { setSizeProduct } from "../../graphql/localVarsCart";
+import { openSizeChart } from "../../graphql/localVarsModal";
+import { SELECT_SIZE_QUERY } from "../../graphql/gqlQuery";
+import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 
 const useStyles = makeStyles((theme) => ({
   btns: {
@@ -24,14 +25,14 @@ const ProductSizeSelector = ({
 }) => {
   const classes = useStyles();
 
-  const selectSize = useSelector((state) => state.productselect.size[alias]);
+  const { data } = useQueryApp(SELECT_SIZE_QUERY, { alias });
 
-  const dispatch = useDispatch();
+  const selectSize = data ? data.selectSize : null;
 
   const handleSetSize = (size) => {
     const selected = selectSize === size;
     if (!selected) {
-      dispatch(setSizeProduct({ alias, size }));
+      setSizeProduct(alias, size);
       if (set_error && error) {
         set_error(false);
       }
@@ -39,7 +40,7 @@ const ProductSizeSelector = ({
   };
 
   const handleSizeChart = () => {
-    dispatch(openSizeChart(sizesgroup_id));
+    openSizeChart(sizesgroup_id);
   };
 
   const labelText = error ? "Пожалуйста, выберите размер:" : "Выберите размер:";

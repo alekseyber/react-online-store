@@ -3,8 +3,7 @@ import {
   createMuiTheme,
   ThemeProvider,
   makeStyles,
-} from "@material-ui/core/styles"; //makeStyles,
-import { useDispatch } from "react-redux";
+} from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import ListItem from "@material-ui/core/ListItem";
 import Divider from "@material-ui/core/Divider";
@@ -23,8 +22,11 @@ import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
-import { cartDeleteItem, cartChangeItemCount } from "../../redux/actions/cart";
-import { setColorAndSizeProduct } from "../../redux/actions/productselect";
+import {
+  setColorAndSizeProduct,
+  cartDeleteItem,
+  cartChangeItemCount,
+} from "../../graphql/localVarsCart";
 import SizeSelector from "./sizeselector/SizeSelector";
 import ColorSelector from "./colorselector/ColorSelector";
 import { useRouter } from "../../hooks/router.hook";
@@ -64,18 +66,15 @@ const CartItem = ({
 }) => {
   const classes = useStyles();
   const { history } = useRouter();
-  const dispatch = useDispatch();
 
   const handleDeletItem = useCallback(() => {
-    dispatch(cartDeleteItem(index));
-  }, [dispatch, index]);
+    cartDeleteItem(index);
+  }, [index]);
 
   const handleOpenProduct = (event) => {
     event.preventDefault();
     event.stopPropagation();
-    dispatch(
-      setColorAndSizeProduct(itemcart.alias, itemcart.level1, itemcart.level2)
-    );
+    setColorAndSizeProduct(itemcart.alias, itemcart.level1, itemcart.level2);
     history.push(productLink);
     if (handleClose) {
       handleClose();
@@ -83,7 +82,7 @@ const CartItem = ({
   };
 
   const handleChangeQty = (event) => {
-    dispatch(cartChangeItemCount(index, event.target.value));
+    cartChangeItemCount(index, event.target.value);
   };
 
   const { alias, level1, level2, qty, price } = itemcart;

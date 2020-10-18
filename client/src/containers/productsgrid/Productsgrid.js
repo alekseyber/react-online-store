@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
 import ProductItem from "../productitem/ProductItem";
 import { PaginationList, usePagin } from "../../hoc/Paginationlist";
 import {
@@ -13,8 +12,7 @@ import LoaderPage from "../../components/loaderpage/LoaderPage";
 const ListProduct = ({
   productImgProperty,
   qualityproductImg,
-  currSymbol,
-  baseApiUrl,
+  currSymbol,  
 }) => {
   const paginationRezult = usePagin();
 
@@ -39,8 +37,7 @@ const ListProduct = ({
       {paginationRezult.map((item, index) => (
         <ProductItem
           item={item}
-          imgproperty={productImgProperty}
-          baseurl={baseApiUrl}
+          imgproperty={productImgProperty}          
           quality={qualityproductImg}
           currsymbol={currSymbol}
           key={index}
@@ -50,9 +47,7 @@ const ListProduct = ({
   );
 };
 
-const ProductsGrid = ({ products, page }) => {
-  const { baseApiUrl } = useSelector((state) => state.app);
-
+const ProductsGrid = ({ products, page }) => {  
   const { data, loading } = useQueryApp(PRODUCTS_GRID_QUERY);
 
   if (loading) {
@@ -80,8 +75,7 @@ const ProductsGrid = ({ products, page }) => {
   const listBind = {
     productImgProperty,
     qualityproductImg,
-    currSymbol,
-    baseApiUrl,
+    currSymbol,    
   };
 
   return (
@@ -99,8 +93,7 @@ ProductsGrid.defaultProps = {
 ListProduct.propTypes = {
   productImgProperty: PropTypes.array.isRequired,
   qualityproductImg: PropTypes.number.isRequired,
-  currSymbol: PropTypes.string.isRequired,
-  baseApiUrl: PropTypes.string.isRequired,
+  currSymbol: PropTypes.string.isRequired,  
 };
 
 ProductsGrid.propTypes = {

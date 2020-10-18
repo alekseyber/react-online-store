@@ -1,34 +1,37 @@
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert from '@material-ui/lab/Alert';
-import { hideAlert } from '../../redux/actions/app';
+import React from "react";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
+import { hideAlert } from "../../graphql/localVarsApp";
+import { ALERT_QUERY } from "../../graphql/gqlQuery";
+import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 
-
-
-const Alert = props => {
-    return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
-
+const Alert = (props) => {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+};
 
 export default () => {
+  const { data } = useQueryApp(ALERT_QUERY);
 
-    const { alertType, alertText, alertVisible } = useSelector(state => state.app);
-    const dispatch = useDispatch();
+  const alertData = data ? data.alert : null;
+  const alertText = alertData ? alertData.text : "";
+  const alertType = alertData ? alertData.type : "success";
+  
+  const closeAlertHandler = (_, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    hideAlert();
+  };
 
-    const closeAlertHandler = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        dispatch(hideAlert())
-    };
-   
-    return (
-
-        <Snackbar open={alertVisible} autoHideDuration={6000} onClose={closeAlertHandler}>
-            <Alert onClose={closeAlertHandler} severity={alertType || 'success'}>
-                {alertText}
-            </Alert>
-        </Snackbar>
-    )
-}
+  return (
+    <Snackbar
+      open={alertData}
+      autoHideDuration={6000}
+      onClose={closeAlertHandler}
+    >
+      <Alert onClose={closeAlertHandler} severity={alertType || "success"}>
+        {alertText}
+      </Alert>
+    </Snackbar>
+  );
+};

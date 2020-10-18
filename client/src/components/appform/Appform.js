@@ -1,6 +1,5 @@
 import React, { useState, useRef } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { useDispatch } from "react-redux";
 import ReCAPTCHA from "react-google-recaptcha";
 import InputMask from "react-input-mask";
 import PropTypes from "prop-types";
@@ -19,7 +18,7 @@ import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
 import ButtonProgress from "../buttonprogress/ButtonProgress";
 import OrderDelivery from "../../containers/orderdelivery/OrderDelivery";
-import { openOferta } from "../../redux/actions/modaldialog";
+import { openOferta } from "../../graphql/localVarsModal";
 import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 import { APP_FORM_QUERY } from "../../graphql/gqlQuery";
 
@@ -46,7 +45,7 @@ const AppForm = ({
   reOn,
 }) => {
   const classes = useStyles();
-  const dispatch = useDispatch();
+  
   const [checked, setChecked] = useState(true);
   const [value, setValue] = useState(0);
 
@@ -78,7 +77,7 @@ const AppForm = ({
     setValue(parseInt(event.target.value, 10));
   };
   const handleBtnOferta = () => {
-    dispatch(openOferta());
+    openOferta();
   };
 
   const colorLabelOferta =

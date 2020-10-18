@@ -1,93 +1,83 @@
-import React, { useMemo, useEffect } from 'react'; //, , useCallback
-import PropTypes from 'prop-types';
-import { useSelector, useDispatch } from 'react-redux';
-import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import ProductItem from '../productitem/ProductItem';
-import { addRecentlyViewed } from '../../redux/actions/app'
+import React, { useMemo, useEffect } from "react"; //, , useCallback
+import PropTypes from "prop-types";
+import { makeStyles } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
+import ProductItem from "../productitem/ProductItem";
+import { addRecentlyViewed } from "../../graphql/localVarsApp";
+import { RECENTLY_VIEWED_QUERY } from "../../graphql/gqlQuery";
+import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        marginTop: theme.spacing(5),
-        marginBottom: theme.spacing(5),
-    },
-
+  root: {
+    marginTop: theme.spacing(5),
+    marginBottom: theme.spacing(5),
+  },
 }));
 
-const RecentlyViewed = ({ alias, imgproperty, baseurl, quality, currsymbol }) => {
-    const classes = useStyles();
-    const recentlyViewed = useSelector(state => state.app.recentlyViewed);
-    const dispatch = useDispatch();
+const RecentlyViewed = ({ alias, imgproperty, quality, currsymbol }) => {
+  const classes = useStyles();
 
-    useEffect(() => {
-        dispatch(addRecentlyViewed(alias));
-    }, [dispatch, alias]);
+  const { data } = useQueryApp(RECENTLY_VIEWED_QUERY);
+  const recentlyViewed = data ? data.recentlyViewed : [];
 
+  useEffect(() => {
+    addRecentlyViewed(alias);
+  }, [alias]);
 
-    const products = useMemo(() => {
-        const rezult = [];
-        if (recentlyViewed.length) {
-            let q = 0;
+  const products = useMemo(() => {
+    const rezult = [];
+    if (recentlyViewed.length) {
+      let q = 0;
 
-            for (let i = 0; i < recentlyViewed.length; i++) {
-                if (recentlyViewed[i] !== alias) {
-                    rezult.push(recentlyViewed[i]);
-                    q++;
-                }
-
-                if (q === 4) {
-                    break;
-                }
-            }
+      for (let i = 0; i < recentlyViewed.length; i++) {
+        if (recentlyViewed[i] !== alias) {
+          rezult.push(recentlyViewed[i]);
+          q++;
         }
 
-        return rezult;
-
-    }, [recentlyViewed, alias]);
-
-    if (products.length === 0) {
-        return null;
+        if (q === 4) {
+          break;
+        }
+      }
     }
 
-    return (
-        <div className={classes.root}>
-            <Typography gutterBottom variant="h6" component="h2">Недавно просмотренные</Typography>
-            <Grid
-                container
-                spacing={2}
-            >
-                {products.map((item, index) => (
+    return rezult;
+  }, [recentlyViewed, alias]);
 
-                    <ProductItem
-                        item={item}                        
-                        imgproperty={imgproperty}
-                        baseurl={baseurl}
-                        quality={quality}                        
-                        currsymbol={currsymbol}
-                        key={index}
-                    />
+  if (products.length === 0) {
+    return null;
+  }
 
-                ))}
-            </Grid>
-
-        </div>
-    )
-
-}
-
+  return (
+    <div className={classes.root}>
+      <Typography gutterBottom variant="h6" component="h2">
+        Недавно просмотренные
+      </Typography>
+      <Grid container spacing={2}>
+        {products.map((item, index) => (
+          <ProductItem
+            item={item}
+            imgproperty={imgproperty}
+            quality={quality}
+            currsymbol={currsymbol}
+            key={index}
+          />
+        ))}
+      </Grid>
+    </div>
+  );
+};
 
 RecentlyViewed.defaultProps = {
-    currsymbol: "",
+  currsymbol: "",
 };
 
 RecentlyViewed.propTypes = {
-    alias: PropTypes.string.isRequired,    
-    imgproperty: PropTypes.array.isRequired,
-    baseurl: PropTypes.string.isRequired,
-    quality: PropTypes.number.isRequired,
-    currsymbol: PropTypes.string
+  alias: PropTypes.string.isRequired,
+  imgproperty: PropTypes.array.isRequired,
+  quality: PropTypes.number.isRequired,
+  currsymbol: PropTypes.string,
 };
-
 
 export default RecentlyViewed;

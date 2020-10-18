@@ -1,20 +1,19 @@
 import React from "react";
-import { useDispatch } from "react-redux";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import { openDelivery } from "../../redux/actions/modaldialog";
+import { openDelivery } from "../../graphql/localVarsModal";
 import { DELIVERY_CITY_CARRENT_QUERY } from "../../graphql/gqlQuery";
 import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 
 const DeliveryCityCarrent = () => {
-  const dispatch = useDispatch();
+  
   const { data } = useQueryApp(DELIVERY_CITY_CARRENT_QUERY);
 
   const cityNameCurrent = data ? data.cityNameCurrent : "";
 
   const openDeliveryHandler = () => {
-    dispatch(openDelivery());
+    openDelivery();
   };
 
   return (

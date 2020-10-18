@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { green } from '@material-ui/core/colors';
@@ -26,11 +25,11 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const ButtonProgress = ({ onClick, buttonClassname, disabled, color, variant, size, children, type }) => {
-    const loadingForm = useSelector(state => state.app.loadingForm);
+const ButtonProgress = ({ onClick, buttonClassname, disabled, color, variant, size, children, type, loading }) => {
+    
     const classes = useStyles();
 
-    const disabledValue = loadingForm || disabled;
+    const disabledValue = loading || disabled;
 
     const handleButtonClick = onClick ?? null;
 
@@ -48,7 +47,7 @@ const ButtonProgress = ({ onClick, buttonClassname, disabled, color, variant, si
             >
                 {children}
             </Button>
-            {loadingForm && <CircularProgress size={24} className={classes.buttonProgress} />}
+            {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
         </div>
     )
 }
@@ -59,7 +58,8 @@ ButtonProgress.defaultProps = {
     disabled: false,
     variant: "contained",
     size: "medium",
-    type: 'button'
+    type: 'button',
+    loading: false
 };
 
 ButtonProgress.propTypes = {
@@ -69,6 +69,7 @@ ButtonProgress.propTypes = {
     variant: PropTypes.string,
     size: PropTypes.string,
     type: PropTypes.string,
+    loading: PropTypes.bool
 
 };
 

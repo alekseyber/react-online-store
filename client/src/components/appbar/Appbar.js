@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
 import withWidth, { isWidthDown, isWidthUp } from "@material-ui/core/withWidth";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -56,14 +55,13 @@ const options = {
 };
 
 const AppBarAppF = ({ width }) => {
-  const { data } = useQueryApp(APP_BAR_QUERY); //loading,
-  const { baseApiUrl } = useSelector((state) => state.app);
-
+  const { data } = useQueryApp(APP_BAR_QUERY); //loading,  
+  
   const classes = useStyles();
   const trigger = useScrollTrigger(options);
 
   if (!data) return null;
-
+  const baseApiUrl = data.baseApiUrl;
   const { categoryTree, paramsData } = data;
 
   const { categoryImgProperty, shop_name_rus, topLinks, logoimg } = paramsData;

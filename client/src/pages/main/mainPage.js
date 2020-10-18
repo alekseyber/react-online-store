@@ -1,5 +1,4 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import MetaTags from "react-meta-tags";
 import Container from "@material-ui/core/Container";
 import { Typography } from "@material-ui/core";
@@ -27,7 +26,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default () => {
   const classes = useStyles();
-  const baseApiUrl = useSelector((state) => state.app.baseApiUrl);
 
   const { data, loading, error } = useQueryApp(MAIN_PAGE_QUERY);
 
@@ -35,7 +33,7 @@ export default () => {
   if (error) {
     return <ErrorContent />;
   }
-
+  const baseApiUrl = data.baseApiUrl;
   const { categoryImgProperty } = data.paramsData;
   const categoryImgBase = baseApiUrl + categoryImgProperty;
   const mainData = data.mainPage;
@@ -49,7 +47,9 @@ export default () => {
         <meta property="og:title" content={mainData.meta.title} />
         {/* <meta property="og:image" content="path/to/image.jpg" /> */}
       </MetaTags>
-      {mainData.topslidervisible && <MainSlider topSlider={mainData.topSlider} baseApiUrl={baseApiUrl}/> }
+      {mainData.topslidervisible && (
+        <MainSlider topSlider={mainData.topSlider} baseApiUrl={baseApiUrl} />
+      )}
       <Container fixed>
         {mainData.maincatalogvisible && (
           <MainCatalog
@@ -60,7 +60,10 @@ export default () => {
           />
         )}
         {mainData.mainBanner && (
-          <MainBanner mainBanner={mainData.mainBanner} baseApiUrl={baseApiUrl}/>
+          <MainBanner
+            mainBanner={mainData.mainBanner}
+            baseApiUrl={baseApiUrl}
+          />
         )}
         {mainData.hitData.length > 0 && (
           <div className={classes.hits}>
