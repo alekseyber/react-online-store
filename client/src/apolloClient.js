@@ -20,6 +20,8 @@ import {
   cuponDataVar,
 } from "./graphql/localVarsCart";
 
+import { filterSelectVar } from "./graphql/localVarsFilter";
+
 const baseApiUrl = () => {
   if (process.env.REACT_APP_API_URL) {
     return process.env.REACT_APP_API_URL;
@@ -200,6 +202,11 @@ export const cache = new InMemoryCache({
     },
     Query: {
       fields: {
+        filterSelect: {
+          read() {
+            return filterSelectVar();
+          },
+        },
         cartData: {
           read() {
             return cartDataVar();

@@ -1,13 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { useDispatch } from "react-redux";
 import { Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import ProductsGrid from "../productsgrid/ProductsGrid";
 import PageContent from "../../components/pagecontent/PageContent";
 import { useFilterProduct } from "../../hooks/filterproduct.hook";
-import { removeFilterSelect } from "../../redux/actions/filter";
+import { removeFilterSelect } from "../../graphql/localVarsFilter";
 import { PageBase } from "../../hoc/PageBase";
 import { useGetQueryPage } from "../../hooks/router.hook";
 
@@ -41,17 +40,10 @@ const Category = ({ data, alias }) => {
   const classes = useStyles();
   const page = useGetQueryPage();
 
-  const {
-    filterData,
-    category,    
-    productsCategory,
-  } = data;
+  const { filterData, category, productsCategory } = data;
 
+  const { contCategoryData, productsCategoryData } = category;
 
-  const {contCategoryData, productsCategoryData} = category;
-
-  //  const content = categoryData.contData.content;
-  // const contData = categoryData.contData;
   const products = productsCategory.productsList;
   const { colors, filter, level2 } = productsCategoryData;
   const productsData = useFilterProduct({
@@ -64,10 +56,8 @@ const Category = ({ data, alias }) => {
   const productsTotal = products.length;
   const canonical = `/category/${alias}`;
 
-  const dispatch = useDispatch();
-
   const handleClear = () => {
-    dispatch(removeFilterSelect());
+    removeFilterSelect();
   };
 
   const bind = {

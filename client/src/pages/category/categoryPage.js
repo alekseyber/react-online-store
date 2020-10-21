@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { setFilterSelectByQwery } from "../../redux/actions/filter";
+import { setFilterSelectByQwery } from "../../graphql/localVarsFilter";
 import LoaderPage from "../../components/loaderpage/LoaderPage";
 import Category from "../../containers/category/Category";
 import { useQuery, useRouter } from "../../hooks/router.hook";
@@ -13,7 +12,6 @@ export default () => {
   const { alias } = params;
   const query = useQuery(true);
 
-  const dispatch = useDispatch();
   const { data, loading, error } = useQueryApp(
     CATEGORY_PAGE_QUERY,
     { alias },
@@ -26,9 +24,9 @@ export default () => {
 
   useEffect(() => {
     if (filterIndex) {
-      dispatch(setFilterSelectByQwery(query, filterIndex));
+      setFilterSelectByQwery(query, filterIndex);
     }
-  }, [dispatch, filterIndex, query]);
+  }, [filterIndex, query]);
 
   if (loading) return <LoaderPage />;
   if (error) return <ErrorContent />;

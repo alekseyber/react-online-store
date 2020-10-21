@@ -97,7 +97,7 @@ export const setColorProductAction = (alias, level1, level2) => {
 };
 
 const cartUpdate = (cart = []) => {
-  cartDataVar(cart);  
+  cartDataVar(cart);
   reactLocalStorage.setObject("cartData", cart);
 };
 
@@ -124,59 +124,71 @@ export const cartDeleteItem = (index) => {
 
 export const cartChangeItemCount = (index, qty) => {
   const cartData = cartDataVar();
-  if (cartData[index]) {
-    cartData[index].qty = qty;
-  }
-  cartUpdate(cartData);
+  const newCartData = cartData.map((el, i) => {
+    if (index === i) {
+      return { ...el, qty };
+      //el.qty = qty;
+    }
+    return el;
+  });
+
+  cartUpdate(newCartData);
 };
 
 export const cartEditItem = (index, level1 = null, level2 = null, product) => {
   const cartData = cartDataVar();
 
-  const alias = cartData[index].alias;
   let edit = false;
 
-  if (level1) {
+  const newItem = {
+    alias: cartData[index].alias,
+    qty: cartData[index].qty,
+    price: cartData[index].price,
+    level1: cartData[index].level1,
+    level2: cartData[index].level2,
+  };
+
+  if (level1 && newItem.level1 !== level1) {
     if (product) {
       const currentProduct = product.level1Arr.find(
         (el) => el.alias === level1
       );
       if (currentProduct) {
         if (currentProduct.price > 0) {
-          cartData[index].price = currentProduct.price;
+          newItem.price = currentProduct.price;
         }
       }
     }
-    if (cartData[index].level1 !== level1) {
-      cartData[index].level1 = level1;
-      edit = true;
-    }
-  } else {
-    level1 = cartData[index].level1;
+
+    newItem.level1 = level1;
+    edit = true;
   }
 
-  if (level2) {
-    if (cartData[index].level2 !== level2) {
-      cartData[index].level2 = level2;
-      edit = true;
-    }
-  } else {
-    level2 = cartData[index].level2;
+  if (level2 && newItem.level2 !== level2) {
+    newItem.level2 = level2;
+    edit = true;
   }
 
-  const idItem = alias + level1 + level2;
-  cartData[index].idItem = idItem;
+  if (!edit) {
+    return null;
+  }
 
-  const cartForUpdate = cartData.filter((item, i) => {
+  newItem.idItem = newItem.alias + newItem.level1 + newItem.level2;
+
+  const newCartData = cartData.map((elItem, ind) => {
+    if (index === ind) {
+      return newItem;
+    }
+    return elItem;
+  }); 
+
+  const cartForUpdate = newCartData.filter((item, i) => {
     if (index === i) {
       return true;
     }
-    return !(item.idItem === idItem);
+    return !(item.idItem === newItem.idItem);
   });
-
-  if (edit) {
-    cartUpdate(cartForUpdate);
-  }
+  cartUpdate(cartForUpdate);
 };
 
 const cartAddCheced = ({ alias, level1, level2, price }) => {

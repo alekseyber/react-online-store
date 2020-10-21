@@ -1,40 +1,48 @@
-import { SET_SELECT_FILTER, REMOVE_SELECT_FILTER } from "../constants";
+import { makeVar } from "@apollo/client";
+
+export const filterSelectVar = makeVar({});
 
 export const removeFilterSelect = () => {
-  return {
-    type: REMOVE_SELECT_FILTER,
-  };
+  filterSelectVar({});
 };
 
-const setSelect = (filterSelect) => {
-  return {
-    type: SET_SELECT_FILTER,
-    payload: filterSelect,
-  };
+const deletObjProperty = (obj, prop) => {
+  return Object.keys(obj).reduce((object, key) => {
+    if (key !== prop) {
+      object[key] = obj[key];
+    }
+    return object;
+  }, {});
 };
 
-export const setFilterSelect = (aliasGr, aliasAttr) => (dispatch, getState) => {
-  const { filter } = getState();
-  let filterSelect = Object.assign({}, filter.filterSelect);
+export const setFilterSelect = (aliasGr, aliasAttr) => {
+  const filter = filterSelectVar();
+  let filterSelect = Object.assign({}, filter);
 
   if (aliasGr in filterSelect) {
     if (aliasAttr in filterSelect[aliasGr]) {
-      delete filterSelect[aliasGr][aliasAttr];
+      filterSelect[aliasGr] = deletObjProperty(
+        filterSelect[aliasGr],
+        aliasAttr
+      );
+
       if (Object.keys(filterSelect[aliasGr]).length === 0) {
         delete filterSelect[aliasGr];
       }
     } else {
-      filterSelect[aliasGr][aliasAttr] = aliasAttr;
+      filterSelect[aliasGr] = {
+        ...filterSelect[aliasGr],
+        [aliasAttr]: aliasAttr,
+      };
     }
   } else {
     filterSelect[aliasGr] = {};
     filterSelect[aliasGr][aliasAttr] = aliasAttr;
   }
-
-  dispatch(setSelect(filterSelect));
+  filterSelectVar(filterSelect);
 };
 
-export const setFilterSelectByQwery = (qwery, filterIndex) => (dispatch) => {
+export const setFilterSelectByQwery = (qwery, filterIndex) => {
   const keys = Object.keys(qwery);
   const filterSelect = {};
 
@@ -43,7 +51,7 @@ export const setFilterSelectByQwery = (qwery, filterIndex) => (dispatch) => {
       filterSelect[key] = {};
     }
     filterSelect[key][attr] = attr;
-  };  
+  };
 
   if (keys.length) {
     if (filterIndex) {
@@ -62,6 +70,6 @@ export const setFilterSelectByQwery = (qwery, filterIndex) => (dispatch) => {
   }
 
   if (Object.keys(filterSelect).length) {
-    dispatch(setSelect(filterSelect));
+    filterSelectVar(filterSelect);
   }
 };

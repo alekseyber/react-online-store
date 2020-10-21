@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
@@ -7,7 +6,7 @@ import Drawer from "@material-ui/core/Drawer";
 import { makeStyles } from "@material-ui/core/styles";
 import ItemGrupp from "./itemgrupp/ItemGrupp";
 import ItemGruppMbile from "./itemgruppmobile/ItemGruppMobile";
-import { removeFilterSelect } from "../../redux/actions/filter";
+import { removeFilterSelect } from "../../graphql/localVarsFilter";
 
 const useStyles = makeStyles((theme) => ({
   btngr: {
@@ -25,7 +24,7 @@ const AppFilter = ({
   mobile,
 }) => {
   const classes = useStyles();
-  const dispatch = useDispatch();
+  
   const [state, setState] = useState(false);
 
   const toggleDrawer = (open) => (event) => {
@@ -40,7 +39,7 @@ const AppFilter = ({
   };
 
   const handleClear = () => {
-    dispatch(removeFilterSelect());
+    removeFilterSelect();
   };
 
   return (

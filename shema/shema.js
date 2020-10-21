@@ -609,10 +609,6 @@ const typeDefs = gql`
     link: String!
   }
 
-  # type SearchListData {
-  #   searchAll: String!
-  #   products: [SearchProductsList]
-  # }
   # ----searchFull---
   type SearchFullFilterSelected {
     color: [String]

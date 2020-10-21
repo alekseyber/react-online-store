@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useMemo } from "react";
+import React, { useEffect, useCallback } from "react";
 import {
   createMuiTheme,
   ThemeProvider,
@@ -67,6 +67,8 @@ const CartItem = ({
   const classes = useStyles();
   const { history } = useRouter();
 
+  const { alias, level1, level2, qty, price } = itemcart;
+
   const handleDeletItem = useCallback(() => {
     cartDeleteItem(index);
   }, [index]);
@@ -74,7 +76,7 @@ const CartItem = ({
   const handleOpenProduct = (event) => {
     event.preventDefault();
     event.stopPropagation();
-    setColorAndSizeProduct(itemcart.alias, itemcart.level1, itemcart.level2);
+    setColorAndSizeProduct(alias, level1, level2);
     history.push(productLink);
     if (handleClose) {
       handleClose();
@@ -85,48 +87,30 @@ const CartItem = ({
     cartChangeItemCount(index, event.target.value);
   };
 
-  const { alias, level1, level2, qty, price } = itemcart;
+  let current = null;
+  let level2Current = null;
 
-  // const { data, loading } = useQueryApp(CART_ITEM_QUERY, { alias });
+  if (product) {
+    current = product.level1Arr.find((el) => el.alias === level1);
+  }
 
-  const { deleteAction, current, level2Current } = useMemo(() => {
-    const rezult = {
-      deleteAction: false,
-      current: null,
-      level2Current: null,
-    };
-
-    if (!product) {
-      rezult.deleteAction = true;
-      return rezult;
-    }
-
-    rezult.current = product.level1Arr.find((el) => el.alias === level1);
-
-    if (!rezult.current) {
-      rezult.deleteAction = true;
-      return rezult;
-    }
-    rezult.level2Current = rezult.current.level2.find(
-      (ell2) => ell2.alias === level2
-    );
-
-    if (!rezult.level2Current) {
-      rezult.deleteAction = true;
-    }
-
-    return rezult;
-  }, [product, level1, level2]);
+  if (current) {
+    level2Current = current.level2.find((ell2) => ell2.alias === level2);
+  }
 
   useEffect(() => {
-    if (deleteAction) {
+    if (!product && !level2Current && !current) {
       handleDeletItem();
     }
-  }, [deleteAction, handleDeletItem]);
+  }, [product, level2Current, current, handleDeletItem]);
 
-  if (!product) {
+  if (!product || !level2Current || !current) {
     return null;
   }
+
+  const levels1 = product.level1Arr.filter((itemL1) => itemL1.level2.findIndex(l2=> l2.alias ===level2) > -1);
+
+  
 
   const productLink = `/product/${alias}`;
   const level2SelectTrue =
@@ -142,7 +126,6 @@ const CartItem = ({
     if (!full) {
       return null;
     }
-
     //    Array.apply(null, { length: N }).map((_, val) => (
 
     const N = qty <= 5 ? 5 : qty;
@@ -187,7 +170,7 @@ const CartItem = ({
           <Box mt={1} mb={1}>
             <ColorSelector
               index={index}
-              levels1={product.level1Arr}
+              levels1={levels1}
               level1Cart={level1}
               level2Cart={level2}
               product={product}

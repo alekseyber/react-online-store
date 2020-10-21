@@ -29,10 +29,11 @@ const CartList = ({ full, handleClose }) => {
   const products = data ? data.products : [];
   const baseApiUrl = data ? data.baseApiUrl : "";
   const cartData = data ? data.cartData : [];
-  const count = cartData.length;
+  
+  const count = cartData.length;  
 
   useEffect(() => {
-    if (!products.length && !loading) {      
+    if (!products.length && !loading) {
       cartClear();
     }
   }, [products, loading]);

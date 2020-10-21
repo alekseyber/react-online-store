@@ -539,9 +539,16 @@ export const FILTER_QUERY = gql`
     categoryTree @client {
       ...FilterCategoryTreeFragment
     }
+    filterSelect @client
   }
   ${Filter.fragments.filterData}
   ${Filter.fragments.categoryTree}
+`;
+
+export const SELECT_FILTER_QUERY = gql`
+  query FilterSelect {
+    filterSelect @client
+  }
 `;
 
 export const SORT_BTN_QUERY = gql`

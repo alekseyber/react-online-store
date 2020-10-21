@@ -5,7 +5,7 @@ import { combineReducers } from "redux";
 //import { productsReducer } from './productsReducer';
 //import { productselectReducer } from "./productselectReducer";
 //import { categoryReducer } from './categoryReducer';
-import { filterReducer } from "./filterReducer";
+//import { filterReducer } from "./filterReducer";
 //import { modaldialogReducer } from "./modaldialogReducer";
 //import { cartReducer } from "./cartReducer";
 //import { deliveryReducer } from "./deliveryReducer";
@@ -19,7 +19,7 @@ export const rootReducer = combineReducers({
   //    products: productsReducer,
  // productselect: productselectReducer,
   //   category: categoryReducer,
-  filter: filterReducer,
+ // filter: filterReducer,
  // modaldialog: modaldialogReducer,
  // cart: cartReducer,
 //  delivery: deliveryReducer,

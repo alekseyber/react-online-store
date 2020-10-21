@@ -1,12 +1,14 @@
 import { useMemo } from "react"; //React, useEffect, useState,
-import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
+import { SELECT_FILTER_QUERY } from "../graphql/gqlQuery";
+import { useQueryApp } from "./appolloQueryApp.hook";
 
 // фильтр товаров
 const useFilterProduct = ({ colors, filter, level2, products, filterData }) => {
   const { filterRezult, colorsGrupp, filterIndex, colorsChToGr } = filterData;
 
-  const filterSelect = useSelector((state) => state.filter.filterSelect);
+  const { data } = useQueryApp(SELECT_FILTER_QUERY);
+  const filterSelect = data ? data.filterSelect : {};
 
   const {
     productsFilter,

@@ -40,7 +40,7 @@ export default () => {
           component="img"
           alt="Страница не найдена"
           //height="140"
-          image={baseApiUrl + "/images/404.png"}
+          image={baseApiUrl + "/static/images/404.png"}
         />
         <CardContent>
           <Typography variant="body1" component="p">

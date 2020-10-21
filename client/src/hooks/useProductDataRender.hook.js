@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+//import { useMemo } from "react";
 import PropTypes from "prop-types";
 
 const getSrcsetByImg = (img, imgproperty, baseurl = "", start = 0, end) => {
@@ -46,103 +46,185 @@ const useProductDataRender = ({
     if (productData.productMain) {
       productMainInput = productData.productMain;
     }
+  } else {
+    return null;
   }
 
-  return useMemo(() => {
-    if (!productDataInput) {
-      return null;
-    }
+  const product = { ...productDataInput };
 
-    const product = Object.assign({}, productDataInput);
-    product.link = "/product/" + product.alias;
+  product.link = "/product/" + product.alias;
 
-    product.stateSelectColor = stateSelectColor;
+  product.stateSelectColor = stateSelectColor;
 
-    product.current = null;
+  product.current = null;
 
-    if (colorselect) {
-      product.current = product.level1Arr.find(
-        (el) => el.alias === colorselect
-      );
-    }
+  if (colorselect) {
+    product.current = product.level1Arr.find((el) => el.alias === colorselect);
+  }
 
-    if (!product.current && stateSelectColor) {
-      product.current = product.level1Arr.find(
-        (el) => el.alias === stateSelectColor
-      );
-    }
-
-    if (!product.current) {
-      product.current = product.level1Arr.find(
-        (el) => el.alias === product.color_default
-      );
-    }
-
-    if (!product.current) {
-      product.current = product.level1Arr[0];
-    }
-
-    if (!product.current) {
-      return null;
-    }
-
-    product.imgThumb =
-      getimgPathSmallThumb(imgproperty, baseurl) + product.current.img;
-    product.img = getimgPathThumb(imgproperty, baseurl) + product.current.img;
-
-    const quality =
-      qualityproductImg <= imgproperty.length ? qualityproductImg : 2;
-
-    product.srcset = getSrcsetByImg(
-      product.current.img,
-      imgproperty,
-      baseurl,
-      0,
-      quality
+  if (!product.current && stateSelectColor) {
+    product.current = product.level1Arr.find(
+      (el) => el.alias === stateSelectColor
     );
+  }
 
-    if (product.current.price > 0) {
-      product.price = product.current.price;
-    }
-    if (product.current.old_price > 0) {
-      product.old_price = product.current.old_price;
-    }
+  if (!product.current) {
+    product.current = product.level1Arr.find(
+      (el) => el.alias === product.color_default
+    );
+  }
 
-    if (productMainInput) {
-      product.gal = [];
+  if (!product.current) {
+    product.current = product.level1Arr[0];
+  }
 
-      const gal = productMainInput.level1GalArr.find(
-        (elGal) => elGal.alias === product.current.alias
-      );
-      if (gal) {
-        gal.imgs.forEach((element) => {
-          product.gal.push({
-            img: getimgPath(imgproperty, baseurl) + element,
-            imgThumb: getimgPathSmallThumb(imgproperty, baseurl) + element,
-            srcset: getSrcsetByImg(element, imgproperty, baseurl, 1),
-          });
-        });
-      }
+  if (!product.current) {
+    return null;
+  }
 
-      if (product.gal.length === 0) {
-        product.gal.push({
-          img: getimgPath(imgproperty, baseurl) + product.current.img,
-          imgThumb: product.imgThumb,
-          srcset: getSrcsetByImg(product.current.img, imgproperty, baseurl, 1),
-        });
-      }
-    }
+  product.imgThumb =
+    getimgPathSmallThumb(imgproperty, baseurl) + product.current.img;
+  product.img = getimgPathThumb(imgproperty, baseurl) + product.current.img;
 
-    return product;
-  }, [
-    productDataInput,
-    productMainInput,
-    colorselect,
+  const quality =
+    qualityproductImg <= imgproperty.length ? qualityproductImg : 2;
+
+  product.srcset = getSrcsetByImg(
+    product.current.img,
     imgproperty,
     baseurl,
-    qualityproductImg,
-    stateSelectColor,
-  ]);
+    0,
+    quality
+  );
+
+  if (product.current.price > 0) {
+    product.price = product.current.price;
+  }
+  if (product.current.old_price > 0) {
+    product.old_price = product.current.old_price;
+  }
+
+  if (productMainInput) {
+    product.gal = [];
+
+    const gal = productMainInput.level1GalArr.find(
+      (elGal) => elGal.alias === product.current.alias
+    );
+    if (gal) {
+      gal.imgs.forEach((element) => {
+        product.gal.push({
+          img: getimgPath(imgproperty, baseurl) + element,
+          imgThumb: getimgPathSmallThumb(imgproperty, baseurl) + element,
+          srcset: getSrcsetByImg(element, imgproperty, baseurl, 1),
+        });
+      });
+    }
+
+    if (product.gal.length === 0) {
+      product.gal.push({
+        img: getimgPath(imgproperty, baseurl) + product.current.img,
+        imgThumb: product.imgThumb,
+        srcset: getSrcsetByImg(product.current.img, imgproperty, baseurl, 1),
+      });
+    }
+  }
+  return product;
+
+  // return useMemo(() => {
+  //   if (!productDataInput) {
+  //     return null;
+  //   }
+
+  //   const product = Object.assign({}, productDataInput);
+  //   product.link = "/product/" + product.alias;
+
+  //   product.stateSelectColor = stateSelectColor;
+
+  //   product.current = null;
+
+  //   if (colorselect) {
+  //     product.current = product.level1Arr.find(
+  //       (el) => el.alias === colorselect
+  //     );
+  //   }
+
+  //   if (!product.current && stateSelectColor) {
+  //     product.current = product.level1Arr.find(
+  //       (el) => el.alias === stateSelectColor
+  //     );
+  //   }
+
+  //   if (!product.current) {
+  //     product.current = product.level1Arr.find(
+  //       (el) => el.alias === product.color_default
+  //     );
+  //   }
+
+  //   if (!product.current) {
+  //     product.current = product.level1Arr[0];
+  //   }
+
+  //   if (!product.current) {
+  //     return null;
+  //   }
+
+  //   product.imgThumb =
+  //     getimgPathSmallThumb(imgproperty, baseurl) + product.current.img;
+  //   product.img = getimgPathThumb(imgproperty, baseurl) + product.current.img;
+
+  //   const quality =
+  //     qualityproductImg <= imgproperty.length ? qualityproductImg : 2;
+
+  //   product.srcset = getSrcsetByImg(
+  //     product.current.img,
+  //     imgproperty,
+  //     baseurl,
+  //     0,
+  //     quality
+  //   );
+
+  //   if (product.current.price > 0) {
+  //     product.price = product.current.price;
+  //   }
+  //   if (product.current.old_price > 0) {
+  //     product.old_price = product.current.old_price;
+  //   }
+
+  //   if (productMainInput) {
+  //     product.gal = [];
+
+  //     const gal = productMainInput.level1GalArr.find(
+  //       (elGal) => elGal.alias === product.current.alias
+  //     );
+  //     if (gal) {
+  //       gal.imgs.forEach((element) => {
+  //         product.gal.push({
+  //           img: getimgPath(imgproperty, baseurl) + element,
+  //           imgThumb: getimgPathSmallThumb(imgproperty, baseurl) + element,
+  //           srcset: getSrcsetByImg(element, imgproperty, baseurl, 1),
+  //         });
+  //       });
+  //     }
+
+  //     if (product.gal.length === 0) {
+  //       product.gal.push({
+  //         img: getimgPath(imgproperty, baseurl) + product.current.img,
+  //         imgThumb: product.imgThumb,
+  //         srcset: getSrcsetByImg(product.current.img, imgproperty, baseurl, 1),
+  //       });
+  //     }
+  //   }
+
+  //   return product;
+  // }, [
+  //   productDataInput,
+  //   productMainInput,
+  //   colorselect,
+  //   imgproperty,
+  //   baseurl,
+  //   qualityproductImg,
+  //   stateSelectColor,
+  // ]);
 };
 
 useProductDataRender.defaultProps = {
