@@ -1,5 +1,4 @@
-import React, { useMemo } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React from "react";
 import Card from "@material-ui/core/Card";
 import PhoneIcon from "@material-ui/icons/Phone";
 import CardContent from "@material-ui/core/CardContent";
@@ -7,7 +6,6 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import { PageBase } from "../../hoc/PageBase";
-import { sendReturnProduct } from "../../redux/actions/order";
 import { useHtml } from "../../hooks/html.hook";
 import AppForm from "../../components/appform/AppForm";
 import { RETURN_PRODUCT_PAGE_QUERY } from "../../graphql/gqlQuery";
@@ -15,24 +13,31 @@ import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 import LoaderPage from "../../components/loaderpage/LoaderPage";
 import ErrorContent from "../../components/errorcontent/ErrorContent";
 
+import { RETURN_PRODUCT_MUTATION } from "../../graphql/gqlMutation";
+import {
+  FormDataClass,
+  useMutationApp,
+} from "../../hooks/appolloMutationApp.hook";
+import { returnProductStatusVar } from "../../graphql/localVarsOrder";
+
 export default () => {
   const { data, loading, error } = useQueryApp(RETURN_PRODUCT_PAGE_QUERY);
 
-  const { returnProductStatus, returnProductAction } = useSelector(
-    (state) => state.order
-  );
-
-  const textReturnProduct = useMemo(() => {
-    if (data) {
-      return data.textReturnProduct.content;
-    }
-  }, [data]);
+  const returnProductStatus = data ? data.returnProductStatus : null;
+  const textReturnProduct = data ? data.textReturnProduct.content : "";
 
   const contentReact = useHtml(textReturnProduct);
-  const dispatch = useDispatch();
 
-  const handleInputSubmit = (data) => {
-    dispatch(sendReturnProduct(data));
+  const onCompleted = (inputData) => {
+    returnProductStatusVar(inputData.addReturnProduct.message);
+  };
+
+  const { mutate } = useMutationApp(RETURN_PRODUCT_MUTATION, onCompleted);
+
+  const handleInputSubmit = (formDataInput) => {
+    const fieldsForm = ["action", "phone", "recaptchaToken"];
+    const formData = new FormDataClass(formDataInput, fieldsForm);
+    mutate({ variables: { formData } });
   };
 
   if (loading) return <LoaderPage />;
@@ -64,7 +69,7 @@ export default () => {
           {returnProductStatus && (
             <>
               <Typography variant="h6" component="h2">
-                Ваша заявка на {returnProductAction} успешно получена.
+                {returnProductStatus}
               </Typography>
               <Typography variant="body1" component="p" gutterBottom>
                 Благодарим Вас за обращение на нашем сайте. В ближайшее время с

@@ -35,13 +35,10 @@ const ItemAttr = ({
 
   if (color) {
     title = itemAttr.colorGruppItem.title;
-    //title = colorsData[itemAttr.alias].title;
     const style = { color: itemAttr.colorGruppItem.colorkey };
-    //  const style = { color: colorsData[itemAttr.alias].colorkey };
     icon = <Brightness1Icon fontSize="small" style={style} />;
     checkedIcon = <CheckCircleIcon fontSize="small" style={style} />;
   } else if (sizes) {
-    //title = sizesData[itemAttr.alias].title;
     title = itemAttr.sizeItem.title;
   } else {
     title = itemAttr.title;

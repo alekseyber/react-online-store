@@ -1,7 +1,6 @@
 import React from "react"; //, { lazy, Suspense }
 import { YMInitializer } from "react-yandex-metrika";
-import { Router } from "react-router-dom"; //BrowserRouter as Router
-import { history } from "./redux/store";
+import { BrowserRouter as Router } from "react-router-dom"; //BrowserRouter as Router
 import { useRoutes } from "./router";
 import Layout from "./containers/layout/Layout";
 
@@ -43,7 +42,7 @@ function App() {
   return (
     <div className="root">
       {ymRezultFull && <YMInitializer {...ymBind} />}
-      <Router history={history}>
+      <Router>
         <Layout>{routes}</Layout>
       </Router>
     </div>

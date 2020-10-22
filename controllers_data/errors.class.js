@@ -87,9 +87,9 @@ const getErrorStatus = (e, res) => {
   const status = e.status ? e.status : 500;
   // const message = "Произошла ошибка на сервере, повторите попытку позже";
 
-  if (!e.status) {
-    console.error(e.message);
-  }
+  // if (!e.status) {
+  //   console.error(e.message);
+  // }
   if (res) {
     return res.status(status).send(e.message);
   }

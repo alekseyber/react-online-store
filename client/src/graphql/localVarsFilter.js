@@ -16,6 +16,7 @@ const deletObjProperty = (obj, prop) => {
 };
 
 export const setFilterSelect = (aliasGr, aliasAttr) => {
+  
   const filter = filterSelectVar();
   let filterSelect = Object.assign({}, filter);
 

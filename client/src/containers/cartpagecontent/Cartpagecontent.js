@@ -1,5 +1,4 @@
 import React from "react";
-import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
@@ -10,9 +9,11 @@ import CartList from "../cartlist/CartList";
 import CartSumm from "../../components/cartsumm/CartSumm";
 import CartAddCupon from "../../components/cartaddcupon/CartAddCupon";
 import AppForm from "../../components/appform/AppForm";
-import { sendOrder } from "../../redux/actions/order";
+import LoaderPage from "../../components/loaderpage/LoaderPage";
 import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 import { CART_DATA_QUERY } from "../../graphql/gqlQuery";
+import { useAddOrder } from "../../hooks/addOrder.hook";
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,21 +23,18 @@ const useStyles = makeStyles((theme) => ({
 
 const CartPageContent = ({
   phone,
-  currSymbol,  
+  currSymbol,
   categoryRootLink,
   cityDefault,
 }) => {
   const classes = useStyles();
-  const dispatch = useDispatch();
-  
+
   const { data } = useQueryApp(CART_DATA_QUERY);
   const cartData = data ? data.cartData : [];
 
+  const { loadingData, handleSubmit } = useAddOrder();
 
-
-  const handleSubmit = (data) => {
-    dispatch(sendOrder(data));
-  };
+  if (loadingData) return <LoaderPage />;
 
   if (cartData.length === 0) {
     return <CartNulled categoryRootLink={categoryRootLink} phone={phone} />;
@@ -72,7 +70,7 @@ const CartPageContent = ({
   );
 };
 
-CartPageContent.propTypes = {  
+CartPageContent.propTypes = {
   phone: PropTypes.object.isRequired,
   currSymbol: PropTypes.string.isRequired,
   categoryRootLink: PropTypes.string.isRequired,

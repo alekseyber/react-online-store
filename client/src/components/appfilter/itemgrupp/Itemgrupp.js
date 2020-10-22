@@ -8,6 +8,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { makeStyles } from "@material-ui/core/styles";
 import ItemAttr from "../itemattr/ItemAttr";
 
+
 const useStyles = makeStyles((theme) => ({
   btngr: {
     marginRight: theme.spacing(2),
@@ -37,6 +38,11 @@ const ItemGrupp = ({ itemGr, filterSelect }) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+//   const handleClickMenuItem = (aliasGr, itemAttr) => {
+//     setFilterSelect(aliasGr, itemAttr);
+//     handleClose();
+//   };
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -103,7 +109,11 @@ const ItemGrupp = ({ itemGr, filterSelect }) => {
         }}
       >
         {itemGr.attrs.map((item, index) => (
-          <MenuItem key={index} dense className={classes.menuitem}>
+          <MenuItem
+            key={index}
+            dense
+            className={classes.menuitem}           
+          >
             <ItemAttr
               itemAttr={item}
               aliasGr={aliasGr}
@@ -122,8 +132,6 @@ const ItemGrupp = ({ itemGr, filterSelect }) => {
 
 ItemGrupp.propTypes = {
   itemGr: PropTypes.object.isRequired,
-  // colorsData: PropTypes.object.isRequired,
-  // sizesData: PropTypes.object.isRequired,
   filterSelect: PropTypes.object.isRequired,
 };
 

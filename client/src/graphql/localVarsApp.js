@@ -1,6 +1,6 @@
 import { makeVar } from "@apollo/client";
 
-//export const loadingFormVar = makeVar(false);
+export const loadingBtnVar = makeVar(false);
 export const alertVar = makeVar(null);
 export const recentlyViewedVar = makeVar([]);
 export const errorVar = makeVar(null);

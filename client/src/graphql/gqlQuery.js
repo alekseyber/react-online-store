@@ -551,6 +551,12 @@ export const SELECT_FILTER_QUERY = gql`
   }
 `;
 
+export const LOADING_BTN_QUERY = gql`
+  query LoadingBtn {
+    loadingBtn @client
+  }
+`;
+
 export const SORT_BTN_QUERY = gql`
   query SortBtn {
     sortData @client {
@@ -709,6 +715,7 @@ const OrderDonePage = {
 export const ORDER_DONE_PAGE_QUERY = gql`
   query OrderDonePage {
     baseApiUrl @client
+    orderDone @client
     paramsData {
       ...OrderDonePageFragment
     }
@@ -737,8 +744,21 @@ export const RETURN_PRODUCT_PAGE_QUERY = gql`
     textReturnProduct {
       content
     }
+    returnProductStatus @client
   }
   ${ReturnProductPage.fragments.paramsData}
+`;
+
+export const COMMENT_ADD_QUERY = gql`
+  query CommentAdd {
+    commentStatus @client
+  }
+`;
+
+export const RETURN_CALL_QUERY = gql`
+  query ReturnCall {
+    returnCallStatus @client
+  }
 `;
 
 export const PRODUCTS_GRID_QUERY = gql`
@@ -966,6 +986,7 @@ const DeliveryRezult = {
           deliveryDateMin
           deliveryDateMax
           priceByCurrency
+          tariffId
         }
         courier {
           price
@@ -974,6 +995,7 @@ const DeliveryRezult = {
           deliveryDateMin
           deliveryDateMax
           priceByCurrency
+          tariffId
         }
       }
     `,
@@ -1013,6 +1035,21 @@ export const DELIVERY_CITY_INPUT_QUERY = gql`
       oblName
     }
   }
+`;
+
+export const USE_ADD_ORDER_QUERY = gql`
+  query UseAddOrder($cityid: Int!) {
+    cityIdCurrent @client @export(as: "cityid")
+    deliveryData(cityid: $cityid) {
+      ...DeliveryRezultDeliveryDataFragment
+    }
+    pvzSelect @client
+    deliverySelect @client
+    cartData @client
+    cuponData @client
+    cityCurrent @client
+  }  
+  ${DeliveryRezult.fragments.deliveryData}
 `;
 
 export const DELIVERY_REZULT_QUERY = gql`

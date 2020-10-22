@@ -13,9 +13,10 @@ export default () => {
   const { data } = useQueryApp(ALERT_QUERY);
 
   const alertData = data ? data.alert : null;
+  const openOn = data ? !!data.alert : false;
   const alertText = alertData ? alertData.text : "";
   const alertType = alertData ? alertData.type : "success";
-  
+
   const closeAlertHandler = (_, reason) => {
     if (reason === "clickaway") {
       return;
@@ -24,11 +25,7 @@ export default () => {
   };
 
   return (
-    <Snackbar
-      open={alertData}
-      autoHideDuration={6000}
-      onClose={closeAlertHandler}
-    >
+    <Snackbar open={openOn} autoHideDuration={6000} onClose={closeAlertHandler}>
       <Alert onClose={closeAlertHandler} severity={alertType || "success"}>
         {alertText}
       </Alert>

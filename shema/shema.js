@@ -759,7 +759,7 @@ const typeDefs = gql`
     deliveryDateMax: String
     tariffId: Int
     priceByCurrency: Int
-    currency: String
+    # currency: String
   }
 
   input PvzSelect {
@@ -770,6 +770,7 @@ const typeDefs = gql`
     Address: String
     WorkTime: String
     AddressComment: String
+    type: String
   }
 
   input DeliveryPrice {
@@ -798,7 +799,7 @@ const typeDefs = gql`
     deliverySelect: Int
     pvzSelect: PvzSelect
     deliveryPrice: DeliveryPrice
-    cityObj: CityInput
+    cityObj: CityInput!
     cart: [Cart!]!
   }
 
@@ -827,19 +828,23 @@ const typeDefs = gql`
   }
   #=========================================
   type Mutation {
-    addComment(form: AddCommentMutationInput!): BaseMutationResponse
-    addOrder(form: AddOrderMutationInput!): AddOrderMutationResponse
-    addReturnProduct(form: ReturnProductMutationInput!): BaseMutationResponse
-    addReturnCall(form: ReturnCallMutationInput!): BaseMutationResponse
+    addComment(formData: AddCommentMutationInput!): BaseMutationResponse
+    addOrder(formData: AddOrderMutationInput!): AddOrderMutationResponse
+    addReturnProduct(
+      formData: ReturnProductMutationInput!
+    ): BaseMutationResponse
+    addReturnCall(formData: ReturnCallMutationInput!): BaseMutationResponse
   }
 `;
 
 const resolvers = {
   Mutation: {
-    addComment: (_, { form }, { ip }) => addCommentData(form, ip),
-    addOrder: (_, { form }, { ip }) => sentOrderData(form, ip),
-    addReturnProduct: (_, { form }, { ip }) => returnProductFormData(form, ip),
-    addReturnCall: (_, { form }, { ip }) => returnCallFormData(form, ip),
+    addComment: (_, { formData }, { ip }) => addCommentData(formData, ip),
+    addOrder: (_, { formData }, { ip }) => sentOrderData(formData, ip),
+    addReturnProduct: (_, { formData }, { ip }) =>
+      returnProductFormData(formData, ip),
+    addReturnCall: (_, { formData }, { ip }) =>
+      returnCallFormData(formData, ip),
   },
   MutationResponse: {
     __resolveType(mutationResponse, context, info) {

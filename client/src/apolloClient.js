@@ -9,7 +9,12 @@ import {
   baseApiUrlVar,
 } from "./graphql/localVars";
 
-import { alertVar, recentlyViewedVar, errorVar } from "./graphql/localVarsApp";
+import {
+  alertVar,
+  recentlyViewedVar,
+  errorVar,
+  loadingBtnVar,
+} from "./graphql/localVarsApp";
 
 import { modalRootDataVar } from "./graphql/localVarsModal";
 
@@ -21,6 +26,13 @@ import {
 } from "./graphql/localVarsCart";
 
 import { filterSelectVar } from "./graphql/localVarsFilter";
+
+import {
+  orderDoneVar,
+  returnProductStatusVar,
+  commentStatusVar,
+  returnCallStatusVar,
+} from "./graphql/localVarsOrder";
 
 const baseApiUrl = () => {
   if (process.env.REACT_APP_API_URL) {
@@ -202,6 +214,31 @@ export const cache = new InMemoryCache({
     },
     Query: {
       fields: {
+        loadingBtn: {
+          read() {
+            return loadingBtnVar();
+          },
+        },
+        orderDone: {
+          read() {
+            return orderDoneVar();
+          },
+        },
+        returnProductStatus: {
+          read() {
+            return returnProductStatusVar();
+          },
+        },
+        commentStatus: {
+          read() {
+            return commentStatusVar();
+          },
+        },
+        returnCallStatus: {
+          read() {
+            return returnCallStatusVar();
+          },
+        },
         filterSelect: {
           read() {
             return filterSelectVar();
@@ -310,6 +347,11 @@ export const cache = new InMemoryCache({
             const cityСurrent = cityСurrentVar();
             if (cityСurrent.id) return cityСurrent.id;
             return 44;
+          },
+        },
+        cityCurrent: {
+          read() {
+            return cityСurrentVar();
           },
         },
         selectSize: {

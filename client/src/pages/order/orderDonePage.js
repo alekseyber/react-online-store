@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { makeStyles } from "@material-ui/core/styles";
@@ -10,9 +9,9 @@ import LinkUi from "@material-ui/core/Link";
 import Button from "@material-ui/core/Button";
 import { PageBase } from "../../hoc/PageBase";
 import { useRouter } from "../../hooks/router.hook";
-import { setOrderValue } from "../../redux/actions/order";
 import { showAlert } from "../../graphql/localVarsApp";
 import { ORDER_DONE_PAGE_QUERY } from "../../graphql/gqlQuery";
+import { orderDoneVar } from "../../graphql/localVarsOrder";
 import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 import LoaderPage from "../../components/loaderpage/LoaderPage";
 import ErrorContent from "../../components/errorcontent/ErrorContent";
@@ -35,32 +34,33 @@ const useStyles = makeStyles({
 export default () => {
   const classes = useStyles();
   const { replace } = useRouter();
-  const dispatch = useDispatch();
-
-  const { orderDone, orderId, orderNumber } = useSelector(
-    (state) => state.order
-  );
-
-  const { data, loading, error } = useQueryApp(ORDER_DONE_PAGE_QUERY);
-
-  const linkOrder = `/order/${orderId}`;
 
   const copyHandler = () => {
     showAlert("Ссылка скопирована");
   };
 
+  const { data, loading, error } = useQueryApp(ORDER_DONE_PAGE_QUERY);
+
+  const orderDone = data ? data.orderDone : null;
+
   useEffect(() => {
-    if (!orderDone) {
+    if (!orderDone && !loading) {
       replace("/404");
     }
-
     return () => {
-      dispatch(setOrderValue("orderDone", false));
+      if (orderDone) {
+        orderDoneVar(null);
+      }
     };
-  }, [dispatch, orderDone, replace]);
+  }, [replace, loading, orderDone]);
 
   if (loading) return <LoaderPage />;
   if (error) return <ErrorContent />;
+
+  const orderId = orderDone ? orderDone.orderId : "";
+  const orderNumber = orderDone ? orderDone.orderNumber : "";
+
+  const linkOrder = `/order/${orderId}`;
 
   const { orderDoneText, baseUrl } = data.paramsData;
   const baseApiUrl = data.baseApiUrl;

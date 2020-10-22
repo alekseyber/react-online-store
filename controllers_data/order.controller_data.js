@@ -349,15 +349,10 @@ module.exports.sentOrderData = async (inputData, ip) => {
     order.pvzCode = "";
     order.pvzSelect = false;
 
-    if (
-      inputData.pvzSelect &&
-      inputData.pvzSelectStatus &&
-      inputData.pvzSelect !== "false" &&
-      inputData.pvzSelectStatus !== "false"
-    ) {
+    if (inputData.pvzSelect && inputData.pvzSelectStatus) {
       order.pvzCode = inputData.pvzSelect.Code;
       order.pvzSelect = true;
-      order.deliveryComment += ` Адрес ПВЗ: ${inputData.pvzSelect.Address}, время: ${inputData.pvzSelect.WorkTime}.`;
+      order.deliveryComment += ` Адрес ПВЗ: ${inputData.pvzSelect.Address}, время: ${inputData.pvzSelect.WorkTime}, тип: ${inputData.pvzSelect.type}.`;
       order.deliveryPrice = order.deliveryPricePvz;
     }
 
@@ -471,24 +466,22 @@ module.exports.returnProductFormData = async (inputData, acquirer_ip) => {
 
     const phone = phoneFormat(inputData.phone);
     const acquirer_id = await detectAcquirer(phone);
-
+    const action = Number(inputData.action);
+    const actionStr = action === 0 ? "обмен" : "возврат";
     if (acquirer_id) {
       const detect = await detectReturnProduct(acquirer_id);
 
       if (detect) {
-        const action = Number(inputData.action);
-
         const rezultObj = { acquirer_id, phone, action, acquirer_ip };
         const newReturnProduct = new Returnproduct(rezultObj);
         await newReturnProduct.save();
         rezultObj.dateStr = formatDateStr();
 
-        rezultObj.actionStr = action === 0 ? "обмен" : "возврат";
+        rezultObj.actionStr = actionStr;
         sendAdminEmailReturnProduct(rezultObj);
-        // return doc;
       }
     }
-    return new SuccessClass("Заявка получена");
+    return new SuccessClass(`Заявка на ${actionStr} получена.`);
     //throw new DetectPfoneError("returnProductFormData not Detect");
   } catch (e) {
     globalErrorCheck(e);

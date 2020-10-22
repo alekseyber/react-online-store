@@ -48,8 +48,9 @@ export const hideDialog = () => {
 
 const openDialog = (modalDialogData) => {
   const modalRootData = modalRootDataVar();
+
   if (modalRootData) {
-    modalPrevDataVar(modalDialogData);
+    modalPrevDataVar(modalRootData);
   }
   modalRootDataVar(modalDialogData);
 };
