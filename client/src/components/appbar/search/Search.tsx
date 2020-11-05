@@ -118,10 +118,14 @@ const Search: React.FC<SearchProps> = ({ fclose }) => {
       open={searchTerm.length > 1}
       onChange={(_, newValue) => handleSelect(newValue as TSearchProductsList)}
       getOptionLabel={(option) => (option as TSearchProductsList).title}
-      getOptionSelected={(option, value) => {
-        const opt = option as TSearchProductsList;
-        const valSel = value as TSearchProductsList;
-        return opt.title === valSel.title;
+      getOptionSelected={() => {
+        //option, value
+        // const opt = option as TSearchProductsList;
+        // const valSel = value as TSearchProductsList;
+
+        // console.log(opt, valSel);
+        // return opt.title === valSel.title;
+        return true
       }}
       options={options}
       loading={loading}
