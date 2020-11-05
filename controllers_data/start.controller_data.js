@@ -400,7 +400,9 @@ const getStartTest = async (ip) => {
     //   doc.save();
     // });
 
-  //  return await getCategoryProductsData();
+    //  return await getCategoryProductsData();
+
+    return await getFilter();
 
     return {};
   } catch (e) {

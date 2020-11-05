@@ -141,8 +141,7 @@ const typeDefs = gql`
     title: String!
   }
 
-  type ParamsData @cacheControl(maxAge: 36000) {
-    #_id: ID!
+  type ParamsData @cacheControl(maxAge: 36000) {   
     shop_name: String!
     shop_name_rus: String
     shop_fullname_rus: String
@@ -610,9 +609,9 @@ const typeDefs = gql`
   }
 
   # ----searchFull---
-  type SearchFullFilterSelected {
-    color: [String]
-  }
+  # type SearchFullFilterSelected {
+  #   color: [String]
+  # }
 
   type SearchFullProduct {
     alias: String!

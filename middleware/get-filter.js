@@ -2,8 +2,8 @@ const Product = require("../models/product.model");
 const Filter = require("../models/filter.model");
 const Сolor = require("../models/colors.model");
 const Sizes = require("../models/sizes.model");
-const Cache = require("../models/cache.model");
-const md5 = require("js-md5");
+// const Cache = require("../models/cache.model");
+// const md5 = require("js-md5");
 
 const getColorGr = async () => {
   try {
@@ -90,13 +90,13 @@ const getColorChilds = async () => {
 
 const getFilter = async () => {
   try {
-    const cacheKey = md5("filter_filter");
-    const cacheAction = "filter";
-    const doc = await Cache.findOne({ cacheKey }, { _id: 0, cacheData: 1 });
+    //  const cacheKey = md5("filter_filter");
+    // const cacheAction = "filter";
+    //  const doc = await Cache.findOne({ cacheKey }, { _id: 0, cacheData: 1 });
 
-    if (doc) {
-      return doc.cacheData.get("obj");
-    }
+    // if (doc) {
+    //   return doc.cacheData.get("obj");
+    // }
 
     const aggregate = await Product.aggregate([
       { $match: { status: true } },
@@ -193,7 +193,7 @@ const getFilter = async () => {
             alias: "$alias",
           },
         },
-        { $addFields: { color: 1 } },       
+        { $addFields: { color: 1 } },
       ]);
 
       if (colors_aggregate.length > 0) {
@@ -230,7 +230,7 @@ const getFilter = async () => {
 
         if (grupp.color) {
           if (rezult.colors.length > 0) {
-            attrs = rezult.colors;            
+            attrs = rezult.colors;
           }
         } else if (grupp.sizes) {
           if (rezult.sizes.length > 0) {
@@ -277,11 +277,13 @@ const getFilter = async () => {
 
     const colorsGrupp = await getColorGr();
     const colorsChToGr = await getColorChilds();
-    const cacheData = {};
-    cacheData.obj = { filterRezult, filterIndex, colorsGrupp, colorsChToGr };
-    const сache = new Cache({ cacheKey, cacheData, cacheAction });
-    await сache.save();
-    return cacheData.obj;
+
+    return { filterRezult, filterIndex, colorsGrupp, colorsChToGr };
+    // const cacheData = {};
+    // cacheData.obj = { filterRezult, filterIndex, colorsGrupp, colorsChToGr };
+    // const сache = new Cache({ cacheKey, cacheData, cacheAction });
+    // await сache.save();
+    // return cacheData.obj;
   } catch (e) {
     throw e;
   }

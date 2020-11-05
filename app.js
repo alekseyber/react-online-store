@@ -9,7 +9,7 @@ const { ApolloServer } = require("apollo-server-express");
 const responseCachePlugin = require("apollo-server-plugin-response-cache");
 const passportStrategy = require("./middleware/passport-strategy");
 const authRoutes = require("./routes/auth.routes");
-// const startRoutes = require("./routes/start.routes");
+//const startRoutes = require("./routes/start.routes");
 // const deliveryRoutes = require("./routes/delivery.routes");
 // const productsRoutes = require("./routes/products.routes");
 // const categoryRoutes = require("./routes/category.routes");
@@ -66,7 +66,7 @@ app.use((req, _, next) => {
   next();
 });
 
-// app.use("/api/start", startRoutes);
+//app.use("/api/start", startRoutes);
 app.use("/api/auth", authRoutes);
 // app.use("/api/delivery", deliveryRoutes);
 // app.use("/api/products", productsRoutes);
