@@ -5,7 +5,8 @@ import Button from "@material-ui/core/Button";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import Popover from "@material-ui/core/Popover";
-import Typography from "@material-ui/core/Typography";
+//import Typography from "@material-ui/core/Typography";
+import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
@@ -39,6 +40,11 @@ const useStyles = makeStyles((theme) => ({
     //flexGrow: 1,
     padding: theme.spacing(2),
     overflowY: "hidden",
+  },
+  cardLink: {
+    "&:hover": {
+      textDecoration: "none",
+    },
   },
   cardRoot: {
     "&:hover": {
@@ -105,7 +111,13 @@ const MenuItemBtn: React.FC<MenuItemBtnProps> = ({
     setAnchorEl(null);
   };
 
-  const handleTo = (to: string): void => {
+  const handleTo = (
+    to: string,
+    e?: React.SyntheticEvent<HTMLElement>
+  ): void => {
+    if (e) {
+      e.preventDefault();
+    }
     history.push("/category/" + to);
     handleClose();
   };
@@ -115,7 +127,11 @@ const MenuItemBtn: React.FC<MenuItemBtnProps> = ({
 
   if (root || item.childs.length === 0) {
     return (
-      <MenuButton size="medium" onClick={() => handleTo(item.alias)}>
+      <MenuButton
+        size="medium"
+        onClick={(e) => handleTo(item.alias, e)}
+        href={"/category/" + item.alias}
+      >
         {item.title}
       </MenuButton>
     );
@@ -135,20 +151,21 @@ const MenuItemBtn: React.FC<MenuItemBtnProps> = ({
 
     return (
       <Grid item>
-        <Card
-          className={classes.cardRoot}
-          // component={Link}
-          // to={"/category/" + cat.alias}
-          onClick={() => handleTo(cat.alias)}
-        >
+        <Card className={classes.cardRoot} onClick={() => handleTo(cat.alias)}>
           <CardActionArea>
             <CardMedia>
               <Image src={imgStartPatch + cat.img} alt={cat.title} />
             </CardMedia>
             <CardContent>
-              <Typography gutterBottom variant="h6" component="div">
+              <Link
+                className={classes.cardLink}
+                gutterBottom
+                variant="h6"
+                href={"/category/" + cat.alias}
+                onClick={(e: React.SyntheticEvent) => e.preventDefault()}
+              >
                 {title}
-              </Typography>
+              </Link>
             </CardContent>
           </CardActionArea>
         </Card>

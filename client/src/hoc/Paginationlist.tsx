@@ -130,9 +130,11 @@ export const PaginationList: React.FC<PaginationListProps> = (props) => {
     return <PaginationItem component="a" href={href} {...item} />;
   };
 
-  if (paginationLength < page) {
-    replace("/404");
-  }
+  useEffect(() => {
+    if (paginationLength < page) {
+      replace("/404");
+    }
+  }, [paginationLength, page, replace]);
 
   if (totalList === 0) {
     return null;

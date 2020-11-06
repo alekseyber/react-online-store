@@ -1,12 +1,15 @@
 import { red } from "@material-ui/core/colors";
+import { green } from "@material-ui/core/colors";
 import { createMuiTheme } from "@material-ui/core/styles";
 
 declare module "@material-ui/core/styles/createPalette" {
   export interface Palette {
     darkprimary: Palette["primary"];
+    priceprimary: Palette["primary"];
   }
   export interface PaletteOptions {
     darkprimary?: PaletteOptions["primary"];
+    priceprimary?: Palette["primary"];
   }
 }
 
@@ -21,7 +24,7 @@ const theme = createMuiTheme({
     },
     secondary: {
       light: "#ff7961",
-      main: "#f44336",
+      main: red[600], //#ac7904 /зол #f44336 /кр
       dark: "#ba000d",
       contrastText: "#fff",
     },
@@ -31,12 +34,17 @@ const theme = createMuiTheme({
       main: "#111111",
       contrastText: "#fffff",
     },
+    priceprimary: {
+      light: "rgba(0,0,0,.6)", //old price
+      dark: green[800], //summ cart
+      main: red[600], // price
+      contrastText: "#fffff",
+    },
     error: {
       main: red.A400,
     },
     background: {
       default: "#fff",
-
       //dark: "#111111",
     },
     success: {
@@ -46,6 +54,45 @@ const theme = createMuiTheme({
       contrastText: "rgba(0, 0, 0, 0.87)",
     },
   },
+  overrides: {
+    MuiButton: {
+      root: {
+        borderRadius: 0,
+      },
+    },
+    // MuiPaper: {
+    //   root: {
+    //     borderRadius: 0,
+    //   },
+    // },
+  },
+  // shape: {
+  //   borderRadius: 0,
+  // },
 });
 
 export default theme;
+
+export const themeBtnAddCart = createMuiTheme({
+  palette: {
+    primary: {
+      //btn add cart
+      main: green[500],
+      contrastText: "#fff",
+    },
+    secondary: {
+      // btn qorder
+      light: "#ff7961",
+      main: "#f44336",
+      dark: "#ba000d",
+      contrastText: "#fff",
+    },
+  },
+  overrides: {
+    MuiButton: {
+      root: {
+        borderRadius: 0,
+      },
+    },
+  },
+});

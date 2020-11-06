@@ -57,11 +57,13 @@ const useStyles = makeStyles((theme) => ({
   },
   price: {
     fontWeight: 700,
+    color: theme.palette.priceprimary.main,
   },
-  oldrice: {
+  oldprice: {
     fontWeight: 700,
     marginLeft: theme.spacing(1),
     textDecoration: "line-through",
+    color: theme.palette.priceprimary.light,
   },
   color: {
     "&:hover": {
@@ -76,7 +78,6 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     overflow: "hidden",
     position: "relative",
-
     alignItems: "center",
     flexShrink: 0,
     borderRadius: "50%",
@@ -213,7 +214,7 @@ const ProductForCatalog: React.FC<ProductForCatalogProps> = ({
         <div>
           <Typography
             variant="subtitle1"
-            color="secondary"
+            //  color="initial"
             component="span"
             className={classes.price}
           >
@@ -221,9 +222,8 @@ const ProductForCatalog: React.FC<ProductForCatalogProps> = ({
           </Typography>
           <Typography
             variant="subtitle2"
-            color="textSecondary"
             component="span"
-            className={classes.oldrice}
+            className={classes.oldprice}
           >
             {product.old_price} {currsymbol}
           </Typography>

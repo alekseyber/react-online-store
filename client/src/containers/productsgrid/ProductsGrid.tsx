@@ -80,7 +80,7 @@ const ListProduct: React.FC<ProductBaseForGrid> = ({
 
 const ProductsGrid: React.FC<ProductsGridProps> = ({ products, page = 1 }) => {
   const { data, loading } = useQueryApp<IProductsGrid>(PRODUCTS_GRID_QUERY);
-
+  
   if (loading) {
     return <LoaderPage />;
   }

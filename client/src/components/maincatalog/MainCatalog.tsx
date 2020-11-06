@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "-100%",
     backgroundColor: "rgba(0,0,0,.2)",
     width: "100%",
-    color: "#fff",
+    color: theme.palette.primary.contrastText,
     overflow: "hidden",
     alignItems: "center",
     display: "flex",
@@ -108,13 +108,14 @@ const MainCatalog: React.FC<MainCatalogProps> = ({
               </CardMedia>
               <CardContent>
                 {maincatalogprefix && (
-                  <Typography variant="h5" component="div" color="secondary">
+                  <Typography variant="h5" component="div" color="textSecondary">
                     {maincatalogprefix}
                   </Typography>
                 )}
                 <Typography
                   variant="h5"
                   component="div"
+                  color="secondary"
                   className={classes.title}
                 >
                   {item.title}

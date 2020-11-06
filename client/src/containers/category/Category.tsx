@@ -59,7 +59,7 @@ const Category: React.FC<CategoryProps> = ({ data, alias }) => {
     products,
     filterData,
   });
-  const productsTotal = products.length;
+  const productsTotal = productsData.products.length;
   const canonical = `/category/${alias}`;
 
   const handleClear = () => {
@@ -79,7 +79,9 @@ const Category: React.FC<CategoryProps> = ({ data, alias }) => {
     filterInputRezult: productsData.filterRezult,
     breadcrumbs_data: contCategoryData.breadcrumbs,
     page,
+    category: true,
   };
+  
 
   return (
     <PageBase {...bind}>

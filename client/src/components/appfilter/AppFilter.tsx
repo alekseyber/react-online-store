@@ -71,7 +71,7 @@ const AppFilter: React.FC<AppFilterProps> = ({
           color="primary"
           onClick={toggleDrawer(true)}
           className={classes.btngr}
-          size="small"
+          // size="small"
         >
           Фильтр
         </Button>
@@ -82,7 +82,7 @@ const AppFilter: React.FC<AppFilterProps> = ({
           color="primary"
           onClick={handleClear}
           className={classes.btngr}
-          size="small"
+          //  size="small"
         >
           Очистить
         </Button>
@@ -92,7 +92,7 @@ const AppFilter: React.FC<AppFilterProps> = ({
           variant="outlined"
           color="primary"
           className={classes.btngr}
-          size="small"
+       //   size="small"
           component={Link}
           to={rootCategory}
         >

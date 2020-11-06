@@ -41,6 +41,7 @@ export interface IPageBaseProps {
   container_fixed?: boolean;
   breadcrumbs_on?: boolean;
   error?: boolean;
+  category?: boolean;
 }
 
 // declare namespace JSX {
@@ -72,6 +73,7 @@ export const PageBase: React.FC<IPageBaseProps> = (props) => {
     filterInputRezult,
     container_fixed = true,
     error = false,
+    category = false,
   } = props;
 
   const { data } = useQueryApp<IPageBase>(PAGE_BASE_QUERY);
@@ -112,7 +114,7 @@ export const PageBase: React.FC<IPageBaseProps> = (props) => {
 
   if (filter_on) {
     bindFilter.sortBtnStatus = true;
-    bindFilter.category = true;
+    bindFilter.category = category;
     bindFilter.filterInputRezult = filterInputRezult;
   }
   let canonical = link_page;

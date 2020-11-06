@@ -1,20 +1,28 @@
 import React from "react";
 //import PropTypes from "prop-types";
-import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles"; //makeStyles,
+import { makeStyles } from "@material-ui/core/styles"; //makeStyles,
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
-import { green } from "@material-ui/core/colors";
+//import { green } from "@material-ui/core/colors";
 import { useCartSumm } from "../../hooks/cart-summ.hook";
 import { useDeliveryPrice } from "../../hooks/delivery-price.hook";
 import { ICity } from "../../graphql/localVars";
 
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: green[600],
-    },
+// const theme = createMuiTheme({
+//   palette: {
+//     primary: {
+//       main: green[600],
+//     },
+//   },
+// });
+
+const useStyles = makeStyles((theme) => ({
+  summprice: {
+    fontWeight: 700,
+    color: theme.palette.priceprimary.dark,
+    marginLeft: theme.spacing(1),
   },
-});
+}));
 
 interface CartSummProps {
   cityDefault: ICity;
@@ -24,6 +32,11 @@ interface CartSummProps {
 const CartSumm: React.FC<CartSummProps> = ({ currSymbol, cityDefault }) => {
   const summData = useCartSumm();
   const deliveryPrice = useDeliveryPrice(cityDefault);
+  const classes = useStyles();
+
+  if (summData.summcupon === 0) {
+    return null;
+  }
 
   return (
     <Box m={1}>
@@ -62,16 +75,16 @@ const CartSumm: React.FC<CartSummProps> = ({ currSymbol, cityDefault }) => {
         <Typography variant="body1" component="span" color="textSecondary">
           Итого:
         </Typography>
-        <ThemeProvider theme={theme}>
-          <Typography
-            variant="h6"
-            component="span"
-            color="primary"
-            className="ml-1 font-weight-black"
-          >
-            {summData.summcupon} {currSymbol}
-          </Typography>
-        </ThemeProvider>
+        {/* <ThemeProvider theme={theme}> */}
+        <Typography
+          variant="h6"
+          component="span"
+        //  color="primary"
+          className={classes.summprice}
+        >
+          {summData.summcupon} {currSymbol}
+        </Typography>
+        {/* </ThemeProvider> */}
       </div>
       {deliveryPrice > 0 && (
         <>
@@ -93,16 +106,14 @@ const CartSumm: React.FC<CartSummProps> = ({ currSymbol, cityDefault }) => {
             <Typography variant="body1" component="span" color="textSecondary">
               Итого с доставкой:
             </Typography>
-            <ThemeProvider theme={theme}>
-              <Typography
-                variant="h6"
-                component="span"
-                color="primary"
-                className="ml-1 font-weight-black"
-              >
-                {summData.summcupon + deliveryPrice} {currSymbol}
-              </Typography>
-            </ThemeProvider>
+            <Typography
+              variant="h6"
+              component="span"
+          //    color="inherit"
+              className={classes.summprice}
+            >
+              {summData.summcupon + deliveryPrice} {currSymbol}
+            </Typography>
           </div>
         </>
       )}

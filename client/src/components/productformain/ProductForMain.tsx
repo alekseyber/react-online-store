@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from "react";
 //import PropTypes from "prop-types";
-import {
-  makeStyles,
-  createMuiTheme,
-  ThemeProvider,
-} from "@material-ui/core/styles";
+import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Grid from "@material-ui/core/Grid";
@@ -16,13 +12,13 @@ import SendIcon from "@material-ui/icons/Send";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import Divider from "@material-ui/core/Divider";
 import Box from "@material-ui/core/Box";
-import { green } from "@material-ui/core/colors";
 import { setColorProductAction } from "../../graphql/localVarsCart";
 import { cartAddAction } from "../../graphql/localVarsCart";
 import ProductSizeSelector from "../productsizeselector/ProductSizeSelector";
 import DeliveryRezult from "../../containers/deliveryrezult/DeliveryRezult";
 import { IProductRezult } from "../../hooks/useProductDataRender.hook";
 import { TProductLevel1 } from "../../graphql/gqlQuery";
+import { themeBtnAddCart } from "../../theme";
 
 const useStyles = makeStyles((theme) => ({
   rowinf: {
@@ -36,11 +32,13 @@ const useStyles = makeStyles((theme) => ({
   },
   price: {
     fontWeight: 700,
+    color: theme.palette.priceprimary.main,
   },
-  oldrice: {
+  oldprice: {
     fontWeight: 700,
     marginLeft: theme.spacing(1),
     textDecoration: "line-through",
+    color: theme.palette.priceprimary.light,
   },
   color: {
     "&:hover": {
@@ -61,19 +59,10 @@ const useStyles = makeStyles((theme) => ({
   btnscart: {
     marginTop: theme.spacing(0.8),
     marginBottom: theme.spacing(0.8),
+    //  margin: theme.spacing(0.8),
     // minWidth: 200,
-    //  width: '100%'
   },
 }));
-
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: green[500],
-      contrastText: "#fff",
-    },
-  },
-});
 
 interface ProductForMainProps {
   product: IProductRezult;
@@ -189,7 +178,7 @@ const ProductForMain: React.FC<ProductForMainProps> = ({
           <div>
             <Typography
               variant="subtitle1"
-              color="secondary"
+              //   color="inherit"
               component="span"
               className={classes.price}
             >
@@ -198,9 +187,9 @@ const ProductForMain: React.FC<ProductForMainProps> = ({
             {product.old_price > 0 && (
               <Typography
                 variant="subtitle2"
-                color="textSecondary"
+                //  color="inherit"
                 component="span"
-                className={classes.oldrice}
+                className={classes.oldprice}
               >
                 {product.old_price} {currsymbol}
               </Typography>
@@ -261,7 +250,7 @@ const ProductForMain: React.FC<ProductForMainProps> = ({
             />
           </div>
         )}
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={themeBtnAddCart}>
           <Button
             variant="contained"
             color="primary"
@@ -272,17 +261,17 @@ const ProductForMain: React.FC<ProductForMainProps> = ({
           >
             В корзину
           </Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            className={classes.btnscart}
+            endIcon={<SendIcon />}
+            fullWidth={true}
+            onClick={() => handleAddCart(true)}
+          >
+            Быстрый заказ
+          </Button>
         </ThemeProvider>
-        <Button
-          variant="contained"
-          color="secondary"
-          className={classes.btnscart}
-          endIcon={<SendIcon />}
-          fullWidth={true}
-          onClick={() => handleAddCart(true)}
-        >
-          Быстрый заказ
-        </Button>
         <Box mt={3}>
           <Divider />
           <DeliveryRezult

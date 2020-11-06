@@ -44,7 +44,17 @@ const useStyles = makeStyles((theme) => ({
     width: 65,
     height: 65,
   },
-
+  price: {
+    fontWeight: 700,
+    color: theme.palette.priceprimary.main,
+    marginLeft: theme.spacing(1),
+  },
+  oldprice: {
+    fontWeight: 700,
+    marginLeft: theme.spacing(1),
+    textDecoration: "line-through",
+    color: theme.palette.priceprimary.light,
+  },
   formControl: {
     marginTop: theme.spacing(0.5),
     marginBottom: theme.spacing(0.5),
@@ -276,18 +286,18 @@ const CartItem: React.FC<CartItemProps> = ({
         </Typography>
         <Typography
           variant="body2"
-          color="secondary"
+         // color="secondary"
           component="span"
-          className="font-weight-black ml-1"
+          className={classes.price}
         >
           {price} {currsymbol}
         </Typography>
         {priceOld > 0 && (
           <Typography
             variant="body2"
-            color="textSecondary"
+         //   color="textSecondary"
             component="span"
-            className="oldrice ml-1"
+            className={classes.oldprice}
           >
             {priceOld} {currsymbol}
           </Typography>
