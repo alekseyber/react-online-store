@@ -1,4 +1,4 @@
-import React, { useState, createRef, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, useRef } from "react";
 import { useForm, Controller } from "react-hook-form";
 import ReCAPTCHA from "react-google-recaptcha";
 import InputMask from "react-input-mask";
@@ -98,7 +98,7 @@ const AppForm: React.FC<AppFormProps> = ({
   const deliverySelect = data ? data.deliverySelect : 0;
   const googleReKey = data ? data.googleReKey : "";
 
-  const recaptchaRef = createRef<ReCAPTCHA>();
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
 
   const { register, handleSubmit, errors, control } = useForm(); //, watch
 
@@ -106,9 +106,12 @@ const AppForm: React.FC<AppFormProps> = ({
     if (returnproduct) {
       data.action = value;
     }
-    if (reOn && recaptchaRef.current) {
-      const token = await recaptchaRef.current.executeAsync();
-      data.recaptchaToken = token;
+
+    if (reOn && recaptchaRef) {
+      if (recaptchaRef.current) {
+        const token = await recaptchaRef.current.executeAsync();
+        data.recaptchaToken = token;
+      }
     }
 
     handleInputSubmit(data);

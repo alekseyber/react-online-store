@@ -15,7 +15,7 @@ class FormDataClass<T extends object> {
 
   constructor(formDataInput: T, fieldsForm: string[]) {
     fieldsForm.forEach((field) => {
-      if (formDataInput[field as keyof T]) {
+      if (formDataInput[field as keyof T] !== undefined) {
         const item = formDataInput[field as keyof T] as unknown;
         if (typeof item === "string") {
           this[field] = (item as string).trim();
