@@ -55,11 +55,11 @@ const DeliveryRegion: React.FC<DeliveryRegionProps> = ({
           sel_pvz_v={sel_pvz_v}
         />
       )}
-      {textDeliveryProduct && (
+      {textDeliveryProduct && sel_pvz_v && (
         <Typography
-          variant="subtitle1"
+          variant="body2"
           component="div"
-          className="font-weight-black"
+          className="font-weight-black mt-2"
         >
           {textDeliveryProduct}
         </Typography>
