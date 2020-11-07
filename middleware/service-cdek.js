@@ -1,9 +1,9 @@
+const axios = require("axios");
+const oauth = require("axios-oauth-client");
 const Deliverysettings = require("../models/deliverysettings.model");
 const Order = require("../models/order.model");
 const Product = require("../models/product.model");
 const Cacheauth = require("../models/cacheauth.model");
-const axios = require("axios");
-const oauth = require("axios-oauth-client");
 
 function getDateStr(value) {
   const inputDate = new Date(value);
@@ -267,7 +267,7 @@ async function clearCacheauth() {
   }
 }
 
-async function clientAuthorization(api_settings = false, dev = false) {
+async function clientAuthorization(api_settings = null, dev = false) {
   try {
     const candidate = await Cacheauth.findOne(
       { cacheKey: "cdek" },
@@ -290,8 +290,8 @@ async function clientAuthorization(api_settings = false, dev = false) {
     if (dev) {
       //dev
       oauthSettings.url = "https://api.edu.cdek.ru/v2/oauth/token?parameters";
-      oauthSettings.client_id = "z9GRRu7FxmO53CQ9cFfI6qiy32wpfTkd";
-      oauthSettings.client_secret = "w24JTCv4MnAcuRTx0oHjHLDtyt3I6IBq";
+      oauthSettings.client_id = "EMscd6r9JnFiQ3bLoyjJY6eM78JrJceI";
+      oauthSettings.client_secret = "PjLZkKBHEiLK3YsjtNrt3TGNG0ahs3kG";
     } else {
       //prodaction
       oauthSettings.url = "https://api.cdek.ru/v2/oauth/token?parameters";
@@ -308,9 +308,9 @@ async function clientAuthorization(api_settings = false, dev = false) {
     }
     // console.log(oauthSettings)
     const getClientCredentials = oauth.client(axios.create(), oauthSettings);
-
     const auth = await getClientCredentials();
-    // console.log(auth)
+
+    //  console.log("auth", auth);
     if (auth.access_token) {
       axios.defaults.headers.common = {
         Authorization: `Bearer ${auth.access_token}`,
@@ -711,14 +711,14 @@ module.exports.deletingOrder = async (uuid, dev = false) => {
       }
     }
     const request = data.requests[data.requests.length - 1];
-
-    if (request.errors.length) {
-      const message = request.warnings.length
-        ? request.warnings[0].message
-        : "Ошибка в ответе СДЕК";
-      throw new Error(message);
+    if (request.errors) {
+      if (request.errors.length) {
+        const message = request.warnings.length
+          ? request.warnings[0].message
+          : "Ошибка в ответе СДЕК";
+        throw new Error(message);
+      }
     }
-
     const rezult = {
       uuid: data.entity.uuid,
     };
@@ -749,14 +749,14 @@ module.exports.deletingOrderByOrder = async (order_id, dev = false) => {
       }
 
       const request = data.requests[data.requests.length - 1];
-
-      if (request.errors.length) {
-        const message = request.warnings.length
-          ? request.warnings[0].message
-          : "Ошибка в ответе СДЕК";
-        throw new Error(message);
+      if (request.errors) {
+        if (request.errors.length) {
+          const message = request.warnings.length
+            ? request.warnings[0].message
+            : "Ошибка в ответе СДЕК";
+          throw new Error(message);
+        }
       }
-
       order.deliveryUuid = "";
       order.deliveryStatus = false;
       await order.save();
@@ -909,16 +909,18 @@ module.exports.creatingOrderReceipt = async (
     }
 
     const request = data.requests[data.requests.length - 1];
-
-    if (request.errors.length) {
-      const message = request.warnings.length
-        ? request.warnings[0].message
-        : "Ошибка в ответе СДЕК";
-      throw new Error(message);
+    if (request.errors) {
+      if (request.errors.length) {
+        const message = request.warnings.length
+          ? request.warnings[0].message
+          : "Ошибка в ответе СДЕК";
+        throw new Error(message);
+      }
     }
 
     return data.entity;
   } catch (e) {
+    console.error(e);
     throw e;
   }
 };
