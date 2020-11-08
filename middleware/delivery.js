@@ -248,9 +248,9 @@ module.exports.getDeliveryMidel = async (cityid, ip, start = false) => {
           false
         );
       }
-      return rezult;
     }
-    throw new Error(rezult.errMsg);
+    return rezult;
+    // throw new Error(rezult.errMsg);
   } catch (e) {
     throw new Error(e.message);
   }

@@ -42,7 +42,7 @@ const DeliveryRezult: React.FC<DeliveryRezultProps> = ({
   //   ? data.paramsData.cityDefault.id === cityIdCurrent
   //   : true;
   // const deliverySelect = data ? data.deliverySelect : 0;
-
+ 
   if (loading) return <LoaderContent />;
   if (!data) return null;
 
@@ -54,6 +54,8 @@ const DeliveryRezult: React.FC<DeliveryRezultProps> = ({
 
   const cityDefaultStatus = data.paramsData.cityDefault.id === cityIdCurrent;
   const deliverySelect = data.deliverySelect;
+
+
 
   const {
     defaultDeliveryText,
