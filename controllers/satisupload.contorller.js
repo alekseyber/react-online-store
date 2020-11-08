@@ -29,7 +29,7 @@ function strTrim(str, searchValue = "/") {
   return str;
 }
 function getNewDestination(addPatch) {
-  const staticDestination = path.resolve(__dirname, "../..", "static");
+  const staticDestination = path.resolve(__dirname, "..", "static");
   let newDestination = staticDestination;
 
   addPatch = strTrim(addPatch);
@@ -83,15 +83,17 @@ async function saveFile(
     const addPath = !modelName ? "" : modelName;
     const addReturnPath = addPath ? `/${addPath}` : "";
     const filename = getFileName(file.originalname);
-    let returnPath = `/static/images${addReturnPath}/${filename}`;
+    let returnPath = `/static/static/images${addReturnPath}/${filename}`;
     let newDestination = path.resolve(
       __dirname,
-      "../..",
+      "..",
       "static",
       "static",
       "images",
       addPath
     );
+
+   // console.log('newDestination', newDestination)
     const fileBuffer = file.buffer;
 
     if (modelName === "product" || modelName === "category") {
@@ -138,6 +140,7 @@ async function saveFile(
   } catch (e) {
     rezult.err = true;
     console.error(e.message);
+  //  console.error(e);
   }
 
   return rezult;
