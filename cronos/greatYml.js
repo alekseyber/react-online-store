@@ -360,7 +360,7 @@ module.exports = async () => {
         const products = await getProducts((params.baseUrl + productImgPrefixObj.path), params.currency, params.currSymbol, params.baseUrl);
 
         const category = await Category.find({ status: true }, { title: 1, parent_id: 1 });
-        const filePath = path.resolve(__dirname, '../..', 'static', 'static', 'price.xml');
+        const filePath = path.resolve(__dirname, '..', 'static', 'static', 'price.xml');
 
         //    console.log(filePath)
 
