@@ -113,7 +113,7 @@ async function start() {
       useUnifiedTopology: true,
       useCreateIndex: true,
     });
-    console.log("MongoDB connected");
+    console.log(`MongoDB connected, MONGO_URI: ${keys.MONGO_URI}`);
     const db = mongoose.connection;
 
     db.on("reconnected", function () {
