@@ -108,12 +108,12 @@ server.applyMiddleware({ app, path: "/api/graphql" });
 
 async function start() {
   try {
-    await mongoose.connect(keys.MONGO_URI, {
+    await mongoose.connect(keys.MONGO_URI_R, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useCreateIndex: true,
     });
-    console.log(`MongoDB connected, MONGO_URI: ${keys.MONGO_URI}`);
+    console.log(`MongoDB connected, MONGO_URI_R: ${keys.MONGO_URI_R}`);
     const db = mongoose.connection;
 
     db.on("reconnected", function () {
