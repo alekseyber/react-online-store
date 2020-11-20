@@ -34,7 +34,7 @@ export const deliverySelectVar = makeVar<TDeliverySelect>(0);
 const googleReKeyInitial: string =
   process.env.REACT_APP_RE_KEY || "6LdMXcQUAAAAAMDZv8aiNoBc1poD0Yd6fZjeivKN";
 const yaMapKeyInitial: string =
-  process.env.REACT_APP_RE_KEY || "b43c189e-389a-4ccc-b79e-436d89a914ee";
+  process.env.REACT_APP_YMAP_KEY || "b43c189e-389a-4ccc-b79e-436d89a914ee";
 let baseApiUrlInitial: string =
   process.env.NODE_ENV !== "production" ? "http://localhost:5000" : "";
 
