@@ -69,7 +69,7 @@ npm update in /client folder.
 
 ### Server
 
-MONGO_URI<br />
+MONGO_URI_R<br />
 JWT<br />
 PORT<br />
 API_SERVER_OFF - server return status 503
@@ -93,4 +93,3 @@ REACT_APP_GA_KEY - key<br />
 REACT_APP_YM_ON - On/Off<br />
 REACT_APP_YM_KEY - key<br />
 REACT_APP_YM_WEBVISOR_ON - Webvisor On/Off<br />
-REACT_APP_REDUX_DEVTOOLS_ON - REDUX_DEVTOOLS_ON in production mode, default on only development mode
