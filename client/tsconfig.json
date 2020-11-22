@@ -1,7 +1,13 @@
 {
   "compilerOptions": {
     "target": "ES6",
-    "lib": ["ES2017", "ESNext", "DOM", "DOM.Iterable", "ES6"],
+    "lib": [
+      "ES2017",
+      "ESNext",
+      "DOM",
+      "DOM.Iterable",
+      "ES6"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -14,10 +20,12 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react",
+    "jsx": "react", //react-jsx
     "noImplicitAny": true,
     "noImplicitThis": true,
     "strictNullChecks": true
   },
-  "include": ["src"]
+  "include": [
+    "src"
+  ]
 }

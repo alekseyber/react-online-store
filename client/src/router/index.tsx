@@ -1,4 +1,4 @@
-import React from "react"; //, { Suspense, lazy }
+import React, { ReactNode } from "react"; //, { Suspense, lazy }
 import { Switch, Route } from "react-router-dom";
 //import { useLocation } from 'react-use';
 //import { animated, useTransition } from 'react-spring';
@@ -24,7 +24,7 @@ import NewsPage from "../pages/news/NewsPage";
 // const CategoryPage = lazy(() => import('../pages/category/categoryPage'));
 // const PageFoundPage = lazy(() => import('../pages/pagefound/pageFoundPage'));
 
-export const useRoutes = (): React.ReactNode => {
+export const useRoutes = (): ReactNode => {
   return (
     <Switch>
       <Route path="/" exact>

@@ -1,4 +1,4 @@
-import React from "react"; //, { lazy, Suspense }
+import React, { FC } from "react"; //, { lazy, Suspense }
 import { YMInitializer } from "react-yandex-metrika";
 import { BrowserRouter as Router } from "react-router-dom"; //BrowserRouter as Router
 import { useRoutes } from "./router/index";
@@ -46,7 +46,7 @@ if (ymRezultFull) {
   }
 }
 
-const App: React.FC = () => {
+const App: FC = () => {
   const routes = useRoutes();
 
   return (
