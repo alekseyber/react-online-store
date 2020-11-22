@@ -70,8 +70,8 @@ npm update in /client folder.
 ### Server
 
 MONGO_URI_R<br />
-JWT<br />
-PORT<br />
+JWT_R<br />
+PORT_R<br />
 API_SERVER_OFF - server return status 503
 
 ### Client
