@@ -102,6 +102,8 @@ app.use(
   })
 );
 
+console.log(`Keys: ${JSON.stringify(keys)}`);
+
 const PORT = keys.PORT || 5000;
 
 server.applyMiddleware({ app, path: "/api/graphql" });
