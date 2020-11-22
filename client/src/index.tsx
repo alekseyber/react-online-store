@@ -7,15 +7,7 @@ import App from "./App";
 import theme from "./theme";
 import "./index.scss";
 import { client } from "./apolloClient";
-import reportWebVitals from './reportWebVitals';
-
-//</React.StrictMode>,
-
-// if (process.env.NODE_ENV === 'production') {
-//   config.set({ baseUrl: '' });
-// } else {
-//   config.set({ baseUrl: 'http://localhost:5000' });
-// }
+import reportWebVitals from "./reportWebVitals";
 
 render(
   <ApolloProvider client={client}>

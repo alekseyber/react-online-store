@@ -1,4 +1,4 @@
-import React, { useContext, createContext, useMemo } from "react";
+import React, { useContext, createContext, useMemo, FC } from "react";
 //import PropTypes from "prop-types";
 import MetaTags from "react-meta-tags";
 import Container from "@material-ui/core/Container";
@@ -42,6 +42,7 @@ export interface IPageBaseProps {
   breadcrumbs_on?: boolean;
   error?: boolean;
   category?: boolean;
+  Slider?: FC | null;
 }
 
 // declare namespace JSX {
@@ -51,7 +52,7 @@ export interface IPageBaseProps {
 const PageBaseContext = createContext<string>("/");
 export const usePageBase = () => useContext(PageBaseContext);
 
-export const PageBase: React.FC<IPageBaseProps> = (props) => {
+export const PageBase: FC<IPageBaseProps> = (props) => {
   const classes = useStyles();
   const addGet = useAddGet();
 
@@ -74,6 +75,7 @@ export const PageBase: React.FC<IPageBaseProps> = (props) => {
     container_fixed = true,
     error = false,
     category = false,
+    Slider = null,
   } = props;
 
   const { data } = useQueryApp<IPageBase>(PAGE_BASE_QUERY);
@@ -136,6 +138,7 @@ export const PageBase: React.FC<IPageBaseProps> = (props) => {
           {canonical_on && !error && <link rel="canonical" href={canonical} />}
         </MetaTags>
       )}
+      {Slider && <Slider />}
       <Container fixed={container_fixed}>
         {filter_on && !error && <Filter {...bindFilter} />}
         {title && !error && (

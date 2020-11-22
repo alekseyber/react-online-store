@@ -1,4 +1,4 @@
-import React, { useMemo } from "react"; //useEffect, useState
+import React, { useMemo, createElement } from "react"; //useEffect, useState
 import { Link } from "react-router-dom";
 import LinkUi from "@material-ui/core/Link";
 import HtmlToReact, { Parser } from "html-to-react"; //HtmlToReact,
@@ -40,7 +40,7 @@ export const useHtml = (htmlInput) => {
           attrs.alt = node.attribs.alt;
         }
 
-        return React.createElement("img", attrs);
+        return createElement("img", attrs);
       },
     };
 
