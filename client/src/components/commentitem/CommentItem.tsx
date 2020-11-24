@@ -1,5 +1,4 @@
-import React from "react";
-//import PropTypes from "prop-types";
+import { FC } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
@@ -38,7 +37,7 @@ interface CommentItemProps {
   item: TComment;
 }
 
-const CommentItem: React.FC<CommentItemProps> = ({ item }) => {
+const CommentItem: FC<CommentItemProps> = ({ item }) => {
   const classes = useStyles();
 
   const Contetnt = () => {
@@ -89,9 +88,5 @@ const CommentItem: React.FC<CommentItemProps> = ({ item }) => {
     </Grid>
   );
 };
-
-// CommentItem.propTypes = {
-//   item: PropTypes.object.isRequired,
-// };
 
 export default CommentItem;

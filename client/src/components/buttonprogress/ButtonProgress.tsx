@@ -1,5 +1,4 @@
-import React from "react";
-//import PropTypes from "prop-types";
+import { FC } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { green } from "@material-ui/core/colors";
@@ -31,10 +30,10 @@ interface ButtonProgressProps {
   size?: "medium" | "large" | "small";
   type?: "button" | "reset" | "submit";
   loading?: boolean;
-  color?: "inherit" | "default" | "primary" | "secondary";  
+  color?: "inherit" | "default" | "primary" | "secondary";
 }
 
-const ButtonProgress: React.FC<ButtonProgressProps> = ({
+const ButtonProgress: FC<ButtonProgressProps> = ({
   onClick,
   buttonClassname = "",
   disabled = false,
@@ -76,24 +75,5 @@ const ButtonProgress: React.FC<ButtonProgressProps> = ({
   );
 };
 
-// ButtonProgress.defaultProps = {
-//   buttonClassname: "",
-//   color: "primary",
-//   disabled: false,
-//   variant: "contained",
-//   size: "medium",
-//   type: "button",
-//   loading: false,
-// };
-
-// ButtonProgress.propTypes = {
-//   onClick: PropTypes.func,
-//   buttonClassname: PropTypes.string,
-//   disabled: PropTypes.bool,
-//   variant: PropTypes.string,
-//   size: PropTypes.string,
-//   type: PropTypes.string,
-//   loading: PropTypes.bool,
-// };
 
 export default ButtonProgress;

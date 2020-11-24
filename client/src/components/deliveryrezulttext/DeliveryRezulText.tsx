@@ -1,5 +1,4 @@
-import React from "react";
-//import PropTypes from 'prop-types';
+import { FC } from "react";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import DeliveryPvzDescrNoProps from "../deliverypvzdescrnoprops/DeliveryPvzDescrNoProps";
@@ -12,7 +11,7 @@ interface DeliveryRezulTextProps {
   dateMax: string;
 }
 
-const DeliveryRezulText: React.FC<DeliveryRezulTextProps> = ({
+const DeliveryRezulText: FC<DeliveryRezulTextProps> = ({
   pvz = false,
   price,
   currSymbol,
@@ -74,20 +73,5 @@ const DeliveryRezulText: React.FC<DeliveryRezulTextProps> = ({
   );
 };
 
-// DeliveryRezulText.defaultProps = {
-//     pvz: false,
-//     currSymbol: '',
-//     sel_pvz_v: true
-
-// };
-
-// DeliveryRezulText.propTypes = {
-//     pvz: PropTypes.bool,
-//     sel_pvz_v: PropTypes.bool,
-//     price: PropTypes.number.isRequired,
-//     currSymbol: PropTypes.string,
-//     dateMax: PropTypes.string.isRequired,
-
-// };
 
 export default DeliveryRezulText;

@@ -1,12 +1,9 @@
-import React from "react";
-//import PropTypes from "prop-types";
-//import { Link } from "react-router-dom";
+import { FC, SyntheticEvent } from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import { TMainBanner } from "../../graphql/gqlQuery";
 import { useRouter } from "../../hooks/router.hook";
-//import { Image } from '../../image/Image';
 
 const CssButton = withStyles({
   root: {
@@ -58,10 +55,7 @@ interface MainBannerProps {
   mainBanner: TMainBanner;
 }
 
-export const MainBanner: React.FC<MainBannerProps> = ({
-  mainBanner,
-  baseApiUrl,
-}) => {
+export const MainBanner: FC<MainBannerProps> = ({ mainBanner, baseApiUrl }) => {
   const classes = useStyles();
   const { history } = useRouter();
 
@@ -69,7 +63,7 @@ export const MainBanner: React.FC<MainBannerProps> = ({
     return null;
   }
 
-  const handleTo = (event: React.SyntheticEvent, to: string): void => {
+  const handleTo = (event: SyntheticEvent, to: string): void => {
     event.preventDefault();
     history.push(to);
   };
@@ -102,10 +96,5 @@ export const MainBanner: React.FC<MainBannerProps> = ({
     </div>
   );
 };
-
-// MainBanner.propTypes = {
-//     mainBanner: PropTypes.object,
-//     baseApiUrl: PropTypes.string,
-// };
 
 export default MainBanner;

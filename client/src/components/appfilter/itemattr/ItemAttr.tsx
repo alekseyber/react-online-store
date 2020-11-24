@@ -1,5 +1,4 @@
-import React from "react";
-//import PropTypes from "prop-types";
+import { FC } from "react";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
@@ -27,7 +26,7 @@ interface ItemAttrProps {
   handleClose?: () => void;
 }
 
-const ItemAttr: React.FC<ItemAttrProps> = ({
+const ItemAttr: FC<ItemAttrProps> = ({
   itemAttr,
   aliasGr,
   color,
@@ -81,15 +80,5 @@ const ItemAttr: React.FC<ItemAttrProps> = ({
     />
   );
 };
-
-// ItemAttr.propTypes = {
-//   itemAttr: PropTypes.object.isRequired,
-//   aliasGr: PropTypes.string.isRequired,
-//   color: PropTypes.bool.isRequired,
-//   sizes: PropTypes.bool.isRequired,
-//   itemSelect: PropTypes.object.isRequired,
-//   oneStatus: PropTypes.bool.isRequired,
-//   handleClose: PropTypes.func,
-// };
 
 export default ItemAttr;

@@ -1,5 +1,4 @@
-import React from "react";
-//import PropTypes from "prop-types";
+import { FC, useState } from "react";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
@@ -20,12 +19,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ItemGruppMobile: React.FC<ItemGruppProps> = ({
-  itemGr,
-  filterSelect,
-}) => {
+const ItemGruppMobile: FC<ItemGruppProps> = ({ itemGr, filterSelect }) => {
   const classes = useStyles();
-  const [expanded, setExpanded] = React.useState(false);
+  const [expanded, setExpanded] = useState(false);
 
   const handleChange = () => () => {
     setExpanded(!expanded);

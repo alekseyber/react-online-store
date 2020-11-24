@@ -1,4 +1,4 @@
-import React from "react";
+import { FC } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { PageBase } from "../../hoc/PageBase";
 import CommentAdd from "../../components/commentadd/CommentAdd";
@@ -12,7 +12,7 @@ const useStyles = makeStyles({
   },
 });
 
-const CommentPage: React.FC = () => {
+const CommentPage: FC = () => {
   const classes = useStyles();
   const page = useGetQueryPage();
 

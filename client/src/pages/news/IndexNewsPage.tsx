@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import { useMemo, FC } from "react";
 import { PageBase } from "../../hoc/PageBase";
 import { useGetQueryPage } from "../../hooks/router.hook";
 import LoaderPage from "../../components/loaderpage/LoaderPage";
@@ -11,7 +11,7 @@ import {
 } from "../../graphql/gqlQuery";
 import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 
-const IndexNewsPage: React.FC = () => {
+const IndexNewsPage: FC = () => {
   const page = useGetQueryPage();
 
   const { data, loading, error } = useQueryApp<IIndexNewsPage>(

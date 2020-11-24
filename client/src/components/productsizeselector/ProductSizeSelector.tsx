@@ -1,5 +1,4 @@
-import React from "react";
-//import PropTypes from "prop-types";
+import { FC, Dispatch, SetStateAction } from "react";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
@@ -26,14 +25,14 @@ interface ProductSizeSelectorProps {
   alias: string;
   error: boolean;
   sizesgroup_id: string;
-  set_error?: React.Dispatch<React.SetStateAction<boolean>>;
+  set_error?: Dispatch<SetStateAction<boolean>>;
 }
 
 interface SizeItemProps {
   item: TProductLevel2;
 }
 
-const ProductSizeSelector: React.FC<ProductSizeSelectorProps> = ({
+const ProductSizeSelector: FC<ProductSizeSelectorProps> = ({
   level2,
   alias,
   error,
@@ -65,7 +64,7 @@ const ProductSizeSelector: React.FC<ProductSizeSelectorProps> = ({
   const labelText = error ? "Пожалуйста, выберите размер:" : "Выберите размер:";
   const labelColorText = error ? "error" : "textSecondary";
 
-  const SizeItem: React.FC<SizeItemProps> = ({ item }) => {
+  const SizeItem: FC<SizeItemProps> = ({ item }) => {
     const variant = selectSize === item.alias ? "contained" : "outlined";
 
     return (
@@ -79,9 +78,6 @@ const ProductSizeSelector: React.FC<ProductSizeSelectorProps> = ({
       </Button>
     );
   };
-  // SizeItem.propTypes = {
-  //   item: PropTypes.object.isRequired,
-  // };
 
   return (
     <>
@@ -106,17 +102,5 @@ const ProductSizeSelector: React.FC<ProductSizeSelectorProps> = ({
     </>
   );
 };
-
-// ProductSizeSelector.defaultProps = {
-//   error: false,
-// };
-
-// ProductSizeSelector.propTypes = {
-//   level2: PropTypes.array.isRequired,
-//   alias: PropTypes.string.isRequired,
-//   error: PropTypes.bool,
-//   sizesgroup_id: PropTypes.string,
-//   set_error: PropTypes.func,
-// };
 
 export default ProductSizeSelector;

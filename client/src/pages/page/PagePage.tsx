@@ -1,4 +1,4 @@
-import React from "react";
+import { FC } from "react";
 import LoaderPage from "../../components/loaderpage/LoaderPage";
 import { useParamsMemo } from "../../hooks/router.hook";
 import { PageBase } from "../../hoc/PageBase";
@@ -11,7 +11,7 @@ import {
 } from "../../graphql/gqlQuery";
 import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 
-const PagePage: React.FC = () => {
+const PagePage: FC = () => {
   const { params } = useParamsMemo<{ alias: string }>();
   const { alias } = params;
 

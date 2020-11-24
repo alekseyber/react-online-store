@@ -1,20 +1,10 @@
-import React from "react";
-//import PropTypes from "prop-types";
-import { makeStyles } from "@material-ui/core/styles"; //makeStyles,
+import { FC } from "react";
+import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
-//import { green } from "@material-ui/core/colors";
 import { useCartSumm } from "../../hooks/cart-summ.hook";
 import { useDeliveryPrice } from "../../hooks/delivery-price.hook";
 import { ICity } from "../../graphql/localVars";
-
-// const theme = createMuiTheme({
-//   palette: {
-//     primary: {
-//       main: green[600],
-//     },
-//   },
-// });
 
 const useStyles = makeStyles((theme) => ({
   summprice: {
@@ -29,7 +19,7 @@ interface CartSummProps {
   currSymbol: string;
 }
 
-const CartSumm: React.FC<CartSummProps> = ({ currSymbol, cityDefault }) => {
+const CartSumm: FC<CartSummProps> = ({ currSymbol, cityDefault }) => {
   const summData = useCartSumm();
   const deliveryPrice = useDeliveryPrice(cityDefault);
   const classes = useStyles();
@@ -79,7 +69,7 @@ const CartSumm: React.FC<CartSummProps> = ({ currSymbol, cityDefault }) => {
         <Typography
           variant="h6"
           component="span"
-        //  color="primary"
+          //  color="primary"
           className={classes.summprice}
         >
           {summData.summcupon} {currSymbol}
@@ -109,7 +99,7 @@ const CartSumm: React.FC<CartSummProps> = ({ currSymbol, cityDefault }) => {
             <Typography
               variant="h6"
               component="span"
-          //    color="inherit"
+              //    color="inherit"
               className={classes.summprice}
             >
               {summData.summcupon + deliveryPrice} {currSymbol}
@@ -120,10 +110,5 @@ const CartSumm: React.FC<CartSummProps> = ({ currSymbol, cityDefault }) => {
     </Box>
   );
 };
-
-// CartSumm.propTypes = {
-//   currSymbol: PropTypes.string.isRequired,
-//   cityDefault: PropTypes.object.isRequired,
-// };
 
 export default CartSumm;

@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react"; //, { Suspense, lazy }
+import { ReactNode } from "react"; //, { Suspense, lazy }
 import { Switch, Route } from "react-router-dom";
 //import { useLocation } from 'react-use';
 //import { animated, useTransition } from 'react-spring';

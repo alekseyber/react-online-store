@@ -1,4 +1,4 @@
-import React from "react";
+import { FC, useState, SyntheticEvent } from "react";
 import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
@@ -32,11 +32,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SmallCart: React.FC = () => {
+const SmallCart: FC = () => {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState<
-    (EventTarget & HTMLElement) | null
-  >(null);
+  const [anchorEl, setAnchorEl] = useState<(EventTarget & HTMLElement) | null>(
+    null
+  );
 
   const { data } = useQueryApp<ICartData>(CART_DATA_QUERY);
 
@@ -48,7 +48,7 @@ const SmallCart: React.FC = () => {
   const cartData = data.cartData;
   const count: number = cartData.length;
 
-  const handleClick = (event: React.SyntheticEvent<HTMLElement>) => {
+  const handleClick = (event: SyntheticEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
 

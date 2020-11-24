@@ -1,5 +1,4 @@
-import React from "react";
-//import PropTypes from "prop-types";
+import { FC, ChangeEvent } from "react";
 import Box from "@material-ui/core/Box";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
@@ -15,7 +14,7 @@ interface DeliverySelectorProps {
   deliverySelect: number;
 }
 
-const DeliverySelector: React.FC<DeliverySelectorProps> = ({
+const DeliverySelector: FC<DeliverySelectorProps> = ({
   pvz_price = 0,
   courier_price = 0,
   currSymbol = "",
@@ -26,7 +25,7 @@ const DeliverySelector: React.FC<DeliverySelectorProps> = ({
     `ПВЗ - ${pvz_price} ${currSymbol}`,
   ];
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (parseInt(event.target.value, 10)) {
       deliverySelectVar(1);
     } else {
@@ -56,19 +55,5 @@ const DeliverySelector: React.FC<DeliverySelectorProps> = ({
     </Box>
   );
 };
-
-// DeliverySelector.defaultProps = {
-//   currSymbol: "",
-//   pvz_price: 0,
-//   courier_price: 0,
-//   deliverySelect: 0,
-// };
-
-// DeliverySelector.propTypes = {
-//   pvz_price: PropTypes.number,
-//   courier_price: PropTypes.number,
-//   currSymbol: PropTypes.string,
-//   deliverySelect: PropTypes.number,
-// };
 
 export default DeliverySelector;

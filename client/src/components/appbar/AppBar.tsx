@@ -1,4 +1,4 @@
-import React from "react";
+import { FC } from "react";
 import { Link } from "react-router-dom";
 import withWidth, {
   isWidthDown,
@@ -58,7 +58,7 @@ const options = {
   threshold: 10,
 };
 
-const AppBarAppF: React.FC<WithWidth> = ({ width }) => {
+const AppBarAppF: FC<WithWidth> = ({ width }) => {
   const { data } = useQueryApp<IAppBar>(APP_BAR_QUERY); //loading,
 
   const classes = useStyles();

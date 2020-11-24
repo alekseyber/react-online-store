@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState, FC } from "react";
 import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
 import MuiAccordion from "@material-ui/core/Accordion";
@@ -10,7 +10,12 @@ import Typography from "@material-ui/core/Typography";
 import AppForm from "../appform/AppForm";
 import { COMMENT_ADD_QUERY, ICommentAdd } from "../../graphql/gqlQuery";
 import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
-import { COMMENT_ADD_MUTATION, AddCommentMutation, AddCommentMutationVar, AddCommentMutationInput } from "../../graphql/gqlMutation";
+import {
+  COMMENT_ADD_MUTATION,
+  AddCommentMutation,
+  AddCommentMutationVar,
+  AddCommentMutationInput,
+} from "../../graphql/gqlMutation";
 import {
   FormDataClass,
   useMutationApp,
@@ -34,10 +39,10 @@ const AccordionDetails = withStyles({
 interface IFormDataInput {
   name: string;
   comment: string;
-  recaptchaToken: string; 
+  recaptchaToken: string;
 }
 
-const CommentAdd: React.FC = () => {
+const CommentAdd: FC = () => {
   const [expanded, setExpanded] = useState(false);
 
   const { data } = useQueryApp<ICommentAdd>(COMMENT_ADD_QUERY);
@@ -49,12 +54,18 @@ const CommentAdd: React.FC = () => {
     commentStatusVar(true);
   };
 
-  const { mutate } = useMutationApp<AddCommentMutation, AddCommentMutationVar>(COMMENT_ADD_MUTATION, onCompleted);
+  const { mutate } = useMutationApp<AddCommentMutation, AddCommentMutationVar>(
+    COMMENT_ADD_MUTATION,
+    onCompleted
+  );
 
   const handleInputSubmit = (formDataInput: IFormDataInput): void => {
     const fieldsForm = ["name", "comment", "recaptchaToken"];
 
-    const formDataStart = new FormDataClass<IFormDataInput>(formDataInput, fieldsForm);
+    const formDataStart = new FormDataClass<IFormDataInput>(
+      formDataInput,
+      fieldsForm
+    );
 
     const formData: AddCommentMutationInput = {
       authorName: formDataStart.name,

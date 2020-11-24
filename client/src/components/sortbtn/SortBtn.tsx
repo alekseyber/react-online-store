@@ -1,4 +1,4 @@
-import React from "react";
+import { FC, useState, SyntheticEvent } from "react";
 import SortIcon from "@material-ui/icons/Sort";
 import IconButton from "@material-ui/core/IconButton";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -17,12 +17,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SortBtn: React.FC = () => {
+const SortBtn: FC = () => {
   const { data } = useQueryApp<ISortBtn>(SORT_BTN_QUERY);
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState<
-    (EventTarget & HTMLElement) | null
-  >(null);
+  const [anchorEl, setAnchorEl] = useState<(EventTarget & HTMLElement) | null>(
+    null
+  );
   const open = Boolean(anchorEl);
   const sortValue = sortValueVar();
   if (!data) {
@@ -33,7 +33,7 @@ const SortBtn: React.FC = () => {
     setAnchorEl(null);
   };
 
-  const handleMenu = (event: React.SyntheticEvent<HTMLElement>) => {
+  const handleMenu = (event: SyntheticEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
 

@@ -1,24 +1,22 @@
-import React from 'react';
-import { PageBase } from '../../hoc/PageBase';
-import Delivery from '../../containers/delivery/Delivery';
+import { FC } from "react";
+import { PageBase } from "../../hoc/PageBase";
+import Delivery from "../../containers/delivery/Delivery";
 
-const DeliveryPage: React.FC = () => {
+const DeliveryPage: FC = () => {
+  const bind = {
+    name_page: "Доставка",
+    action_page: "Доставка с примеркой во все города России",
+    link_page: "/delivery",
+    title: "О доставке и оплате",
+    //  filter_on: false,
+    // breadcrumbs_data: []
+  };
 
-    const bind = {
-        name_page: "Доставка",
-        action_page: "Доставка с примеркой во все города России",
-        link_page: "/delivery",
-        title: "О доставке и оплате",
-        //  filter_on: false,
-        // breadcrumbs_data: []
-    }
+  return (
+    <PageBase {...bind}>
+      <Delivery />
+    </PageBase>
+  );
+};
 
-    return (
-        <PageBase {...bind}>
-            <Delivery />
-        </PageBase>
-    )
-}
-
-
-export default DeliveryPage
+export default DeliveryPage;

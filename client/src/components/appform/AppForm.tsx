@@ -1,8 +1,7 @@
-import React, { useState, ChangeEvent, useRef } from "react";
+import { useState, ChangeEvent, useRef, FC } from "react";
 import { useForm, Controller } from "react-hook-form";
 import ReCAPTCHA from "react-google-recaptcha";
 import InputMask from "react-input-mask";
-//import PropTypes from "prop-types";
 import TextField, {
   FilledTextFieldProps,
   OutlinedTextFieldProps,
@@ -77,7 +76,7 @@ interface AppFormProps {
   reOn?: boolean;
 }
 
-const AppForm: React.FC<AppFormProps> = ({
+const AppForm: FC<AppFormProps> = ({
   handleInputSubmit,
   fullOrder = true,
   variant = "filled",
@@ -361,27 +360,5 @@ const AppForm: React.FC<AppFormProps> = ({
   );
 };
 
-// AppForm.defaultProps = {
-//   btnText: "Отправить заказ",
-//   variant: "filled",
-//   fullOrder: true,
-//   ofertaOn: true,
-//   commentOn: true,
-//   returnproduct: false,
-//   commentAdd: false,
-//   reOn: false,
-// };
-
-// AppForm.propTypes = {
-//   handleInputSubmit: PropTypes.func.isRequired,
-//   fullOrder: PropTypes.bool,
-//   variant: PropTypes.string,
-//   ofertaOn: PropTypes.bool,
-//   commentOn: PropTypes.bool,
-//   btnText: PropTypes.string,
-//   returnproduct: PropTypes.bool,
-//   commentAdd: PropTypes.bool,
-//   reOn: PropTypes.bool,
-// };
 
 export default AppForm;

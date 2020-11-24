@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect, FC } from "react";
 import LoaderPage from "../../components/loaderpage/LoaderPage";
 import { setColorProductAction } from "../../graphql/localVarsCart";
 import ProductMainPage from "../../containers/productmainpage/ProductMainPage";
@@ -11,7 +11,7 @@ import {
 import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 import ErrorContent from "../../components/errorcontent/ErrorContent";
 
-const ProductPage: React.FC = () => {
+const ProductPage: FC = () => {
   const { replace } = useRouter();
   const { params } = useParamsMemo<{ alias: string }>();
   const query = useQuery(true);

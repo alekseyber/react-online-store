@@ -1,4 +1,4 @@
-import React from "react";
+import { FC } from "react";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -66,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const TopBarAppF: React.FC<WithWidth> = (props) => {
+const TopBarAppF: FC<WithWidth> = (props) => {
   const { data } = useQueryApp<ITopBar>(TOP_BAR_QUERY);
 
   const classes = useStyles();

@@ -1,5 +1,4 @@
-import React from "react";
-//import PropTypes from "prop-types";
+import { FC } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import withWidth, { isWidthUp, WithWidth } from "@material-ui/core/withWidth";
 import Grid from "@material-ui/core/Grid";
@@ -45,7 +44,7 @@ interface MainSliderFProps extends WithWidth {
   baseApiUrl: string;
 }
 
-const MainSliderF: React.FC<MainSliderFProps> = ({
+const MainSliderF: FC<MainSliderFProps> = ({
   topSlider,
   baseApiUrl,
   width,

@@ -1,4 +1,4 @@
-import React, { useContext, createContext, useMemo, FC } from "react";
+import { useContext, createContext, useMemo, FC } from "react";
 //import PropTypes from "prop-types";
 import MetaTags from "react-meta-tags";
 import Container from "@material-ui/core/Container";

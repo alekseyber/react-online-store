@@ -1,4 +1,4 @@
-import React from "react";
+import { FC } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
@@ -8,7 +8,7 @@ import LinkUi from "@material-ui/core/Link";
 import HomeIcon from "@material-ui/icons/Home";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import { TBreadcrumb } from "../../graphql/gqlQuery";
-//import PropTypes from "prop-types";
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,7 +39,7 @@ interface ItemProps {
   el: TBreadcrumb;
 }
 
-const Item: React.FC<ItemProps> = ({ el }) => {
+const Item: FC<ItemProps> = ({ el }) => {
   if (el.disabled) {
     return <Typography color="textPrimary">{el.text}</Typography>;
   }
@@ -50,7 +50,7 @@ const Item: React.FC<ItemProps> = ({ el }) => {
   );
 };
 
-export const AppBreadcrumbs: React.FC<IPageBaseProps> = ({
+export const AppBreadcrumbs: FC<IPageBaseProps> = ({
   breadcrumbsData,
 }) => {
   const classes = useStyles();
@@ -86,8 +86,5 @@ export const AppBreadcrumbs: React.FC<IPageBaseProps> = ({
   );
 };
 
-// AppBreadcrumbs.propTypes = {
-//   breadcrumbsData: PropTypes.array.isRequired,
-// };
 
 export default AppBreadcrumbs;

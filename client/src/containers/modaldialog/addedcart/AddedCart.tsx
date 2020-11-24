@@ -1,5 +1,4 @@
-import React from "react";
-//import PropTypes from "prop-types";
+import { FC } from "react";
 import Button from "@material-ui/core/Button";
 import AddedCartComponent from "../../../components/addedcart/AddedCart";
 import ModalBase, { IChildrenNodeBaseProps } from "../../../hoc/ModalBase";
@@ -8,7 +7,7 @@ import { ADDED_CART_MODAL_QUERY, IAddedCart } from "../../../graphql/gqlQuery";
 import { useQueryApp } from "../../../hooks/appolloQueryApp.hook";
 import LoaderContent from "../../../components/loadercontent/LoaderContent";
 
-const AddedCart: React.FC<IChildrenNodeBaseProps> = ({ handleClose }) => {
+const AddedCart: FC<IChildrenNodeBaseProps> = ({ handleClose }) => {
   const { history } = useRouter();
 
   const { data, loading } = useQueryApp<IAddedCart>(ADDED_CART_MODAL_QUERY);
@@ -40,7 +39,7 @@ const AddedCart: React.FC<IChildrenNodeBaseProps> = ({ handleClose }) => {
       title="Добавлено в корзину"
       actionsNode={actionsNode}
     >
-      {(loading === true || !data) ? (
+      {loading === true || !data ? (
         <LoaderContent />
       ) : (
         <AddedCartComponent lastCart={lastCart} currSymbol={currSymbol} />

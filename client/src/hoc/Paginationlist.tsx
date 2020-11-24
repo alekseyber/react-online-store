@@ -1,9 +1,11 @@
-import React, {
+import {
   useState,
   useMemo,
   useEffect,
   useContext,
   createContext,
+  FC,
+  ChangeEvent,
 } from "react";
 //import PropTypes from "prop-types";
 import Pagination, {
@@ -60,7 +62,7 @@ interface ItemPaginProps {
   item: PaginationRenderItemParams;
 }
 
-export const PaginationList: React.FC<PaginationListProps> = (props) => {
+export const PaginationList: FC<PaginationListProps> = (props) => {
   const classes = useStyles();
   const { replace } = useRouter();
   const linkPage = usePageBase();
@@ -75,7 +77,7 @@ export const PaginationList: React.FC<PaginationListProps> = (props) => {
   } = props;
   const [currentPage, setCurrentPage] = useState(page);
 
-  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+  const handleChange = (event: ChangeEvent<unknown>, value: number) => {
     event.preventDefault();
     setCurrentPage(value);
     if (window.scrollY) {
@@ -114,7 +116,7 @@ export const PaginationList: React.FC<PaginationListProps> = (props) => {
     return inputList.slice(start, end);
   }, [inputList, totalList, paginationLength, currentPage, countPage]);
 
-  const ItemPagin: React.FC<ItemPaginProps> = ({ item }) => {
+  const ItemPagin: FC<ItemPaginProps> = ({ item }) => {
     let href = linkPage;
     if (item) {
       if (item.page && item.page > 1) {

@@ -1,13 +1,11 @@
-import React from "react";
+import { FC } from "react";
 import { PageBase } from "../../hoc/PageBase";
 import CartPageContent from "../../containers/cartpagecontent/CartPageContent";
 import { CART_PAGE_QUERY, ICartPage } from "../../graphql/gqlQuery";
 import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 import ErrorContent from "../../components/errorcontent/ErrorContent";
 
-const CartPage: React.FC = () => {
-
-  
+const CartPage: FC = () => {
   const bind = {
     name_page: "Корзина",
     action_page: "Оформить заказ",
@@ -43,4 +41,4 @@ const CartPage: React.FC = () => {
   );
 };
 
-export default CartPage
+export default CartPage;

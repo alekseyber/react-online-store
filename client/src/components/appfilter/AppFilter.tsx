@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import { useState, FC, TouchEvent, KeyboardEvent, MouseEvent } from "react";
 import { Link } from "react-router-dom";
-//import PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
 import Drawer from "@material-ui/core/Drawer";
 import { makeStyles } from "@material-ui/core/styles";
@@ -33,7 +32,7 @@ export interface ItemGruppProps {
   filterSelect: IFilterSelectGr;
 }
 
-const AppFilter: React.FC<AppFilterProps> = ({
+const AppFilter: FC<AppFilterProps> = ({
   filterRezult,
   filterSelect,
   category,
@@ -46,12 +45,12 @@ const AppFilter: React.FC<AppFilterProps> = ({
   const [state, setState] = useState(false);
 
   const toggleDrawer = (open: boolean) => (
-    event: React.TouchEvent | React.KeyboardEvent | React.MouseEvent
+    event: TouchEvent | KeyboardEvent | MouseEvent
   ): void => {
     if (
       event.type === "keydown" &&
-      ((event as React.KeyboardEvent).key === "Tab" ||
-        (event as React.KeyboardEvent).key === "Shift")
+      ((event as KeyboardEvent).key === "Tab" ||
+        (event as KeyboardEvent).key === "Shift")
     ) {
       return;
     }
@@ -92,7 +91,7 @@ const AppFilter: React.FC<AppFilterProps> = ({
           variant="outlined"
           color="primary"
           className={classes.btngr}
-       //   size="small"
+          //   size="small"
           component={Link}
           to={rootCategory}
         >

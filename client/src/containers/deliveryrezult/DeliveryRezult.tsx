@@ -1,5 +1,4 @@
-import React from "react";
-//import PropTypes from "prop-types";
+import { FC } from "react";
 import Typography from "@material-ui/core/Typography";
 import DefaultDeliveryText from "./defaultdeliverytext/DefaultDeliveryText";
 import DeliveryRegion from "./deliveryregion/DeliveryRegion";
@@ -28,7 +27,7 @@ interface DeliveryRezultProps {
   sel_pvz_v?: boolean;
 }
 
-const DeliveryRezult: React.FC<DeliveryRezultProps> = ({
+const DeliveryRezult: FC<DeliveryRezultProps> = ({
   pvz_selector = false,
   city_name_v = false,
   sel_pvz_v = true,
@@ -42,11 +41,11 @@ const DeliveryRezult: React.FC<DeliveryRezultProps> = ({
   //   ? data.paramsData.cityDefault.id === cityIdCurrent
   //   : true;
   // const deliverySelect = data ? data.deliverySelect : 0;
- 
+
   if (loading) return <LoaderContent />;
   if (!data) return null;
 
- // const maxDeliveryHourToday = data.paramsData.maxDeliveryHourToday;
+  // const maxDeliveryHourToday = data.paramsData.maxDeliveryHourToday;
 
   const homeDat = getDeliveryDateHome(data.paramsData.maxDeliveryHourToday);
   const cityIdCurrent = data.cityIdCurrent;
@@ -54,8 +53,6 @@ const DeliveryRezult: React.FC<DeliveryRezultProps> = ({
 
   const cityDefaultStatus = data.paramsData.cityDefault.id === cityIdCurrent;
   const deliverySelect = data.deliverySelect;
-
-
 
   const {
     defaultDeliveryText,
@@ -75,7 +72,7 @@ const DeliveryRezult: React.FC<DeliveryRezultProps> = ({
     deliverySelect,
   };
 
-  const RezultBody: React.FC = () => {
+  const RezultBody: FC = () => {
     if (cityDefaultStatus) {
       return (
         <>

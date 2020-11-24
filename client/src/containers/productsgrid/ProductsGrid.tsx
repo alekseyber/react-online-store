@@ -1,5 +1,4 @@
-import React from "react";
-//import PropTypes from "prop-types";
+import { FC } from "react";
 import ProductItem from "../productitem/ProductItem";
 import {
   PaginationList,
@@ -37,7 +36,7 @@ interface ProductsGridProps {
   page?: number;
 }
 
-const ListProduct: React.FC<ProductBaseForGrid> = ({
+const ListProduct: FC<ProductBaseForGrid> = ({
   productImgProperty,
   qualityproductImg,
   currSymbol,
@@ -67,7 +66,7 @@ const ListProduct: React.FC<ProductBaseForGrid> = ({
     <>
       {paginationRezult.map((item, index) => (
         <ProductItem
-          item={(item as IPaginContextItem | string)}
+          item={item as IPaginContextItem | string}
           imgproperty={productImgProperty}
           quality={qualityproductImg}
           currsymbol={currSymbol}
@@ -78,9 +77,9 @@ const ListProduct: React.FC<ProductBaseForGrid> = ({
   );
 };
 
-const ProductsGrid: React.FC<ProductsGridProps> = ({ products, page = 1 }) => {
+const ProductsGrid: FC<ProductsGridProps> = ({ products, page = 1 }) => {
   const { data, loading } = useQueryApp<IProductsGrid>(PRODUCTS_GRID_QUERY);
-  
+
   if (loading) {
     return <LoaderPage />;
   }

@@ -1,5 +1,4 @@
-import React from "react"; //, { useMemo }
-//import PropTypes from "prop-types";
+import { FC } from "react";
 import CommentGrid from "../commentgrid/CommentGrid";
 import LoaderContent from "../../components/loadercontent/LoaderContent";
 import NullPageContent from "../../components/nullpagecontent/NullPageContent";
@@ -10,22 +9,8 @@ interface CommentListProps {
   page?: number;
 }
 
-const CommentList: React.FC<CommentListProps> = ({ page = 1 }) => {
+const CommentList: FC<CommentListProps> = ({ page = 1 }) => {
   const { data, loading } = useQueryApp<IComment>(COMMENT_LIST_QUERY);
-
-  // const { list, countPage } = useMemo<IListMemo>(() => {
-  //   const rezult: IListMemo = {
-  //     list: [],
-  //     countPage: 10,
-  //   };
-
-  //   if (data) {
-  //     rezult.list = data.comments.list;
-  //     rezult.countPage = data.paramsData.count_page_comment;
-  //   }
-
-  //   return rezult;
-  // }, [data]);
 
   if (loading) {
     return <LoaderContent />;

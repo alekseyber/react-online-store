@@ -1,5 +1,11 @@
-import React, { useState, useCallback } from "react";
-//import PropTypes from "prop-types";
+import {
+  useState,
+  useCallback,
+  FC,
+  TouchEvent,
+  KeyboardEvent,
+  MouseEvent,
+} from "react";
 import Box from "@material-ui/core/Box";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
@@ -68,7 +74,7 @@ interface ListItemPvzProps extends ListItemPvzBaseProps {
   item: TPvzListItem;
 }
 
-const ListItemPvz: React.FC<ListItemPvzProps> = ({
+const ListItemPvz: FC<ListItemPvzProps> = ({
   item,
   pvzSelect,
   index,
@@ -133,14 +139,7 @@ const ListItemPvz: React.FC<ListItemPvzProps> = ({
   );
 };
 
-// ListItemPvz.propTypes = {
-//   item: PropTypes.object.isRequired,
-//   handleSetPvz: PropTypes.func.isRequired,
-//   index: PropTypes.number.isRequired,
-//   pvzSelect: PropTypes.oneOfType([PropTypes.object.isRequired, () => null]),
-// };
-
-const MapItemPvz: React.FC<ListItemPvzProps> = ({
+const MapItemPvz: FC<ListItemPvzProps> = ({
   item,
   handleSetPvz,
   index,
@@ -176,13 +175,6 @@ const MapItemPvz: React.FC<ListItemPvzProps> = ({
   );
 };
 
-// MapItemPvz.propTypes = {
-//   item: PropTypes.object.isRequired,
-//   handleSetPvz: PropTypes.func.isRequired,
-//   index: PropTypes.number.isRequired,
-//   pvzSelect: PropTypes.oneOfType([PropTypes.object.isRequired, () => null]),
-// };
-
 interface MapPvzProps extends ListItemPvzBaseProps {
   yaMapKey: string;
   pvz: TPvzListItem[];
@@ -194,7 +186,7 @@ interface YMapsProps {
   coordorder?: "latlong" | "longlat" | undefined;
 }
 
-const MapPvz: React.FC<MapPvzProps> = ({
+const MapPvz: FC<MapPvzProps> = ({
   pvz,
   pvzSelect,
   handleSetPvz,
@@ -256,13 +248,6 @@ const MapPvz: React.FC<MapPvzProps> = ({
   );
 };
 
-// MapPvz.propTypes = {
-//   pvz: PropTypes.array.isRequired,
-//   handleSetPvz: PropTypes.func.isRequired,
-//   yaMapKey: PropTypes.string.isRequired,
-//   pvzSelect: PropTypes.oneOfType([PropTypes.object.isRequired, () => null]),
-// };
-
 const greatItem = (
   item: TPvzListItem,
   index: number,
@@ -298,9 +283,7 @@ interface DeliveryPvzSelCompProps {
   dataInput: IDeliveryPvzSelector;
 }
 
-const DeliveryPvzSelComp: React.FC<DeliveryPvzSelCompProps> = ({
-  dataInput,
-}) => {
+const DeliveryPvzSelComp: FC<DeliveryPvzSelCompProps> = ({ dataInput }) => {
   const classes = useStyles();
   const theme = useTheme();
   const { data } = useQueryApp<IDeliveryPvzSelComp>(
@@ -318,21 +301,15 @@ const DeliveryPvzSelComp: React.FC<DeliveryPvzSelCompProps> = ({
     [cityid]
   );
 
-  // const handleSetPvz = (item, index) => {
-  //   const selectedPvzValue = greatItem(item, index, cityid);
-  //   pvzSelectVar(selectedPvzValue);
-  //   console.log(selectedPvzValue);
-  // };
-
   const [open, setOpen] = useState(false);
 
   const toggleDrawer = (open: boolean) => (
-    event: React.TouchEvent | React.KeyboardEvent | React.MouseEvent
+    event: TouchEvent | KeyboardEvent | MouseEvent
   ): void => {
     if (
       event.type === "keydown" &&
-      ((event as React.KeyboardEvent).key === "Tab" ||
-        (event as React.KeyboardEvent).key === "Shift")
+      ((event as KeyboardEvent).key === "Tab" ||
+        (event as KeyboardEvent).key === "Shift")
     ) {
       return;
     }
@@ -423,9 +400,5 @@ const DeliveryPvzSelComp: React.FC<DeliveryPvzSelCompProps> = ({
     </div>
   );
 };
-
-// DeliveryPvzSelComp.propTypes = {
-//   dataInput: PropTypes.object.isRequired,
-// };
 
 export default DeliveryPvzSelComp;

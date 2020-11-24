@@ -1,5 +1,4 @@
-import React from "react";
-//import PropTypes from "prop-types";
+import { FC } from "react";
 import { Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
@@ -42,7 +41,7 @@ interface CategoryProps {
   alias: string;
 }
 
-const Category: React.FC<CategoryProps> = ({ data, alias }) => {
+const Category: FC<CategoryProps> = ({ data, alias }) => {
   const classes = useStyles();
   const page = useGetQueryPage();
 
@@ -81,7 +80,6 @@ const Category: React.FC<CategoryProps> = ({ data, alias }) => {
     page,
     category: true,
   };
-  
 
   return (
     <PageBase {...bind}>

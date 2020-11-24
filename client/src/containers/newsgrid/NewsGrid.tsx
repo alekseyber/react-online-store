@@ -1,5 +1,4 @@
-import React from "react";
-//import PropTypes from "prop-types";
+import { FC } from "react";
 import { PaginationList, usePagin } from "../../hoc/Paginationlist";
 import NewsItem from "../../components/newsitem/NewsItem";
 import { TNewsAnnonce } from "../../graphql/gqlQuery";
@@ -12,11 +11,7 @@ interface NewsGridProps {
 
 const spacingGrid: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 = 3;
 
-const NewsGrid: React.FC<NewsGridProps> = ({
-  news,
-  page = 1,
-  countPage = 10,
-}) => {
+const NewsGrid: FC<NewsGridProps> = ({ news, page = 1, countPage = 10 }) => {
   const ListNews: React.FC = () => {
     const paginationRezult = usePagin();
 

@@ -1,5 +1,4 @@
-import React from "react";
-//import PropTypes from "prop-types";
+import { FC } from "react";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
@@ -18,7 +17,7 @@ interface ModalTitleProps {
   handleClose: () => void;
 }
 
-const ModalTitle: React.FC<ModalTitleProps> = ({ handleClose, children }) => {
+const ModalTitle: FC<ModalTitleProps> = ({ handleClose, children }) => {
   const classes = useStyles();
   return (
     <Grid

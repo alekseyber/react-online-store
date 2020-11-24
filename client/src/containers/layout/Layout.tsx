@@ -1,4 +1,4 @@
-import React, { createRef } from "react";
+import { createRef, FC } from "react";
 import AlertApp from "../../components/alertapp/AlertApp";
 import TopBarApp from "../../components/topbar/TopBar";
 import AppBarApp from "../../components/appbar/AppBar";
@@ -12,7 +12,7 @@ import { LAYOUT_QUERY, ILayout } from "../../graphql/gqlQuery";
 import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 import { sortValueVar, cityСurrentVar } from "../../graphql/localVars";
 
-const Layout: React.FC = ({ children }) => {
+const Layout: FC = ({ children }) => {
   const refDiv = createRef<HTMLDivElement>();
   const onCompleted = ({ sortData, deliveryStart }: ILayout) => {
     if (sortData) {

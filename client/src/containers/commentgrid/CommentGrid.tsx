@@ -1,5 +1,4 @@
-import React from "react";
-//import PropTypes from "prop-types";
+import { FC } from "react";
 import { PaginationList, usePagin } from "../../hoc/Paginationlist";
 import CommentItem from "../../components/commentitem/CommentItem";
 import { TComment } from "../../graphql/gqlQuery";
@@ -10,7 +9,7 @@ interface CommentGridProps {
   countPage?: number;
 }
 
-const CommentGrid: React.FC<CommentGridProps> = ({
+const CommentGrid: FC<CommentGridProps> = ({
   comments,
   page = 1,
   countPage = 10,

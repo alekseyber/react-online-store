@@ -1,6 +1,6 @@
-import React, { FC } from "react"; //, { lazy, Suspense }
+import { FC } from "react"; //, { lazy, Suspense }
 import { YMInitializer } from "react-yandex-metrika";
-import { BrowserRouter as Router } from "react-router-dom"; //BrowserRouter as Router
+import { BrowserRouter as Router } from "react-router-dom";
 import { useRoutes } from "./router/index";
 import Layout from "./containers/layout/Layout";
 

@@ -1,5 +1,4 @@
-import React from "react";
-//import PropTypes from "prop-types";
+import { FC } from "react";
 import Typography from "@material-ui/core/Typography";
 import AppForm from "../../../components/appform/AppForm";
 import ModalBase, { IChildrenNodeBaseProps } from "../../../hoc/ModalBase";
@@ -17,7 +16,7 @@ import {
 } from "../../../hooks/appolloMutationApp.hook";
 import { returnCallStatusVar } from "../../../graphql/localVarsOrder";
 
-const ReturnCall: React.FC<IChildrenNodeBaseProps> = ({ handleClose }) => {
+const ReturnCall: FC<IChildrenNodeBaseProps> = ({ handleClose }) => {
   const { data } = useQueryApp<IReturnCall>(RETURN_CALL_QUERY);
   const returnCallStatus = data ? data.returnCallStatus : false;
 

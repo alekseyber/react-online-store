@@ -1,15 +1,11 @@
-import React from "react";
+import { FC } from "react";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
 import { hideAlert } from "../../graphql/localVarsApp";
 import { ALERT_QUERY, IAlert } from "../../graphql/gqlQuery";
 import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 
-// const Alert = (props) => {
-//   return <MuiAlert elevation={6} variant="filled" {...props} />;
-// };
-
-const AlertApp: React.FC = () => {
+const AlertApp: FC = () => {
   const { data } = useQueryApp<IAlert>(ALERT_QUERY);
 
   const alertData = data ? data.alert : null;

@@ -1,6 +1,5 @@
-import React from "react";
-//import PropTypes from "prop-types";
-import { Link } from "react-router-dom"; //, useHistory
+import { FC, SyntheticEvent } from "react";
+import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
@@ -97,7 +96,7 @@ interface ColorItemProps {
   item: TProductLevel1;
 }
 
-const ProductForCatalog: React.FC<ProductForCatalogProps> = ({
+const ProductForCatalog: FC<ProductForCatalogProps> = ({
   product,
   currsymbol,
 }) => {
@@ -116,7 +115,7 @@ const ProductForCatalog: React.FC<ProductForCatalogProps> = ({
   };
 
   //event: ChangeEvent<HTMLInputElement>
-  const preventDefault = (event: React.SyntheticEvent) => {
+  const preventDefault = (event: SyntheticEvent) => {
     event.preventDefault();
     event.stopPropagation();
   };
@@ -134,10 +133,10 @@ const ProductForCatalog: React.FC<ProductForCatalogProps> = ({
     </div>
   ) : null;
 
-  const Colorlevel: React.FC = () => {
+  const Colorlevel: FC = () => {
     if (product.product_model > 2) return null;
 
-    const ColorItem: React.FC<ColorItemProps> = ({ item }) => {
+    const ColorItem: FC<ColorItemProps> = ({ item }) => {
       const href =
         product.color_default !== item.alias
           ? `${product.link}?colors=${item.alias}`
@@ -160,10 +159,6 @@ const ProductForCatalog: React.FC<ProductForCatalogProps> = ({
         </LinkUi>
       );
     };
-
-    // ColorItem.propTypes = {
-    //   item: PropTypes.object.isRequired,
-    // };
 
     return (
       <>
@@ -232,14 +227,5 @@ const ProductForCatalog: React.FC<ProductForCatalogProps> = ({
     </Card>
   );
 };
-
-// ProductForCatalog.defaultProps = {
-//   currsymbol: "",
-// };
-
-// ProductForCatalog.propTypes = {
-//   product: PropTypes.object.isRequired,
-//   currsymbol: PropTypes.string,
-// };
 
 export default ProductForCatalog;

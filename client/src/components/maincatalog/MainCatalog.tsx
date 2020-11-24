@@ -1,6 +1,4 @@
-import React from "react";
-//import PropTypes from "prop-types";
-//import { Link } from "react-router-dom";
+import { FC, SyntheticEvent } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
@@ -11,7 +9,6 @@ import Typography from "@material-ui/core/Typography";
 import Link from "@material-ui/core/Link";
 import { TMaincatalog } from "../../graphql/gqlQuery";
 import { useRouter } from "../../hooks/router.hook";
-//import { Image } from '../image/Image';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -64,7 +61,7 @@ interface MainCatalogProps {
   categoryImgBase: string;
 }
 
-const MainCatalog: React.FC<MainCatalogProps> = ({
+const MainCatalog: FC<MainCatalogProps> = ({
   maincatalog,
   maincatalogprefix,
   maincatalogcount,
@@ -77,7 +74,7 @@ const MainCatalog: React.FC<MainCatalogProps> = ({
     history.push("/category/" + to);
   };
 
-  const preventDefault = (event: React.SyntheticEvent) => {
+  const preventDefault = (event: SyntheticEvent) => {
     event.preventDefault();
   };
 
@@ -108,7 +105,11 @@ const MainCatalog: React.FC<MainCatalogProps> = ({
               </CardMedia>
               <CardContent>
                 {maincatalogprefix && (
-                  <Typography variant="h5" component="div" color="textSecondary">
+                  <Typography
+                    variant="h5"
+                    component="div"
+                    color="textSecondary"
+                  >
                     {maincatalogprefix}
                   </Typography>
                 )}
@@ -128,12 +129,5 @@ const MainCatalog: React.FC<MainCatalogProps> = ({
     </Grid>
   );
 };
-
-// MainCatalog.propTypes = {
-//   maincatalog: PropTypes.array,
-//   categoryImgBase: PropTypes.string.isRequired,
-//   maincatalogprefix: PropTypes.string,
-//   maincatalogcount: PropTypes.number,
-// };
 
 export default MainCatalog;

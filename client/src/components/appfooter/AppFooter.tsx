@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState, FC } from "react";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import LinkUi from "@material-ui/core/Link";
@@ -76,7 +76,7 @@ interface IState {
 
 type TAnchor = 0 | 1 | 2;
 
-const AppFooterF: React.FC<WithWidth> = ({ width }) => {
+const AppFooterF: FC<WithWidth> = ({ width }) => {
   const { data } = useQueryApp<IAppFooter>(APP_FOOTER_QUERY);
 
   const classes = useStyles();
@@ -188,7 +188,7 @@ const AppFooterF: React.FC<WithWidth> = ({ width }) => {
                 {item.title} {Expand(1)}
               </Typography>
               <Collapse
-                in={state[((index + 1) as TAnchor)] || isWidthUp("md", width)}
+                in={state[(index + 1) as TAnchor] || isWidthUp("md", width)}
                 timeout="auto"
                 unmountOnExit
               >

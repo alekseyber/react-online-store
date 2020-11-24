@@ -1,4 +1,4 @@
-import React from "react";
+import { FC, CSSProperties } from "react";
 //import PropTypes from "prop-types";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
@@ -28,7 +28,7 @@ interface ColorItemProps {
   itemLevel1: TProductLevel1;
 }
 
-const ColorSelector: React.FC<ColorSelectorProps> = ({
+const ColorSelector: FC<ColorSelectorProps> = ({
   index,
   level1Cart,
   level2Cart,
@@ -46,8 +46,8 @@ const ColorSelector: React.FC<ColorSelectorProps> = ({
     }
   };
 
-  const ColorItem: React.FC<ColorItemProps> = ({ itemLevel1 }) => {
-    const style: React.CSSProperties = {
+  const ColorItem: FC<ColorItemProps> = ({ itemLevel1 }) => {
+    const style: CSSProperties = {
       backgroundColor: "#" + itemLevel1.colorItem.colorkey,
     };
     const onClick = () => handleSetColor(itemLevel1);

@@ -1,5 +1,4 @@
-import React from "react";
-//import PropTypes from "prop-types";
+import { FC } from "react";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
@@ -16,7 +15,7 @@ interface NullPageContentProps {
   str?: string;
 }
 
-const NullPageContent: React.FC<NullPageContentProps> = ({ title, str }) => {
+const NullPageContent: FC<NullPageContentProps> = ({ title, str }) => {
   const classes = useStyles();
   return (
     <Card className={classes.root}>
@@ -35,10 +34,5 @@ const NullPageContent: React.FC<NullPageContentProps> = ({ title, str }) => {
     </Card>
   );
 };
-
-// NullPageContent.propTypes = {
-//   title: PropTypes.string,
-//   str: PropTypes.string,
-// };
 
 export default NullPageContent;

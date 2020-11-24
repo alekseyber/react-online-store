@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-//import PropTypes from "prop-types";
+import { useState, FC, ChangeEvent } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete"; //, { createFilterOptions }
@@ -65,7 +64,7 @@ interface SearchProps {
   fclose?: () => void;
 }
 
-const Search: React.FC<SearchProps> = ({ fclose }) => {
+const Search: FC<SearchProps> = ({ fclose }) => {
   const { push } = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -97,7 +96,7 @@ const Search: React.FC<SearchProps> = ({ fclose }) => {
     }
   };
 
-  const handleInput = (e: React.ChangeEvent<{}>, value: string) => {
+  const handleInput = (e: ChangeEvent<{}>, value: string) => {
     // setSearchTerm(value);
 
     if (e) {
@@ -125,7 +124,7 @@ const Search: React.FC<SearchProps> = ({ fclose }) => {
 
         // console.log(opt, valSel);
         // return opt.title === valSel.title;
-        return true
+        return true;
       }}
       options={options}
       loading={loading}
@@ -169,9 +168,5 @@ const Search: React.FC<SearchProps> = ({ fclose }) => {
     />
   );
 };
-
-// Search.propTypes = {
-//   fclose: PropTypes.func,
-// };
 
 export default Search;

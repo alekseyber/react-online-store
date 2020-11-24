@@ -1,6 +1,12 @@
-import React, { useState } from "react";
+import {
+  useState,
+  SyntheticEvent,
+  FC,
+  TouchEvent,
+  KeyboardEvent,
+  MouseEvent,
+} from "react";
 import { Link } from "react-router-dom";
-//import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import IconButton from "@material-ui/core/IconButton";
@@ -41,7 +47,7 @@ interface DrawerAppProps {
   shop_name_rus: string;
 }
 
-const DrawerApp: React.FC<DrawerAppProps> = ({
+const DrawerApp: FC<DrawerAppProps> = ({
   shop_name_rus,
   categorytreeData,
   topLinks,
@@ -51,26 +57,22 @@ const DrawerApp: React.FC<DrawerAppProps> = ({
   const [open, setOpen] = useState(false);
   const [gropen, setGrOpen] = useState(false);
 
-  // const setOpenCallback = useCallback((open) => {
-  //   setOpen(open);
-  // }, []);
-
   const setCloseDrawer = () => {
     setOpen(false);
   };
 
-  const handleListGClick = (e: React.SyntheticEvent) => {
+  const handleListGClick = (e: SyntheticEvent) => {
     e.stopPropagation();
     setGrOpen((prev) => !prev);
   };
 
   const toggleDrawer = (open: boolean) => (
-    event: React.TouchEvent | React.KeyboardEvent | React.MouseEvent
+    event: TouchEvent | KeyboardEvent | MouseEvent
   ): void => {
     if (
       event.type === "keydown" &&
-      ((event as React.KeyboardEvent).key === "Tab" ||
-        (event as React.KeyboardEvent).key === "Shift")
+      ((event as KeyboardEvent).key === "Tab" ||
+        (event as KeyboardEvent).key === "Shift")
     ) {
       return;
     }
@@ -78,7 +80,7 @@ const DrawerApp: React.FC<DrawerAppProps> = ({
     setOpen(open);
   };
 
-  const ListDrawerApp: React.FC = () => (
+  const ListDrawerApp: FC = () => (
     <>
       <div
         className={classes.list}
@@ -149,16 +151,5 @@ const DrawerApp: React.FC<DrawerAppProps> = ({
     </>
   );
 };
-
-// DrawerApp.defaultProps = {
-//     root: false,
-//     imgStartPatch: ''
-// };
-
-// DrawerApp.propTypes = {
-//   topLinks: PropTypes.array.isRequired,
-//   categorytreeData: PropTypes.object.isRequired,
-//   shop_name_rus: PropTypes.string.isRequired,
-// };
 
 export default DrawerApp;

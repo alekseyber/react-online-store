@@ -1,9 +1,9 @@
-import React from "react";
+import { FC } from "react";
 import { useQuery } from "../../hooks/router.hook";
 import { PageBase } from "../../hoc/PageBase";
 import Search from "../../containers/search/Search";
 
-const SearchPage: React.FC = () => {
+const SearchPage: FC = () => {
   const query = useQuery();
   const { q } = query;
   const qStr = q ? q.toString() : "";

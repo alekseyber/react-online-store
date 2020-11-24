@@ -1,5 +1,4 @@
-import React from "react";
-//import PropTypes from "prop-types";
+import { FC } from "react";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
@@ -32,7 +31,7 @@ interface ProductContetntProps {
   baseApiUrl: string;
 }
 
-const ProductContetnt: React.FC<ProductContetntProps> = ({
+const ProductContetnt: FC<ProductContetntProps> = ({
   productContetntData,
   bannersProduct,
   bannersProductOn,
@@ -102,12 +101,5 @@ const ProductContetnt: React.FC<ProductContetntProps> = ({
     </Card>
   );
 };
-
-// ProductContetnt.propTypes = {
-//   productContetntData: PropTypes.object.isRequired,
-//   bannersProduct: PropTypes.array.isRequired,
-//   bannersProductOn: PropTypes.bool,
-//   baseApiUrl: PropTypes.string.isRequired,
-// };
 
 export default ProductContetnt;

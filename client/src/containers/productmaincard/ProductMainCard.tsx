@@ -1,5 +1,4 @@
-import React from "react";
-//import PropTypes from "prop-types";
+import { FC } from "react";
 import Grid from "@material-ui/core/Grid";
 import { useProductDataRender } from "../../hooks/useProductDataRender.hook";
 import ProductImgCarusel from "../../components/productimgcarusel/ProductImgCarusel";
@@ -26,7 +25,7 @@ interface ProductMainCardProps extends IProductData {
   currsymbol: string;
 }
 
-const ProductMainCard: React.FC<ProductMainCardProps> = ({
+const ProductMainCard: FC<ProductMainCardProps> = ({
   product,
   productMain,
   imgproperty,

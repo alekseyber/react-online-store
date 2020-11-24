@@ -1,5 +1,4 @@
-import React from "react";
-//import PropTypes from "prop-types";
+import { FC } from "react";
 import ModalBase, { IChildrenNodeBaseProps } from "../../../hoc/ModalBase";
 import LoaderContent from "../../../components/loadercontent/LoaderContent";
 import {
@@ -14,7 +13,7 @@ interface SizeChartContentProps extends IChildrenNodeBaseProps {
   sizesgroupId: string;
 }
 
-const SizeChartContent: React.FC<SizeChartContentProps> = ({
+const SizeChartContent: FC<SizeChartContentProps> = ({
   handleClose,
   sizesgroupId,
 }) => {

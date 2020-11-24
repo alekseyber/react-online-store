@@ -1,7 +1,7 @@
-import { useEffect } from "react";
+import { useEffect, FC } from "react";
 import { useRouter } from "../../hooks/router.hook";
 
-const RouterToTop: React.FC = () => {
+const RouterToTop: FC = () => {
   const { pathname } = useRouter();
 
   useEffect(() => {

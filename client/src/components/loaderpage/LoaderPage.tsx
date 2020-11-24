@@ -1,4 +1,4 @@
-import React from "react";
+import { FC } from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
@@ -18,7 +18,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const LoaderPage: React.FC = () => {
+const LoaderPage: FC = () => {
   const classes = useStyles();
 
   return (

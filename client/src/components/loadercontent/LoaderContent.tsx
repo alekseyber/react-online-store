@@ -1,5 +1,4 @@
-import React from "react";
-//import PropTypes from "prop-types";
+import { FC } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Typography from "@material-ui/core/Typography";
@@ -21,9 +20,7 @@ interface LoaderContentProps {
   text?: string;
 }
 
-const LoaderContent: React.FC<LoaderContentProps> = ({
-  text = "Загрузка...",
-}) => {
+const LoaderContent: FC<LoaderContentProps> = ({ text = "Загрузка..." }) => {
   const classes = useStyles();
 
   return (
@@ -41,12 +38,5 @@ const LoaderContent: React.FC<LoaderContentProps> = ({
     </Card>
   );
 };
-// LoaderContent.defaultProps = {
-//   text: "Загрузка...",
-// };
-
-// LoaderContent.propTypes = {
-//   text: PropTypes.string,
-// };
 
 export default LoaderContent;

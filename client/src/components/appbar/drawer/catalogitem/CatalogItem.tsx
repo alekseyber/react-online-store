@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import { useState, FC, SyntheticEvent } from "react";
 import { Link } from "react-router-dom";
-//import PropTypes from 'prop-types';
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import List from "@material-ui/core/List";
@@ -24,12 +23,12 @@ interface CatalogItemProps {
   root?: boolean;
 }
 
-const CatalogItem: React.FC<CatalogItemProps> = ({ root = false, item }) => {
+const CatalogItem: FC<CatalogItemProps> = ({ root = false, item }) => {
   const [gropen, setGrOpen] = useState(false);
 
   const classes = useStyles();
 
-  const handleListGClick = (e: React.SyntheticEvent) => {
+  const handleListGClick = (e: SyntheticEvent) => {
     e.stopPropagation();
     setGrOpen(!gropen);
   };
@@ -76,14 +75,5 @@ const CatalogItem: React.FC<CatalogItemProps> = ({ root = false, item }) => {
     </>
   );
 };
-
-// CatalogItem.defaultProps = {
-//     root: false,
-// };
-
-// CatalogItem.propTypes = {
-//     root: PropTypes.bool,
-//     item: PropTypes.object.isRequired,
-// };
 
 export default CatalogItem;

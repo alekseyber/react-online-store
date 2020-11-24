@@ -1,5 +1,4 @@
-import React from "react";
-//import PropTypes from "prop-types";
+import { FC } from "react";
 import Typography from "@material-ui/core/Typography";
 import DeliveryRezulText from "../../../components/deliveryrezulttext/DeliveryRezulText";
 import DeliverySelector from "../../../components/deliveryreselector/DeliverySelector";
@@ -14,7 +13,7 @@ interface DeliveryRegionProps {
   deliverySelect: number;
 }
 
-const DeliveryRegion: React.FC<DeliveryRegionProps> = ({
+const DeliveryRegion: FC<DeliveryRegionProps> = ({
   pvz_selector = true,
   sel_pvz_v = true,
   currSymbol,

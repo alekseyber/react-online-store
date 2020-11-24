@@ -1,5 +1,4 @@
-import React, { useMemo } from "react";
-//import PropTypes from "prop-types";
+import { useMemo, FC } from "react";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import ProductForCatalog from "../../components/productforcatalog/ProductForCatalog";
@@ -34,7 +33,7 @@ interface ProductItemProps {
   item: string | ItemProps;
 }
 
-const ProductItem: React.FC<ProductItemProps> = ({
+const ProductItem: FC<ProductItemProps> = ({
   item,
   imgproperty,
   quality,

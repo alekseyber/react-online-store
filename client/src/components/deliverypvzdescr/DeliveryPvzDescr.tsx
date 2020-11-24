@@ -1,5 +1,4 @@
-import React from "react";
-//import PropTypes from "prop-types";
+import { FC } from "react";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import { TPvzSelect } from "../../graphql/localVars";
@@ -21,10 +20,7 @@ interface ItemPvzDescrProps {
   divider_end: boolean;
 }
 
-const SelectedPvzDescr: React.FC<SelectedPvzDescrProps> = ({
-  item,
-  divider_end,
-}) => {
+const SelectedPvzDescr: FC<SelectedPvzDescrProps> = ({ item, divider_end }) => {
   if (!item) {
     return null;
   }
@@ -132,7 +128,7 @@ const ItemPvzDescr: React.FC<ItemPvzDescrProps> = ({ item, divider_end }) => {
   );
 };
 
-const DeliveryPvzDescr: React.FC<DeliveryPvzDescrProps> = ({
+const DeliveryPvzDescr: FC<DeliveryPvzDescrProps> = ({
   item,
   selected = false,
   divider_end = false,
@@ -145,16 +141,5 @@ const DeliveryPvzDescr: React.FC<DeliveryPvzDescrProps> = ({
 
   return <ItemPvzDescr item={item as TPvzListItem} divider_end={divider_end} />;
 };
-
-// DeliveryPvzDescr.defaultProps = {
-//   selected: false,
-//   divider_end: false,
-// };
-
-// DeliveryPvzDescr.propTypes = {
-//   selected: PropTypes.bool,
-//   item: PropTypes.object.isRequired,
-//   divider_end: PropTypes.bool,
-// };
 
 export default DeliveryPvzDescr;

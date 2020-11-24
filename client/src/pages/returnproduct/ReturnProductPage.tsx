@@ -1,4 +1,4 @@
-import React from "react";
+import { FC } from "react";
 import Card from "@material-ui/core/Card";
 import PhoneIcon from "@material-ui/icons/Phone";
 import CardContent from "@material-ui/core/CardContent";
@@ -27,7 +27,7 @@ import {
 } from "../../hooks/appolloMutationApp.hook";
 import { returnProductStatusVar } from "../../graphql/localVarsOrder";
 
-const ReturnProductPage: React.FC = () => {
+const ReturnProductPage: FC = () => {
   const { data, loading, error } = useQueryApp<IReturnProductPage>(
     RETURN_PRODUCT_PAGE_QUERY
   );

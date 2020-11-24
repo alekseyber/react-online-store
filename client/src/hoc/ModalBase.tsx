@@ -1,4 +1,4 @@
-import React from "react";
+import { FC } from "react";
 //import PropTypes from "prop-types";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -17,7 +17,7 @@ export interface IChildrenNodeBaseProps {
   handleClose: () => void;
 }
 
-const ModalBase: React.FC<ModalBaseProps> = (props) => {
+const ModalBase: FC<ModalBaseProps> = (props) => {
   const {
     children,
     handleClose,

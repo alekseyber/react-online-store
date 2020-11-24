@@ -1,11 +1,8 @@
-import React from "react";
-//import PropTypes from "prop-types";
+import { FC } from "react";
 import ModalBase, { IChildrenNodeBaseProps } from "../../../hoc/ModalBase";
 import DeliveryPvzSelectror from "../../deliveryrepvzselector/DeliveryPvzSelector";
 
-const DeliveryPvzModal: React.FC<IChildrenNodeBaseProps> = ({
-  handleClose,
-}) => {
+const DeliveryPvzModal: FC<IChildrenNodeBaseProps> = ({ handleClose }) => {
   return (
     <ModalBase handleClose={handleClose} title="Выбор ПВЗ">
       <DeliveryPvzSelectror />

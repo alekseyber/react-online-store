@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from "react";
+import { useEffect, useCallback, FC, SyntheticEvent, ChangeEvent } from "react";
 import {
   createMuiTheme,
   ThemeProvider,
@@ -83,7 +83,7 @@ interface CartItemProps {
   currsymbol: string;
 }
 
-const CartItem: React.FC<CartItemProps> = ({
+const CartItem: FC<CartItemProps> = ({
   index,
   itemcart,
   productImgProperty,
@@ -103,7 +103,7 @@ const CartItem: React.FC<CartItemProps> = ({
     cartDeleteItem(index);
   }, [index]);
 
-  const handleOpenProduct = (event: React.SyntheticEvent) => {
+  const handleOpenProduct = (event: SyntheticEvent) => {
     event.preventDefault();
     event.stopPropagation();
     setColorAndSizeProduct(alias, level1, level2);
@@ -114,7 +114,7 @@ const CartItem: React.FC<CartItemProps> = ({
   };
 
   const handleChangeQty = (
-    event: React.ChangeEvent<{ name?: string | undefined; value: unknown }>
+    event: ChangeEvent<{ name?: string | undefined; value: unknown }>
   ): void => {
     const value = event.target.value;
     if (typeof value === "string") {
@@ -286,7 +286,7 @@ const CartItem: React.FC<CartItemProps> = ({
         </Typography>
         <Typography
           variant="body2"
-         // color="secondary"
+          // color="secondary"
           component="span"
           className={classes.price}
         >
@@ -295,7 +295,7 @@ const CartItem: React.FC<CartItemProps> = ({
         {priceOld > 0 && (
           <Typography
             variant="body2"
-         //   color="textSecondary"
+            //   color="textSecondary"
             component="span"
             className={classes.oldprice}
           >

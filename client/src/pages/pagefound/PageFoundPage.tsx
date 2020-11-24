@@ -1,4 +1,4 @@
-import React from "react";
+import { FC } from "react";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
@@ -18,7 +18,7 @@ const useStyles = makeStyles({
   },
 });
 
-const PageFoundPage: React.FC = () => {
+const PageFoundPage: FC = () => {
   const classes = useStyles();
   const { data } = useQueryApp<IBaseApiUrl>(BASE_API_URL_QUERY);
   const baseApiUrl = data ? data.baseApiUrl : "";

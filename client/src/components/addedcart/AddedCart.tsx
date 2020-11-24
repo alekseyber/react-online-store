@@ -1,5 +1,4 @@
-import React from "react";
-//import PropTypes from "prop-types";
+import { FC } from "react";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import CardMedia from "@material-ui/core/CardMedia";
@@ -25,7 +24,7 @@ interface AddedCartProps {
   currSymbol: string;
 }
 
-const AddedCart: React.FC<AddedCartProps> = ({ lastCart, currSymbol }) => {
+const AddedCart: FC<AddedCartProps> = ({ lastCart, currSymbol }) => {
   const classes = useStyles();
 
   if (!lastCart) {

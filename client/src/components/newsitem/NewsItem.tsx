@@ -1,5 +1,4 @@
-import React from "react";
-//import PropTypes from 'prop-types';
+import { FC } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
@@ -41,7 +40,7 @@ interface NewsItemProps {
   item: TNewsAnnonce;
 }
 
-const NewsItem: React.FC<NewsItemProps> = ({ item }) => {
+const NewsItem: FC<NewsItemProps> = ({ item }) => {
   const classes = useStyles();
   const { history } = useRouter();
 
@@ -75,8 +74,5 @@ const NewsItem: React.FC<NewsItemProps> = ({ item }) => {
   );
 };
 
-// NewsItem.propTypes = {
-//     item: PropTypes.object.isRequired,
-// };
 
 export default NewsItem;

@@ -1,5 +1,4 @@
-import React, { ElementType } from "react";
-//import PropTypes from 'prop-types';
+import { ElementType, FC } from "react";
 import Paper from "@material-ui/core/Paper";
 import { Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
@@ -32,7 +31,7 @@ interface PageContentProps {
   outlined?: boolean;
 }
 
-export const PageContent: React.FC<PageContentProps> = ({
+export const PageContent: FC<PageContentProps> = ({
   content,
   title,
   tagtitle = "h1",
@@ -74,25 +73,5 @@ export const PageContent: React.FC<PageContentProps> = ({
     </div>
   );
 };
-
-// PageContent.defaultProps = {
-//     tagtitle: "h1",
-//     centertitle: true,
-//     elevation: 2,
-//     square: false,
-//     outlined: false
-
-// };
-
-// PageContent.propTypes = {
-//     content: PropTypes.string,
-//     title: PropTypes.string,
-//     tagtitle: PropTypes.string,
-//     centertitle: PropTypes.bool,
-//     elevation: PropTypes.number,
-//     square: PropTypes.bool,
-//     outlined: PropTypes.bool,
-
-// };
 
 export default PageContent;

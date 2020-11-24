@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-//import PropTypes from "prop-types";
+import { useState, useEffect, FC, ChangeEvent } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete"; //, { createFilterOptions }
@@ -35,7 +34,7 @@ interface DeliveryCityInputProps {
   variant?: "filled" | "outlined" | "standard" | undefined;
 }
 
-const DeliveryCityInput: React.FC<DeliveryCityInputProps> = ({
+const DeliveryCityInput: FC<DeliveryCityInputProps> = ({
   variant = "outlined",
 }) => {
   const cityСurrent = cityСurrentVar();
@@ -58,7 +57,7 @@ const DeliveryCityInput: React.FC<DeliveryCityInputProps> = ({
     cityСurrentVar(newValue);
   };
 
-  const handleInput = (e: React.ChangeEvent<{}>, val: string) => {
+  const handleInput = (e: ChangeEvent<{}>, val: string) => {
     if (e) {
       setSearchTerm(val);
     }

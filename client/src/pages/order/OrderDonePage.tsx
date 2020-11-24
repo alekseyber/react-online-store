@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import { useEffect, useMemo, FC } from "react";
 import { Link } from "react-router-dom";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { makeStyles } from "@material-ui/core/styles";
@@ -31,7 +31,7 @@ const useStyles = makeStyles({
   },
 });
 
-const OrderDonePage: React.FC = () => {
+const OrderDonePage: FC = () => {
   const classes = useStyles();
   const { replace } = useRouter();
 

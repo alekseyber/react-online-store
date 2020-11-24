@@ -1,5 +1,4 @@
-import React from "react";
-//import PropTypes from "prop-types";
+import { FC } from "react";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
@@ -27,7 +26,7 @@ interface SizeItemProps {
   item: TProductLevel2;
 }
 
-const SizeSelector: React.FC<ColorSelectorProps> = ({
+const SizeSelector: FC<ColorSelectorProps> = ({
   index,
   level2Cart,
   levels2,
@@ -42,7 +41,7 @@ const SizeSelector: React.FC<ColorSelectorProps> = ({
   };
   const captionText = levels2.length > 1 ? "Изменить размер:" : "Размер:";
 
-  const SizeItem: React.FC<SizeItemProps> = ({ item }) => {
+  const SizeItem: FC<SizeItemProps> = ({ item }) => {
     const variant: "text" | "outlined" | "contained" =
       level2Cart === item.alias ? "contained" : "outlined";
 

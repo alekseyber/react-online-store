@@ -1,4 +1,4 @@
-import React from "react";
+import { FC } from "react";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
@@ -11,7 +11,7 @@ import {
 import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 import { openPvzSelector } from "../../graphql/localVarsModal";
 
-const DeliveryPvzDescrNoProps: React.FC = () => {
+const DeliveryPvzDescrNoProps: FC = () => {
   const { data } = useQueryApp<IDeliveryPvzDescrNoProps>(
     DELIVERY_PVZ_DESCR_NO_PROPS_QUERY
   );

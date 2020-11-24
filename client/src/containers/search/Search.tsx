@@ -1,5 +1,4 @@
-import React, { useMemo } from "react";
-//import PropTypes from "prop-types";
+import { useMemo, FC } from "react";
 import ProductsGrid from "../../containers/productsgrid/ProductsGrid";
 import LoaderContent from "../../components/loadercontent/LoaderContent";
 import NullPageContent from "../../components/nullpagecontent/NullPageContent";
@@ -11,7 +10,7 @@ import {
 } from "../../graphql/gqlQuery";
 import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 
-const Search: React.FC<ISearchFullVar> = ({ q }) => {
+const Search: FC<ISearchFullVar> = ({ q }) => {
   const { data, loading } = useQueryApp<ISearchFull, ISearchFullVar>(
     SEARCH_FULL_QUERY,
     { q }

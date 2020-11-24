@@ -1,5 +1,4 @@
-import React from "react";
-//import PropTypes from "prop-types";
+import { FC } from "react";
 import withWidth, { isWidthDown, WithWidth } from "@material-ui/core/withWidth"; //isWidthDown,  isWidthUp
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -23,12 +22,12 @@ const useStyles = makeStyles((theme) => ({
 export interface IFilterProps {
   category?: boolean;
   sortBtnStatus?: boolean;
-  filterInputRezult?: IFilterGrupp[] | undefined;  
+  filterInputRezult?: IFilterGrupp[] | undefined;
 }
 
 interface IFilterRezultProps extends IFilterProps, WithWidth {}
 
-const Filter: React.FC<IFilterRezultProps> = ({
+const Filter: FC<IFilterRezultProps> = ({
   filterInputRezult,
   category = false,
   width,
@@ -99,5 +98,3 @@ const Filter: React.FC<IFilterRezultProps> = ({
 // };
 
 export default withWidth()(Filter);
-
-//export default Filter;

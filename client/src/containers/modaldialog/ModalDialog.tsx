@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import { useMemo, FC } from "react";
 import Dialog from "@material-ui/core/Dialog";
 import { hideDialog, IModal } from "../../graphql/localVarsModal";
 import SizeChartContent from "./sizechartcontent/SizeChartContent";
@@ -11,7 +11,7 @@ import ReturnCall from "./returncall/ReturnCall";
 import { MODAL_DIALOG_QUERY, IModalDialog } from "../../graphql/gqlQuery";
 import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 
-const ModalDialog: React.FC = () => {
+const ModalDialog: FC = () => {
   const { data } = useQueryApp<IModalDialog>(MODAL_DIALOG_QUERY);
 
   const { modalData, open } = useMemo<{
@@ -67,7 +67,7 @@ const ModalDialog: React.FC = () => {
     hideDialog();
   };
 
-  const ContentDialog: React.FC = () => {
+  const ContentDialog: FC = () => {
     switch (plagin) {
       case 0:
         return (

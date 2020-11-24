@@ -1,4 +1,4 @@
-import React from "react";
+import { FC, RefObject } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import Fab from "@material-ui/core/Fab";
@@ -14,10 +14,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface ScrollTopProps {
-  anchor: React.RefObject<HTMLDivElement>;
+  anchor: RefObject<HTMLDivElement>;
 }
 
-const ScrollTop: React.FC<ScrollTopProps> = ({ children, anchor }) => {
+const ScrollTop: FC<ScrollTopProps> = ({ children, anchor }) => {
   // const { children, window } = props;
   const classes = useStyles();
 
@@ -51,7 +51,7 @@ const ScrollTop: React.FC<ScrollTopProps> = ({ children, anchor }) => {
   );
 };
 
-const BackToTop: React.FC<ScrollTopProps> = (props) => {
+const BackToTop: FC<ScrollTopProps> = (props) => {
   return (
     <ScrollTop {...props}>
       <Fab color="secondary" size="small" aria-label="scroll back to top">

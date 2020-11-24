@@ -1,10 +1,13 @@
-import React from "react";
+import { FC } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Icon from "@material-ui/core/Icon";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import { DELIVERY_BANNERS_QUERY, IDeliveryBanners } from "../../graphql/gqlQuery";
+import {
+  DELIVERY_BANNERS_QUERY,
+  IDeliveryBanners,
+} from "../../graphql/gqlQuery";
 import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 
 const useStyles = makeStyles((theme) => ({
@@ -18,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const DeliveryBanners: React.FC = () => {
+const DeliveryBanners: FC = () => {
   const classes = useStyles();
   const { data } = useQueryApp<IDeliveryBanners>(DELIVERY_BANNERS_QUERY);
 

@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-//import PropTypes from "prop-types";
+import { useState, FC } from "react";
 import Carousel from "react-material-ui-carousel";
 import CardMedia from "@material-ui/core/CardMedia";
 import { makeStyles } from "@material-ui/core/styles";
@@ -44,10 +43,7 @@ interface CaruselElProps {
   startAt: number;
 }
 
-const ProductImgCarusel: React.FC<ProductImgCaruselProps> = ({
-  gal,
-  title,
-}) => {
+const ProductImgCarusel: FC<ProductImgCaruselProps> = ({ gal, title }) => {
   const classes = useStyles();
   //const initial = 0;
   //const [renderToggle, setRenderToggle] = useState(initial);
@@ -63,8 +59,8 @@ const ProductImgCarusel: React.FC<ProductImgCaruselProps> = ({
 
   const countImg = gal.length;
 
-  const CaruselEl: React.FC<CaruselElProps> = ({ startAt }) => {
-    const ItemSlide: React.FC<ItemThumbProps> = ({ item, posistion }) => {
+  const CaruselEl: FC<CaruselElProps> = ({ startAt }) => {
+    const ItemSlide: FC<ItemThumbProps> = ({ item, posistion }) => {
       const altText = `${title} ${posistion + 1} из ${countImg}`;
 
       return (
@@ -98,7 +94,7 @@ const ProductImgCarusel: React.FC<ProductImgCaruselProps> = ({
     );
   };
 
-  const ItemThumb: React.FC<ItemThumbProps> = ({ item, posistion }) => {
+  const ItemThumb: FC<ItemThumbProps> = ({ item, posistion }) => {
     const altText = `Thumb ${title} ${posistion + 1} из ${countImg}`;
 
     return (
@@ -124,10 +120,5 @@ const ProductImgCarusel: React.FC<ProductImgCaruselProps> = ({
     </div>
   );
 };
-
-// ProductImgCarusel.propTypes = {
-//   gal: PropTypes.array.isRequired,
-//   title: PropTypes.string.isRequired,
-// };
 
 export default ProductImgCarusel;

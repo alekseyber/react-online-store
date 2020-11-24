@@ -1,5 +1,4 @@
-import React, { useMemo } from "react";
-//import PropTypes from "prop-types";
+import { useMemo, FC } from "react";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import ProductContetnt from "../../components/productcontent/ProductContetnt";
@@ -26,7 +25,7 @@ interface ProductMainPageProps {
   color: string | null;
 }
 
-const ProductMainPage: React.FC<ProductMainPageProps> = ({ data, color }) => {
+const ProductMainPage: FC<ProductMainPageProps> = ({ data, color }) => {
   const classes = useStyles();
 
   const {

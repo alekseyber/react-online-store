@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import { useMemo, FC } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
@@ -30,7 +30,7 @@ const useStyles = makeStyles({
   },
 });
 
-const ErrorContent: React.FC = () => {
+const ErrorContent: FC = () => {
   const classes = useStyles();
 
   const { data } = useQueryApp<IErrorApp>(ERROR_QUERY);

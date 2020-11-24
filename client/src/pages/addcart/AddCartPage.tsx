@@ -1,4 +1,4 @@
-import React from "react";
+import { FC } from "react";
 import { PageBase, IPageBaseProps } from "../../hoc/PageBase";
 import { useRouter, useParamsMemo } from "../../hooks/router.hook";
 import LoaderPage from "../../components/loaderpage/LoaderPage";
@@ -12,7 +12,7 @@ import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 
 //const PageBaseRezult = PageBase;
 
-const AddCartPage: React.FC = () => {
+const AddCartPage: FC = () => {
   const { params } = useParamsMemo<{ id: string }>();
   const { replace } = useRouter();
   const id = params.id;

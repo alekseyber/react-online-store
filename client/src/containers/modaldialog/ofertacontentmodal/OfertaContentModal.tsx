@@ -1,5 +1,4 @@
-import React from "react";
-//import PropTypes from "prop-types";
+import { FC } from "react";
 import ModalBase, { IChildrenNodeBaseProps } from "../../../hoc/ModalBase";
 import { useHtml } from "../../../hooks/html.hook";
 import LoaderContent from "../../../components/loadercontent/LoaderContent";
@@ -9,9 +8,7 @@ import {
 } from "../../../graphql/gqlQuery";
 import { useQueryApp } from "../../../hooks/appolloQueryApp.hook";
 
-const OfertaContentModal: React.FC<IChildrenNodeBaseProps> = ({
-  handleClose,
-}) => {
+const OfertaContentModal: FC<IChildrenNodeBaseProps> = ({ handleClose }) => {
   const { data, loading } = useQueryApp<IOfertaContentModal>(
     OFERTA_CONTENT_MODAL_QUERY
   );

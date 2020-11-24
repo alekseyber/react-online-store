@@ -1,7 +1,5 @@
-import React, { useState } from "react";
-//import PropTypes from "prop-types";
+import { useState, FC } from "react";
 import CircularProgress from "@material-ui/core/CircularProgress";
-//import { Styles } from '@material-ui/styles/withStyles'; //, WithStylesOptions
 import common from "@material-ui/core/colors/common";
 import grey from "@material-ui/core/colors/grey";
 import BrokenImage from "@material-ui/icons/BrokenImage";
@@ -108,7 +106,7 @@ const defaultProps = {
   iconContainerStyle: {},
 };
 
-export const Image: React.FC<ImageProps> = (props) => {
+export const Image: FC<ImageProps> = (props) => {
   const [state, setState] = useState({
     imageError: false,
     imageLoaded: false,
@@ -159,38 +157,6 @@ export const Image: React.FC<ImageProps> = (props) => {
         opacity ${animationDuration / 2}ms cubic-bezier(0.4, 0.0, 0.2, 1)`,
     };
     return rezult;
-
-    // const styles = {
-    //   root: {
-    //     backgroundColor: color,
-    //     paddingTop: `calc(1 / ${aspectRatio} * 100%)`,
-    //     position: "relative",
-    //     ...style,
-    //   },
-    //   image: {
-    //     width: "100%",
-    //     height: "100%",
-    //     position: "absolute",
-    //     top: 0,
-    //     left: 0,
-    //     ...imageTransition,
-    //     ...imageStyle,
-    //   },
-    //   iconContainer: {
-    //     width: "100%",
-    //     height: "100%",
-    //     position: "absolute",
-    //     top: 0,
-    //     left: 0,
-    //     display: "flex",
-    //     alignItems: "center",
-    //     justifyContent: "center",
-    //     pointerEvents: "none",
-    //     ...iconContainerStyle,
-    //   },
-    // };
-
-    // return styles;
   };
 
   const imageTransition = getImageTransition();

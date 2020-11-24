@@ -1,11 +1,8 @@
-import React from "react";
-//import PropTypes from "prop-types";
-//import { Link } from "react-router-dom";
+import { FC, useState, SyntheticEvent } from "react";
 import Button from "@material-ui/core/Button";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import Popover from "@material-ui/core/Popover";
-//import Typography from "@material-ui/core/Typography";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
@@ -92,18 +89,18 @@ interface ItemCardProps {
   all?: boolean;
 }
 
-const MenuItemBtn: React.FC<MenuItemBtnProps> = ({
+const MenuItemBtn: FC<MenuItemBtnProps> = ({
   root = false,
   item,
   imgStartPatch = "",
 }) => {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState<
-    (EventTarget & HTMLElement) | null
-  >(null);
+  const [anchorEl, setAnchorEl] = useState<(EventTarget & HTMLElement) | null>(
+    null
+  );
   const history = useRouter();
 
-  const handleClick = (event: React.SyntheticEvent<HTMLElement>) => {
+  const handleClick = (event: SyntheticEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -111,10 +108,7 @@ const MenuItemBtn: React.FC<MenuItemBtnProps> = ({
     setAnchorEl(null);
   };
 
-  const handleTo = (
-    to: string,
-    e?: React.SyntheticEvent<HTMLElement>
-  ): void => {
+  const handleTo = (to: string, e?: SyntheticEvent<HTMLElement>): void => {
     if (e) {
       e.preventDefault();
     }
@@ -146,7 +140,7 @@ const MenuItemBtn: React.FC<MenuItemBtnProps> = ({
     />
   );
 
-  const ItemCard: React.FC<ItemCardProps> = ({ cat, all = false }) => {
+  const ItemCard: FC<ItemCardProps> = ({ cat, all = false }) => {
     const title = all ? "Все " + cat.title.toLowerCase() : cat.title;
 
     return (
@@ -162,7 +156,7 @@ const MenuItemBtn: React.FC<MenuItemBtnProps> = ({
                 gutterBottom
                 variant="h6"
                 href={"/category/" + cat.alias}
-                onClick={(e: React.SyntheticEvent) => e.preventDefault()}
+                onClick={(e: SyntheticEvent) => e.preventDefault()}
               >
                 {title}
               </Link>
@@ -208,16 +202,5 @@ const MenuItemBtn: React.FC<MenuItemBtnProps> = ({
     </div>
   );
 };
-
-// MenuItemBtn.defaultProps = {
-//   root: false,
-//   imgStartPatch: "",
-// };
-
-// MenuItemBtn.propTypes = {
-//   root: PropTypes.bool,
-//   item: PropTypes.object.isRequired,
-//   imgStartPatch: PropTypes.string,
-// };
 
 export default MenuItemBtn;

@@ -1,8 +1,12 @@
-import React, { useEffect } from "react";
+import { useEffect, FC } from "react";
 import { setFilterSelectByQwery } from "../../graphql/localVarsFilter";
 import LoaderPage from "../../components/loaderpage/LoaderPage";
 import Category from "../../containers/category/Category";
-import { useQuery, useParamsMemo, TStringifiableRecordArrayParams } from "../../hooks/router.hook";
+import {
+  useQuery,
+  useParamsMemo,
+  TStringifiableRecordArrayParams,
+} from "../../hooks/router.hook";
 import {
   CATEGORY_PAGE_QUERY,
   ICategoryPageVar,
@@ -11,7 +15,7 @@ import {
 import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 import ErrorContent from "../../components/errorcontent/ErrorContent";
 
-const CategoryPage: React.FC = () => {
+const CategoryPage: FC = () => {
   const { params } = useParamsMemo<{ alias: string }>();
   const { alias } = params;
   const query = useQuery(true) as TStringifiableRecordArrayParams;

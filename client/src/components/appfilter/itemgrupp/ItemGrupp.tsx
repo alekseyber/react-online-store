@@ -1,8 +1,7 @@
-import React from "react";
+import { FC, useState, SyntheticEvent } from "react";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import Button from "@material-ui/core/Button";
-//import PropTypes from "prop-types";
 import clsx from "clsx";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { makeStyles } from "@material-ui/core/styles";
@@ -29,12 +28,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ItemGrupp: React.FC<ItemGruppProps> = ({ itemGr, filterSelect }) => {
+const ItemGrupp: FC<ItemGruppProps> = ({ itemGr, filterSelect }) => {
   const classes = useStyles();
 
-  const [anchorEl, setAnchorEl] = React.useState<
-    (EventTarget & HTMLElement) | null
-  >(null);
+  const [anchorEl, setAnchorEl] = useState<(EventTarget & HTMLElement) | null>(
+    null
+  );
   const open = Boolean(anchorEl);
 
   const handleClose = () => {
@@ -46,7 +45,7 @@ const ItemGrupp: React.FC<ItemGruppProps> = ({ itemGr, filterSelect }) => {
   //     handleClose();
   //   };
 
-  const handleMenu = (event: React.SyntheticEvent<HTMLElement>) => {
+  const handleMenu = (event: SyntheticEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -127,10 +126,5 @@ const ItemGrupp: React.FC<ItemGruppProps> = ({ itemGr, filterSelect }) => {
     </>
   );
 };
-
-// ItemGrupp.propTypes = {
-//   itemGr: PropTypes.object.isRequired,
-//   filterSelect: PropTypes.object.isRequired,
-// };
 
 export default ItemGrupp;

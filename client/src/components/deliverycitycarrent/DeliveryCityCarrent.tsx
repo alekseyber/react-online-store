@@ -1,4 +1,4 @@
-import React from "react";
+import { FC } from "react";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
@@ -9,7 +9,7 @@ import {
 } from "../../graphql/gqlQuery";
 import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 
-const DeliveryCityCarrent: React.FC = () => {
+const DeliveryCityCarrent: FC = () => {
   const { data } = useQueryApp<IDeliveryCityCarrent>(
     DELIVERY_CITY_CARRENT_QUERY
   );

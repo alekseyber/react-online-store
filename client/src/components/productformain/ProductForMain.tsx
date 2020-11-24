@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-//import PropTypes from "prop-types";
+import { useState, useEffect, FC, SyntheticEvent } from "react";
 import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
@@ -74,7 +73,7 @@ interface ColorItemProps {
   item: TProductLevel1;
 }
 
-const ProductForMain: React.FC<ProductForMainProps> = ({
+const ProductForMain: FC<ProductForMainProps> = ({
   product,
   currsymbol,
   baseurl,
@@ -90,12 +89,12 @@ const ProductForMain: React.FC<ProductForMainProps> = ({
   const sizeSelectVisible =
     product.product_model === 1 || product.product_model === 4;
 
-  const preventDefault = (event: React.SyntheticEvent) => {
+  const preventDefault = (event: SyntheticEvent) => {
     event.preventDefault();
     event.stopPropagation();
   };
 
-  const handleColor = (event: React.SyntheticEvent, color: string) => {
+  const handleColor = (event: SyntheticEvent, color: string) => {
     preventDefault(event);
 
     setColorProductAction(product.alias, color, product.current.level2);
@@ -110,10 +109,10 @@ const ProductForMain: React.FC<ProductForMainProps> = ({
 
   // console.log('current', product)
 
-  const Colorlevel: React.FC = () => {
+  const Colorlevel: FC = () => {
     if (product.product_model > 2) return null;
 
-    const ColorItem: React.FC<ColorItemProps> = ({ item }) => {
+    const ColorItem: FC<ColorItemProps> = ({ item }) => {
       const href =
         product.color_default !== item.alias
           ? `${product.link}?colors=${item.alias}`
@@ -121,7 +120,7 @@ const ProductForMain: React.FC<ProductForMainProps> = ({
       const style = {
         backgroundColor: "#" + item.colorItem.colorkey,
       };
-      const onClick = (ev: React.SyntheticEvent) => handleColor(ev, item.alias);
+      const onClick = (ev: SyntheticEvent) => handleColor(ev, item.alias);
       const params = { href, style, onClick };
 
       return (
@@ -130,10 +129,6 @@ const ProductForMain: React.FC<ProductForMainProps> = ({
         </IconButton>
       );
     };
-
-    // ColorItem.propTypes = {
-    //   item: PropTypes.object.isRequired,
-    // };
 
     return (
       <div className={classes.rowinf}>
@@ -284,16 +279,5 @@ const ProductForMain: React.FC<ProductForMainProps> = ({
     </Card>
   );
 };
-
-// ProductForMain.defaultProps = {
-//   currsymbol: "",
-//   baseurl: "",
-// };
-
-// ProductForMain.propTypes = {
-//   product: PropTypes.object.isRequired,
-//   currsymbol: PropTypes.string,
-//   baseurl: PropTypes.string,
-// };
 
 export default ProductForMain;

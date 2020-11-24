@@ -1,9 +1,8 @@
-import React from "react";
-//import PropTypes from "prop-types";
+import { FC } from "react";
 import ModalBase, { IChildrenNodeBaseProps } from "../../../hoc/ModalBase";
 import Delivery from "../../delivery/Delivery";
 
-const DeliveryModal: React.FC<IChildrenNodeBaseProps> = ({ handleClose }) => {
+const DeliveryModal: FC<IChildrenNodeBaseProps> = ({ handleClose }) => {
   return (
     <ModalBase handleClose={handleClose} title="О доставке и оплате">
       <Delivery />

@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-//import PropTypes from "prop-types";
+import { useEffect, FC } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -29,7 +28,7 @@ interface CartListProps {
   full?: boolean;
 }
 
-const CartList: React.FC<CartListProps> = ({ full = false, handleClose }) => {
+const CartList: FC<CartListProps> = ({ full = false, handleClose }) => {
   const classes = useStyles();
 
   const { data, loading } = useQueryApp<ICartList>(CART_LIST_QUERY);
