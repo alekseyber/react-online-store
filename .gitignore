@@ -89,7 +89,7 @@ sw.*
 # Mac OSX
 .DS_Store
 
-keys/keys.dev.js
+#keys/keys.dev.js
 
 static/static/images/
 static/static/files/
