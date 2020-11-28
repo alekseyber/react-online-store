@@ -101,7 +101,11 @@ const MenuItemBtn: FC<MenuItemBtnProps> = ({
   const history = useRouter();
 
   const handleClick = (event: SyntheticEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
+    if (anchorEl) {
+      setAnchorEl(null);
+    } else {      
+      setAnchorEl(event.currentTarget);
+    }
   };
 
   const handleClose = (): void => {

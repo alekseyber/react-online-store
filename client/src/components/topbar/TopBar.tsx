@@ -20,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.primary.dark,
     color: theme.palette.primary.contrastText,
     boxShadow: "none",
+    zIndex: 4900,
   },
   wrap: {
     display: "flex",

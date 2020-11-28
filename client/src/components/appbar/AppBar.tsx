@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.default,
     color: theme.palette.primary.dark,
     top: "30px",
+    zIndex: 5000,
   },
   tollger: {
     flexGrow: 0.1,
