@@ -68,11 +68,11 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       textDecoration: "none",
     },
-    margin: "3px",
+    margin: "3px",    
   },
   colorav: {
-    width: "15px",
-    height: "15px",
+    width: "16px",
+    height: "16px",
     color: "#fff",
     display: "flex",
     overflow: "hidden",
@@ -120,7 +120,9 @@ const ProductForCatalog: FC<ProductForCatalogProps> = ({
     event.stopPropagation();
   };
 
-  const handleColorHover = (color: string) => {
+  const handleColorHover = (color: string, event: SyntheticEvent) => {
+    preventDefault(event);
+    event.stopPropagation();
     setColorProductAction(product.alias, color, product.current.level2);
   };
 
@@ -147,8 +149,8 @@ const ProductForCatalog: FC<ProductForCatalogProps> = ({
           href={href}
           color="inherit"
           className={classes.color}
-          onClick={preventDefault}
-          onMouseEnter={() => handleColorHover(item.alias)}
+          onClick={(e: SyntheticEvent) => handleColorHover(item.alias, e)}
+          //  onMouseEnter={(e: SyntheticEvent) => handleColorHover(item.alias, e)}
         >
           <div
             className={classes.colorav}

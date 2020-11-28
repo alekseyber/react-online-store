@@ -9,8 +9,12 @@ const useStyles = makeStyles((theme) => ({
   productcarusel: {
     height: "100%",
     overflow: "hidden",
-    // marginTop: theme.spacing(5),
-    // marginBottom: theme.spacing(5),
+    "& .MuiIconButton-root": {      
+      backgroundColor: "#ccc",
+      "&:hover": {  
+        backgroundColor: "#999",
+      },
+    },
   },
   productthumb: {
     display: "flex",
@@ -85,7 +89,7 @@ const ProductImgCarusel: FC<ProductImgCaruselProps> = ({ gal, title }) => {
         indicators={true}
         navButtonsAlwaysVisible={true}
         // onChange={(_, active) => { setCurrentImg(active) }}
-        startAt={startAt}
+        index={startAt}
       >
         {gal.map((item, index) => {
           return <ItemSlide item={item} posistion={index} key={index} />;

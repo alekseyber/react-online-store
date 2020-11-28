@@ -12,8 +12,8 @@ import withWidth, { isWidthUp, WithWidth } from "@material-ui/core/withWidth";
 import { openDelivery } from "../../graphql/localVarsModal";
 import { TOP_BAR_QUERY, ITopBar } from "../../graphql/gqlQuery";
 import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
-import useScrollTrigger from "@material-ui/core/useScrollTrigger";
-import Slide from "@material-ui/core/Slide";
+//import useScrollTrigger from "@material-ui/core/useScrollTrigger";
+//import Slide from "@material-ui/core/Slide";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -70,7 +70,7 @@ const TopBarAppF: FC<WithWidth> = (props) => {
   const { data } = useQueryApp<ITopBar>(TOP_BAR_QUERY);
 
   const classes = useStyles();
-  const trigger = useScrollTrigger();
+ // const trigger = useScrollTrigger();
 
   const deliveryBtnHandler = () => {
     openDelivery();
@@ -83,8 +83,8 @@ const TopBarAppF: FC<WithWidth> = (props) => {
   const { phone, topLinks } = data.paramsData;
 
   return (
-    <Slide appear={false} direction="down" in={!trigger}>
-      <AppBar color="inherit" className={classes.root} position="sticky">
+    // <Slide appear={false} direction="down" in={!trigger}>
+      <AppBar color="inherit" className={classes.root} position="fixed">
         <Toolbar className={classes.wrap}>
           <Grid
             container
@@ -133,7 +133,7 @@ const TopBarAppF: FC<WithWidth> = (props) => {
           )}
         </Toolbar>
       </AppBar>
-    </Slide>
+    // </Slide>
   );
 };
 

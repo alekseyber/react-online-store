@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, createRef } from "react";
 import Grid from "@material-ui/core/Grid";
 import { useProductDataRender } from "../../hooks/useProductDataRender.hook";
 import ProductImgCarusel from "../../components/productimgcarusel/ProductImgCarusel";
@@ -38,6 +38,7 @@ const ProductMainCard: FC<ProductMainCardProps> = ({
     SELECT_COLOR_QUERY,
     { alias }
   );
+  const refDivProduct = createRef<HTMLDivElement>();
   const stateSelectColor = data ? data.stateSelectColor : null;
   const productData = { product, productMain };
 
@@ -54,21 +55,25 @@ const ProductMainCard: FC<ProductMainCardProps> = ({
   }
 
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={12} md={8} lg={7}>
-        <ProductImgCarusel
-          gal={productDataRender.gal}
-          title={productDataRender.title}
-        />
+    <>
+      <div ref={refDivProduct} />
+      <Grid container spacing={2}>
+        <Grid item xs={12} md={8} lg={7}>
+          <ProductImgCarusel
+            gal={productDataRender.gal}
+            title={productDataRender.title}
+          />
+        </Grid>
+        <Grid item xs={12} md={4} lg={5}>
+          <ProductForMain
+            product={productDataRender}
+            currsymbol={currsymbol}
+            baseurl={baseurl}
+            refDivProduct={refDivProduct}
+          />
+        </Grid>
       </Grid>
-      <Grid item xs={12} md={4} lg={5}>
-        <ProductForMain
-          product={productDataRender}
-          currsymbol={currsymbol}
-          baseurl={baseurl}
-        />
-      </Grid>
-    </Grid>
+    </>
   );
 };
 

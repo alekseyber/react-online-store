@@ -1,4 +1,4 @@
-import { useState, useEffect, FC, SyntheticEvent } from "react";
+import { useState, useEffect, FC, SyntheticEvent, RefObject } from "react";
 import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
@@ -67,6 +67,7 @@ interface ProductForMainProps {
   product: IProductRezult;
   currsymbol: string;
   baseurl: string;
+  refDivProduct?: RefObject<HTMLDivElement>;
 }
 
 interface ColorItemProps {
@@ -77,6 +78,7 @@ const ProductForMain: FC<ProductForMainProps> = ({
   product,
   currsymbol,
   baseurl,
+  refDivProduct,
 }) => {
   const classes = useStyles();
 
@@ -96,8 +98,16 @@ const ProductForMain: FC<ProductForMainProps> = ({
 
   const handleColor = (event: SyntheticEvent, color: string) => {
     preventDefault(event);
-
     setColorProductAction(product.alias, color, product.current.level2);
+
+    if (refDivProduct) {
+      if (refDivProduct.current) {
+        refDivProduct.current.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+      }
+    }
   };
 
   const handleAddCart = (qorder: boolean = false) => {

@@ -2,6 +2,11 @@ import { useState, FC, TouchEvent, KeyboardEvent, MouseEvent } from "react";
 import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import Drawer from "@material-ui/core/Drawer";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from "@material-ui/icons/Close";
+import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import ItemGrupp from "./itemgrupp/ItemGrupp";
 import ItemGruppMbile from "./itemgruppmobile/ItemGruppMobile";
@@ -15,6 +20,12 @@ const useStyles = makeStyles((theme) => ({
   btngr: {
     marginRight: theme.spacing(1),
     fontSize: theme.typography.pxToRem(11),
+  },
+  btnclose: {
+    marginLeft: theme.spacing(2),
+  },
+  titlepanel: {
+    flexGrow: 1,
   },
 }));
 
@@ -30,6 +41,10 @@ interface AppFilterProps {
 export interface ItemGruppProps {
   itemGr: IFilterGrupp;
   filterSelect: IFilterSelectGr;
+}
+
+interface BtnsProps {
+  barOn?: boolean;
 }
 
 const AppFilter: FC<AppFilterProps> = ({
@@ -62,6 +77,44 @@ const AppFilter: FC<AppFilterProps> = ({
     removeFilterSelect();
   };
 
+  const Btns: FC<BtnsProps> = ({ barOn = false }) => {
+    const size: "large" | "medium" | "small" = barOn ? "small" : "medium";
+    const color: "default" | "inherit" | "primary" | "secondary" = barOn
+      ? "inherit"
+      : "primary";
+
+    const onClick = barOn ? () => toggleDrawer(false) : undefined;
+
+    return (
+      <>
+        {btnClear && category && (
+          <Button
+            variant="outlined"
+            color={color}
+            onClick={handleClear}
+            className={classes.btngr}
+            size={size}
+          >
+            Очистить
+          </Button>
+        )}
+        {btnClear && !category && (
+          <Button
+            variant="outlined"
+            color={color}
+            className={classes.btngr}
+            size={size}
+            component={Link}
+            to={rootCategory}
+            onClick={onClick}
+          >
+            Результат
+          </Button>
+        )}
+      </>
+    );
+  };
+
   return (
     <>
       {mobile && (
@@ -75,35 +128,29 @@ const AppFilter: FC<AppFilterProps> = ({
           Фильтр
         </Button>
       )}
-      {btnClear && category && (
-        <Button
-          variant="outlined"
-          color="primary"
-          onClick={handleClear}
-          className={classes.btngr}
-          //  size="small"
-        >
-          Очистить
-        </Button>
-      )}
-      {btnClear && !category && (
-        <Button
-          variant="outlined"
-          color="primary"
-          className={classes.btngr}
-          //   size="small"
-          component={Link}
-          to={rootCategory}
-        >
-          Результат
-        </Button>
-      )}
+      <Btns />
       {!mobile &&
         filterRezult.map((item, index) => (
           <ItemGrupp key={index} itemGr={item} filterSelect={filterSelect} />
         ))}
       {mobile && (
         <Drawer anchor="bottom" open={state} onClose={toggleDrawer(false)}>
+          <AppBar position="static">
+            <Toolbar variant="dense">
+              <Typography variant="h6" className={classes.titlepanel}>
+                Фильтр
+              </Typography>
+              <Btns barOn={true} />
+              <IconButton
+                edge="end"
+                color="inherit"
+                onClick={toggleDrawer(false)}
+                className={classes.btnclose}
+              >
+                <CloseIcon />
+              </IconButton>
+            </Toolbar>
+          </AppBar>
           {filterRezult.map((item, index) => (
             <ItemGruppMbile
               key={index}

@@ -1,4 +1,5 @@
 import { createRef, FC } from "react";
+import { makeStyles } from "@material-ui/core/styles";
 import AlertApp from "../../components/alertapp/AlertApp";
 import TopBarApp from "../../components/topbar/TopBar";
 import AppBarApp from "../../components/appbar/AppBar";
@@ -12,7 +13,14 @@ import { LAYOUT_QUERY, ILayout } from "../../graphql/gqlQuery";
 import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 import { sortValueVar, cityСurrentVar } from "../../graphql/localVars";
 
+const useStyles = makeStyles({
+  topbl: {
+    minHeight: 88,
+  },
+});
+
 const Layout: FC = ({ children }) => {
+  const classes = useStyles();
   const refDiv = createRef<HTMLDivElement>();
   const onCompleted = ({ sortData, deliveryStart }: ILayout) => {
     if (sortData) {
@@ -44,7 +52,7 @@ const Layout: FC = ({ children }) => {
     <>
       <TopBarApp />
       <AppBarApp />
-      <div ref={refDiv}></div>
+      <div ref={refDiv} className={classes.topbl}></div>
       <AlertApp />
       <ModalDialog />
       {children}

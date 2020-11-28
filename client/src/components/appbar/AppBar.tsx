@@ -7,7 +7,7 @@ import withWidth, {
 } from "@material-ui/core/withWidth";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import useScrollTrigger from "@material-ui/core/useScrollTrigger";
+//import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import { makeStyles } from "@material-ui/core/styles"; //fade, , Theme, Styles
 import DrawerApp from "./drawer/Drawer";
 import MenuItemBtn from "./menuitem/MenuItem";
@@ -20,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.default,
     color: theme.palette.primary.dark,
+    top: "30px",
   },
   tollger: {
     flexGrow: 0.1,
@@ -54,15 +55,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const options = {
-  threshold: 10,
-};
+// const options = {
+//   threshold: 10,
+// };
 
 const AppBarAppF: FC<WithWidth> = ({ width }) => {
   const { data } = useQueryApp<IAppBar>(APP_BAR_QUERY); //loading,
 
   const classes = useStyles();
-  const trigger = useScrollTrigger(options);
+  // const trigger = useScrollTrigger(options);
+  // position={trigger ? "fixed" : "static"}
 
   if (!data) return null;
   const baseApiUrl = data.baseApiUrl;
@@ -73,7 +75,7 @@ const AppBarAppF: FC<WithWidth> = ({ width }) => {
   const imgStartPatch = baseApiUrl + categoryImgProperty;
 
   return (
-    <AppBar position={trigger ? "fixed" : "static"} className={classes.root}>
+    <AppBar position="fixed" className={classes.root}>
       <Toolbar>
         {isWidthDown("sm", width) && (
           <div className={classes.tollger}>
