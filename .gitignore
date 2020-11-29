@@ -68,6 +68,7 @@ typings/
 
 # dotenv environment variables file
 .env
+.env.test
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
@@ -97,12 +98,21 @@ sw.*
 # static/static/sitemap.xml
 # static/static/price.xml
 # static/static/sitemap.xml
-static/static/*
+
 #static/static/price.xml
 #staticroot/robots.txt
 #staticroot/favicon.ico
 #staticroot/icon.png
 #staticroot/price.xml
 #staticroot/sitemap.xml
+static/static/*
 staticroot/*
+
+
+### VisualStudioCode ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
 
