@@ -13,6 +13,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     top: theme.spacing(2),
     paddingBottom: theme.spacing(1),
+    zIndex: 200,
   },
   wrap: {
     justifyContent: "space-between",

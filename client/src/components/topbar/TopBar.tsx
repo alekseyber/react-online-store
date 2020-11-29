@@ -19,8 +19,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.primary.dark,
     color: theme.palette.primary.contrastText,
-    boxShadow: "none",
-    zIndex: 4900,
+    boxShadow: "none",  
   },
   wrap: {
     display: "flex",
@@ -85,7 +84,7 @@ const TopBarAppF: FC<WithWidth> = (props) => {
 
   return (
     // <Slide appear={false} direction="down" in={!trigger}>
-      <AppBar color="inherit" className={classes.root} position="fixed">
+      <AppBar color="inherit" className={classes.root} position="relative">
         <Toolbar className={classes.wrap}>
           <Grid
             container

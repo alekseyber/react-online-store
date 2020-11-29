@@ -20,8 +20,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.default,
     color: theme.palette.primary.dark,
-    top: "30px",
-    zIndex: 5000,
+   // top: "33px",   
   },
   tollger: {
     flexGrow: 0.1,
@@ -76,7 +75,7 @@ const AppBarAppF: FC<WithWidth> = ({ width }) => {
   const imgStartPatch = baseApiUrl + categoryImgProperty;
 
   return (
-    <AppBar position="fixed" className={classes.root}>
+    <AppBar position="sticky" className={classes.root}>
       <Toolbar>
         {isWidthDown("sm", width) && (
           <div className={classes.tollger}>

@@ -11,11 +11,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
+import CloseIcon from "@material-ui/icons/Close";
 import List from "@material-ui/core/List";
 import Divider from "@material-ui/core/Divider";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import HomeIcon from "@material-ui/icons/Home";
 import Icon from "@material-ui/core/Icon";
 import ExpandLess from "@material-ui/icons/ExpandLess";
@@ -80,6 +82,10 @@ const DrawerApp: FC<DrawerAppProps> = ({
     setOpen(open);
   };
 
+  const toggleBtnDrawer = () => {
+    setOpen((prev) => !prev);
+  };
+
   const ListDrawerApp: FC = () => (
     <>
       <div
@@ -89,12 +95,20 @@ const DrawerApp: FC<DrawerAppProps> = ({
         onKeyDown={toggleDrawer(false)}
       >
         <List>
+          <ListItem>
+            <ListItemSecondaryAction>
+              <IconButton edge="end" onClick={toggleDrawer(false)}>
+                <CloseIcon />
+              </IconButton>
+            </ListItemSecondaryAction>
+          </ListItem>
           <ListItem button component={Link} to="/">
             <ListItemIcon>
               <HomeIcon />
             </ListItemIcon>
             <ListItemText primary={shop_name_rus} />
           </ListItem>
+          <Divider />
           <ListItem button onClick={handleListGClick}>
             <ListItemIcon>
               <FolderIcon />
@@ -141,7 +155,7 @@ const DrawerApp: FC<DrawerAppProps> = ({
         edge="start"
         color="inherit"
         aria-label="open drawer"
-        onClick={toggleDrawer(true)}
+        onClick={toggleBtnDrawer}
       >
         <MenuIcon />
       </IconButton>

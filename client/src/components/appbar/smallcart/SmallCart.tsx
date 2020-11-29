@@ -49,7 +49,11 @@ const SmallCart: FC = () => {
   const count: number = cartData.length;
 
   const handleClick = (event: SyntheticEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
+    if (anchorEl) {
+      setAnchorEl(null);
+    } else {
+      setAnchorEl(event.currentTarget);
+    }
   };
 
   const handleClose = () => {

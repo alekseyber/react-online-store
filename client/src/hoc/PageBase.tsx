@@ -1,5 +1,4 @@
 import { useContext, createContext, useMemo, FC } from "react";
-//import PropTypes from "prop-types";
 import MetaTags from "react-meta-tags";
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
@@ -72,7 +71,7 @@ export const PageBase: FC<IPageBaseProps> = (props) => {
     breadcrumbs_on = true,
     page = 1,
     filterInputRezult,
-    container_fixed = true,
+    container_fixed = false,
     error = false,
     category = false,
     Slider = null,
