@@ -99,6 +99,8 @@ static/static/price.xml
 static/static/sitemap.xml
 static/static/price.xml
 staticroot/robots.txt
-#staticroot/favicon.ico
-#staticroot/icon.png
+staticroot/favicon.ico
+staticroot/icon.png
+staticroot/price.xml
+staticroot/sitemap.xml
 
