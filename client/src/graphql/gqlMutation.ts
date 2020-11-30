@@ -12,6 +12,7 @@ interface IBaseMutationResponseFragment {
 type OrderResponse = {
   orderNum: string;
   orderId: string;
+  summa: number;
 };
 
 const BaseMutationResponseFragment = {
@@ -139,6 +140,7 @@ export const ADD_ORDER_MUTATION = gql`
       order {
         orderNum
         orderId
+        summa
       }
     }
   }

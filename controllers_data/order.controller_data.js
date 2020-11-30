@@ -138,7 +138,7 @@ const productValidate = async (alias, level1_alias, level2_alias) => {
       return false;
     }
   } catch (e) {
-    console.error(e.message);
+    console.error(e.message); 
     return false;
   }
 };
@@ -230,7 +230,7 @@ const getCartValidate = async (cart, discontcupon) => {
 };
 
 const cuponValidate = async (cupon_id) => {
-  let rezult = {
+  const rezult = {
     status: false,
     discont: 1,
     cupon_id: "",
@@ -247,15 +247,16 @@ const cuponValidate = async (cupon_id) => {
       expiryDate: { $gte: startDate },
     });
 
-    if (doc !== null) {
+    if (doc) {
       rezult.discont = parseFloat(doc.discontvalue.toString());
+      if (!Number.isNaN(rezult.discont)) {
+        rezult.status = true;
+        rezult.cupon_id = doc._id;
+      }
     }
-    if (!Number.isNaN(rezult.discont)) {
-      rezult.status = true;
-      rezult.cupon_id = doc._id;
-    }
+    
   } catch (e) {
-    console.error(e.message);
+    console.error(e.message); //e.message
   } finally {
     return rezult;
   }
@@ -372,7 +373,8 @@ module.exports.sentOrderData = async (inputData, ip) => {
     rezultOrder.order = {
       orderNum,
       orderId: doc._id,
-    };
+      summa: order.summa,
+    };    
 
     // const rezultOrder = {
     //   order: orderNum,
@@ -380,7 +382,7 @@ module.exports.sentOrderData = async (inputData, ip) => {
     // };
     return rezultOrder;
   } catch (e) {
-    console.error(e.message);
+    console.error(e.message); //
     globalErrorCheck(e);
   }
 };

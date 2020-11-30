@@ -141,7 +141,7 @@ const typeDefs = gql`
     title: String!
   }
 
-  type ParamsData @cacheControl(maxAge: 36000) {   
+  type ParamsData @cacheControl(maxAge: 36000) {
     shop_name: String!
     shop_name_rus: String
     shop_fullname_rus: String
@@ -805,6 +805,7 @@ const typeDefs = gql`
   type OrderResponse {
     orderNum: String
     orderId: String
+    summa: Int
   }
   type AddOrderMutationResponse implements MutationResponse {
     code: String!

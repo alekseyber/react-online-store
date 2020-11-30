@@ -1,4 +1,4 @@
-import { useEffect, useMemo, FC } from "react";
+import { useEffect, useMemo, FC, useContext } from "react";
 import { Link } from "react-router-dom";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { makeStyles } from "@material-ui/core/styles";
@@ -15,6 +15,7 @@ import { orderDoneVar } from "../../graphql/localVarsOrder";
 import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 import LoaderPage from "../../components/loaderpage/LoaderPage";
 import ErrorContent from "../../components/errorcontent/ErrorContent";
+import { ContextAnalitics, IreachGoalData } from "../../hoc/AnaliticsProvider";
 
 const useStyles = makeStyles({
   root: {
@@ -34,6 +35,7 @@ const useStyles = makeStyles({
 const OrderDonePage: FC = () => {
   const classes = useStyles();
   const { replace } = useRouter();
+  const { trigger } = useContext(ContextAnalitics);
 
   const copyHandler = () => {
     showAlert("Ссылка скопирована");
@@ -56,23 +58,41 @@ const OrderDonePage: FC = () => {
     };
   }, [replace, loading, orderDone]);
 
-  const { orderDoneText, baseUrl, baseApiUrl } = useMemo(() => {
-    const rezult = { orderDoneText: "", baseUrl: "", baseApiUrl: "" };
+  const { orderDoneText, baseUrl, baseApiUrl, currSymbol } = useMemo(() => {
+    const rezult = {
+      orderDoneText: "",
+      baseUrl: "",
+      baseApiUrl: "",
+      currSymbol: "",
+    };
     if (data) {
       rezult.orderDoneText = data.paramsData.orderDoneText;
       rezult.baseUrl = data.paramsData.baseUrl;
       rezult.baseApiUrl = data.baseApiUrl;
+      rezult.currSymbol = data.paramsData.currSymbol;
     }
 
     return rezult;
   }, [data]);
+
+  const orderSumma = orderDone ? orderDone.summa : 0;
+
+  useEffect(() => {
+    if (orderSumma && trigger) {
+      const triggerData: IreachGoalData = {
+        currency: currSymbol,
+        order_price: orderSumma,
+        value: orderSumma,
+      };
+      trigger("Order received", triggerData);
+    }
+  }, [orderSumma, currSymbol, trigger]);
 
   if (loading) return <LoaderPage />;
   if (error) return <ErrorContent />;
 
   const orderId = orderDone ? orderDone.orderId : "";
   const orderNumber = orderDone ? orderDone.orderNumber : "";
-
   const linkOrder = `/order/${orderId}`;
 
   // const { orderDoneText, baseUrl } = data.paramsData;

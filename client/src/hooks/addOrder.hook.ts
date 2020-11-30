@@ -94,6 +94,7 @@ const useAddOrder = (qorder: boolean = false) => {
     orderDoneVar({
       orderId: inputData.addOrder.order.orderId,
       orderNumber: inputData.addOrder.order.orderNum,
+      summa: inputData.addOrder.order.summa,
     });
     if (qorder) {
       hideDialog();

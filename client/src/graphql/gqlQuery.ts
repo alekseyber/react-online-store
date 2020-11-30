@@ -1244,9 +1244,9 @@ export type TComment = {
   answer: string;
   date: string;
 };
-interface ICommentList  {
+interface ICommentList {
   list: TComment[];
-};
+}
 
 export interface IComment {
   paramsData: CommentListFragment;
@@ -1306,6 +1306,7 @@ export const INDEX_NEWS_PAGE_QUERY = gql`
 interface OrderDonePageFragment {
   orderDoneText: string;
   baseUrl: string;
+  currSymbol: string;
 }
 
 const OrderDonePage = {
@@ -1314,6 +1315,7 @@ const OrderDonePage = {
       fragment OrderDonePageFragment on ParamsData {
         orderDoneText
         baseUrl
+        currSymbol
       }
     `,
   },

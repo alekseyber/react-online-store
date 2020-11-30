@@ -3,6 +3,7 @@ import { makeVar } from "@apollo/client";
 interface IOrderDone {
   orderId: string;
   orderNumber: string;
+  summa: number;
 }
 
 export type TOrderDone = IOrderDone | null;
@@ -20,4 +21,5 @@ export const returnCallStatusVar = makeVar<TReturnCallStatus>(false);
 // orderDoneVar = {
 //   orderId: "5f5e3aa5457353136c07508a",
 //   orderNumber: "59-289",
+//  summa: 100
 // }

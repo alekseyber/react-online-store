@@ -92,4 +92,4 @@ REACT_APP_GA_KEY - key<br />
 
 REACT_APP_YM_ON - On/Off<br />
 REACT_APP_YM_KEY - key<br />
-REACT_APP_YM_WEBVISOR_ON - Webvisor On/Off<br />
+REACT_APP_YM_WEBVISOR_ON - Webvisor On/Off - not implemented<br />
