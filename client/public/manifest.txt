@@ -1,0 +1,54 @@
+{
+  "short_name": "Угги-Рус",
+  "name": "Интернет магазин обуви Угги-Рус",
+  "lang": "ru",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "120x120",
+      "type": "image/png"
+    },
+    {
+      "src": "/logo192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/logo512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff",
+  "scope": "https://uggi-rus.ru/",
+  "yandex": {
+    "manifest_version": 1,
+    "app_version": "1.0.0",
+    "cache": {
+      "resources": [
+        "/static/css/main.267c7a4e.chunk.css",
+        "/static/js/2.c4df35db.chunk.js",
+        "/static/js/main.ee9a2d58.chunk.js",
+        "/static/js/3.b89af58c.chunk.js",
+        "/static/js/runtime-main.a6585297.js",
+        "/static/media/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.6467d9a2.woff2",
+        "/static/media/KFOlCnqEu92Fr1MmEU9fABc4EsA.5abcda5f.woff2",
+        "/static/media/KFOlCnqEu92Fr1MmEU9fBBc4.f5b74d7f.woff2",
+        "/static/media/KFOlCnqEu92Fr1MmSU5fBBc4.37a7069d.woff2",
+        "/static/media/KFOlCnqEu92Fr1MmWUlfABc4EsA.f48bb1c8.woff2",
+        "/static/media/KFOlCnqEu92Fr1MmWUlfBBc4.c18ee39f.woff2",
+        "/static/media/KFOmCnqEu92Fr1Mu4mxK.176f8f5b.woff2",
+        "/static/media/KFOmCnqEu92Fr1Mu5mxKOzY.3605d18d.woff2",        
+        "/static/icon.png",
+        "/static/favicon.png",
+        "/static/logo192.png",
+        "/static/logo512.png",
+        "/static/ne-tak.png",
+        "/static/robots.txt"
+      ]      
+    }
+  }
+}
