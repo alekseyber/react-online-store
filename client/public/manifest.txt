@@ -25,7 +25,7 @@
   "background_color": "#ffffff",
   "scope": "https://uggi-rus.ru/",
   "yandex": {
-    "manifest_version": 1,
+    "manifest_version": 2,
     "app_version": "1.0.0",
     "cache": {
       "resources": [
