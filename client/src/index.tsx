@@ -8,6 +8,7 @@ import theme from "./theme";
 import "./index.scss";
 import { client } from "./apolloClient";
 import reportWebVitals from "./reportWebVitals";
+import { unregister } from "./serviceWorker";
 
 render(
   <ApolloProvider client={client}>
@@ -23,3 +24,6 @@ render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
+//serviceWorker
+unregister();
+//register();
