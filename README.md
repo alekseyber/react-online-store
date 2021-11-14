@@ -83,13 +83,18 @@ If REACT_APP_API_URL is not set, then in production mode = '', in development mo
 
 REACT_APP_NAME - Title in the title tag client static index.html
 
-#### Google Analytics
+#### Google Analytics (Opt-out in favor of GTM)
 
 REACT_APP_GA_ON - On/Off<br />
 REACT_APP_GA_KEY - key<br />
 
-#### Yandex metrika
+#### Yandex metrika (Opt-out in favor of GTM)
 
 REACT_APP_YM_ON - On/Off<br />
 REACT_APP_YM_KEY - key<br />
 REACT_APP_YM_WEBVISOR_ON - Webvisor On/Off - not implemented<br />
+
+#### Google Tag Manager
+
+REACT_APP_GTM_ON - On/Off<br />
+REACT_APP_GTM_KEY - key<br />

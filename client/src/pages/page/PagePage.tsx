@@ -1,5 +1,7 @@
 import { FC } from "react";
-import LoaderPage from "../../components/loaderpage/LoaderPage";
+//import LoaderPage from "../../components/loaderpage/LoaderPage";
+import PageSceleton from "../../components/skeletons/PageSceleton";
+import ContentSceleton from "../../components/skeletons/ContentSceleton";
 import { useParamsMemo } from "../../hooks/router.hook";
 import { PageBase } from "../../hoc/PageBase";
 import PageContent from "../../components/pagecontent/PageContent";
@@ -22,7 +24,12 @@ const PagePage: FC = () => {
     true
   );
 
-  if (loading) return <LoaderPage />;
+  if (loading)
+    return (
+      <PageSceleton title={true}>
+        <ContentSceleton />
+      </PageSceleton>
+    );
   if (error) return <ErrorContent />;
 
   if (!data) {

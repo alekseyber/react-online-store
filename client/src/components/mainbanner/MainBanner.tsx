@@ -1,7 +1,8 @@
 import { FC, SyntheticEvent } from "react";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
-import CardMedia from "@material-ui/core/CardMedia";
-import Button from "@material-ui/core/Button";
+import makeStyles from '@mui/styles/makeStyles';
+import withStyles from '@mui/styles/withStyles';
+import CardMedia from "@mui/material/CardMedia";
+import Button from "@mui/material/Button";
 import { TMainBanner } from "../../graphql/gqlQuery";
 import { useRouter } from "../../hooks/router.hook";
 

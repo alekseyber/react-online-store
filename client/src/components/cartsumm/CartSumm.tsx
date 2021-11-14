@@ -1,7 +1,7 @@
 import { FC } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Box from "@material-ui/core/Box";
-import Typography from "@material-ui/core/Typography";
+import makeStyles from '@mui/styles/makeStyles';
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 import { useCartSumm } from "../../hooks/cart-summ.hook";
 import { useDeliveryPrice } from "../../hooks/delivery-price.hook";
 import { ICity } from "../../graphql/localVars";

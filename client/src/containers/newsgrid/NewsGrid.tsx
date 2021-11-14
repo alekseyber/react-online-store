@@ -12,7 +12,7 @@ interface NewsGridProps {
 const spacingGrid: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 = 3;
 
 const NewsGrid: FC<NewsGridProps> = ({ news, page = 1, countPage = 10 }) => {
-  const ListNews: React.FC = () => {
+  const ListNews: FC = () => {
     const paginationRezult = usePagin();
 
     return (
@@ -37,17 +37,5 @@ const NewsGrid: FC<NewsGridProps> = ({ news, page = 1, countPage = 10 }) => {
     </PaginationList>
   );
 };
-
-// NewsGrid.defaultProps = {
-//   news: [],
-//   page: 1,
-//   countPage: 10,
-// };
-
-// NewsGrid.propTypes = {
-//   news: PropTypes.array,
-//   page: PropTypes.number,
-//   countPage: PropTypes.number,
-// };
 
 export default NewsGrid;

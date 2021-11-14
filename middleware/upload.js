@@ -17,7 +17,7 @@ const multer = require('multer');
 //     }
 // })
 const storage = multer.memoryStorage()
-const fileFilter = (req, file, cb) => {
+const fileFilter = (_, file, cb) => {
     if (file.mimetype === 'image/png' || file.mimetype === 'image/jpeg' || file.mimetype === 'image/svg+xml') {
         cb(null, true);
     } else {
@@ -26,7 +26,7 @@ const fileFilter = (req, file, cb) => {
 }
 
 module.exports = multer({
-    storage, fileFilter, limits: { fileSize: 1024 * 1024 * 5 }
+    storage, fileFilter, limits: { fileSize: 1024 * 1024 * 7 }
 })
 
 

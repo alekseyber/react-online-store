@@ -1,10 +1,10 @@
 import { FC } from "react";
-import Card from "@material-ui/core/Card";
-import PhoneIcon from "@material-ui/icons/Phone";
-import CardContent from "@material-ui/core/CardContent";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
+import Card from "@mui/material/Card";
+import PhoneIcon from "@mui/icons-material/Phone";
+import CardContent from "@mui/material/CardContent";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
 import { PageBase } from "../../hoc/PageBase";
 import { useHtml } from "../../hooks/html.hook";
 import AppForm from "../../components/appform/AppForm";
@@ -13,7 +13,9 @@ import {
   IReturnProductPage,
 } from "../../graphql/gqlQuery";
 import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
-import LoaderPage from "../../components/loaderpage/LoaderPage";
+//import LoaderPage from "../../components/loaderpage/LoaderPage";
+import PageSceleton from "../../components/skeletons/PageSceleton";
+import ContentSceleton from "../../components/skeletons/ContentSceleton";
 import ErrorContent from "../../components/errorcontent/ErrorContent";
 import {
   RETURN_PRODUCT_MUTATION,
@@ -57,7 +59,12 @@ const ReturnProductPage: FC = () => {
     mutate({ variables: { formData } });
   };
 
-  if (loading) return <LoaderPage />;
+  if (loading)
+    return (
+      <PageSceleton title={true}>
+        <ContentSceleton />
+      </PageSceleton>
+    );
   if (error) return <ErrorContent />;
 
   if (!data) {

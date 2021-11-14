@@ -1,6 +1,6 @@
 import React, { useMemo, createElement } from "react"; //useEffect, useState
 import { Link } from "react-router-dom";
-import LinkUi from "@material-ui/core/Link";
+import LinkUi from "@mui/material/Link";
 import HtmlToReact, { Parser } from "html-to-react"; //HtmlToReact,
 import { BASE_API_URL_QUERY } from "../graphql/gqlQuery";
 import { useQueryApp } from "./appolloQueryApp.hook";

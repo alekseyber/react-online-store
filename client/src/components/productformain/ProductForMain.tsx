@@ -1,16 +1,18 @@
 import { useState, useEffect, FC, SyntheticEvent, RefObject } from "react";
-import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
-import Button from "@material-ui/core/Button";
-import DoneIcon from "@material-ui/icons/Done";
-import SendIcon from "@material-ui/icons/Send";
-import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
-import Divider from "@material-ui/core/Divider";
-import Box from "@material-ui/core/Box";
+import { ThemeProvider } from "@mui/material/styles"; //Theme, , StyledEngineProvider
+//import makeStyles from "@mui/styles/makeStyles";
+import { styled } from "@mui/material/styles";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import Button from "@mui/material/Button";
+import DoneIcon from "@mui/icons-material/Done";
+import SendIcon from "@mui/icons-material/Send";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import Divider from "@mui/material/Divider";
+import Box from "@mui/material/Box";
 import { setColorProductAction } from "../../graphql/localVarsCart";
 import { cartAddAction } from "../../graphql/localVarsCart";
 import ProductSizeSelector from "../productsizeselector/ProductSizeSelector";
@@ -19,27 +21,31 @@ import { IProductRezult } from "../../hooks/useProductDataRender.hook";
 import { TProductLevel1 } from "../../graphql/gqlQuery";
 import { themeBtnAddCart } from "../../theme";
 
-const useStyles = makeStyles((theme) => ({
-  rowinf: {
+// declare module '@mui/styles/defaultTheme' {
+//   // eslint-disable-next-line @typescript-eslint/no-empty-interface
+//   interface DefaultTheme extends Theme {}
+// }
+
+const CssRootCard = styled(Card)(({ theme }) => ({
+  "& .productForMain-rowinf": {
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2),
-    // flexWrap: "wrap",
   },
-  title: {
+  "& .productForMain-title": {
     fontWeight: 700,
-    padding: `${theme.spacing(1)}px 0`,
+    padding: `${theme.spacing(1)} 0`,
   },
-  price: {
+  "& .productForMain-price": {
     fontWeight: 700,
     color: theme.palette.priceprimary.main,
   },
-  oldprice: {
+  "& .productForMain-oldprice": {
     fontWeight: 700,
     marginLeft: theme.spacing(1),
     textDecoration: "line-through",
     color: theme.palette.priceprimary.light,
   },
-  color: {
+  "& .productForMain-color": {
     "&:hover": {
       textDecoration: "none",
     },
@@ -48,20 +54,60 @@ const useStyles = makeStyles((theme) => ({
     minHeight: "28px",
     minWidth: "28px",
   },
-  brand: {
-    textAlign: "right",
-    width: "55px",
-    "& > img": {
-      maxWidth: "55px",
-    },
-  },
-  btnscart: {
+  "& .productForMain-btnscart": {
     marginTop: theme.spacing(0.8),
     marginBottom: theme.spacing(0.8),
-    //  margin: theme.spacing(0.8),
-    // minWidth: 200,
+  },
+  "& .productForMain-paramName": {
+    marginLeft: theme.spacing(1),
+    fontWeight: 700,
+    textTransform: "uppercase",
   },
 }));
+
+// const useStyles = makeStyles((theme) => ({
+//   rowinf: {
+//     marginTop: theme.spacing(2),
+//     marginBottom: theme.spacing(2),
+//     // flexWrap: "wrap",
+//   },
+//   title: {
+//     fontWeight: 700,
+//     padding: `${theme.spacing(1)} 0`,
+//   },
+//   price: {
+//     fontWeight: 700,
+//     color: theme.palette.priceprimary.main,
+//   },
+//   oldprice: {
+//     fontWeight: 700,
+//     marginLeft: theme.spacing(1),
+//     textDecoration: "line-through",
+//     color: theme.palette.priceprimary.light,
+//   },
+//   color: {
+//     "&:hover": {
+//       textDecoration: "none",
+//     },
+//     margin: theme.spacing(0.3),
+//     color: "#fff",
+//     minHeight: "28px",
+//     minWidth: "28px",
+//   },
+//   brand: {
+//     textAlign: "right",
+//     width: "55px",
+//     "& > img": {
+//       maxWidth: "55px",
+//     },
+//   },
+//   btnscart: {
+//     marginTop: theme.spacing(0.8),
+//     marginBottom: theme.spacing(0.8),
+//     //  margin: theme.spacing(0.8),
+//     // minWidth: 200,
+//   },
+// }));
 
 interface ProductForMainProps {
   product: IProductRezult;
@@ -80,8 +126,6 @@ const ProductForMain: FC<ProductForMainProps> = ({
   baseurl,
   refDivProduct,
 }) => {
-  const classes = useStyles();
-
   const [error, setError] = useState(false);
 
   useEffect(() => {
@@ -117,8 +161,6 @@ const ProductForMain: FC<ProductForMainProps> = ({
     }
   };
 
-  // console.log('current', product)
-
   const Colorlevel: FC = () => {
     if (product.product_model > 2) return null;
 
@@ -134,14 +176,14 @@ const ProductForMain: FC<ProductForMainProps> = ({
       const params = { href, style, onClick };
 
       return (
-        <IconButton {...params} className={classes.color} size="small">
+        <IconButton {...params} className="productForMain-color" size="small">
           {item.alias === product.current.alias && <DoneIcon />}
         </IconButton>
       );
     };
 
     return (
-      <div className={classes.rowinf}>
+      <div className="productForMain-rowinf">
         <div>
           <Typography
             variant="subtitle1"
@@ -153,7 +195,7 @@ const ProductForMain: FC<ProductForMainProps> = ({
           <Typography
             variant="subtitle1"
             component="span"
-            className="ml-1 text-uppercase font-weight-black"
+            className="productForMain-paramName"
           >
             {product.current.colorItem.title}
           </Typography>
@@ -169,12 +211,12 @@ const ProductForMain: FC<ProductForMainProps> = ({
   };
 
   return (
-    <Card>
+    <CssRootCard>
       <CardContent>
         <Grid
           container
           direction="row"
-          justify="space-between"
+          justifyContent="space-between"
           alignItems="center"
         >
           <Typography variant="subtitle1" color="textSecondary" component="div">
@@ -183,18 +225,16 @@ const ProductForMain: FC<ProductForMainProps> = ({
           <div>
             <Typography
               variant="subtitle1"
-              //   color="inherit"
               component="span"
-              className={classes.price}
+              className="productForMain-price"
             >
               {product.price} {currsymbol}
             </Typography>
             {product.old_price > 0 && (
               <Typography
                 variant="subtitle2"
-                //  color="inherit"
                 component="span"
-                className={classes.oldprice}
+                className="productForMain-oldprice"
               >
                 {product.old_price} {currsymbol}
               </Typography>
@@ -202,15 +242,19 @@ const ProductForMain: FC<ProductForMainProps> = ({
           </div>
         </Grid>
         <Divider />
-        <Typography variant="h6" component="h1" className={classes.title}>
+        <Typography
+          variant="h6"
+          component="h1"
+          className="productForMain-title"
+        >
           {product.title}
         </Typography>
         <Grid
           container
           direction="row"
-          justify="space-between"
+          justifyContent="space-between"
           alignItems="center"
-          className={classes.rowinf}
+          className="productForMain-rowinf"
         >
           <div>
             {product.sku && (
@@ -225,7 +269,7 @@ const ProductForMain: FC<ProductForMainProps> = ({
                 <Typography
                   variant="subtitle1"
                   component="span"
-                  className="ml-1 text-uppercase font-weight-black"
+                  className="productForMain-paramName"
                 >
                   {product.sku}
                 </Typography>
@@ -233,7 +277,7 @@ const ProductForMain: FC<ProductForMainProps> = ({
             )}
           </div>
           {product.brandItem && (
-            <div className={classes.brand}>
+            <div className="productForMain-brand">
               {product.brandItem.img && (
                 <img
                   src={baseurl + product.brandItem.img}
@@ -245,7 +289,7 @@ const ProductForMain: FC<ProductForMainProps> = ({
         </Grid>
         <Colorlevel />
         {sizeSelectVisible && (
-          <div className={classes.rowinf}>
+          <div className="productForMain-rowinf">
             <ProductSizeSelector
               level2={product.current.level2}
               alias={product.alias}
@@ -255,11 +299,12 @@ const ProductForMain: FC<ProductForMainProps> = ({
             />
           </div>
         )}
+        {/* <StyledEngineProvider injectFirst> */}
         <ThemeProvider theme={themeBtnAddCart}>
           <Button
             variant="contained"
             color="primary"
-            className={classes.btnscart}
+            className="productForMain-btnscart"
             endIcon={<AddShoppingCartIcon />}
             fullWidth={true}
             onClick={() => handleAddCart(false)}
@@ -269,7 +314,7 @@ const ProductForMain: FC<ProductForMainProps> = ({
           <Button
             variant="contained"
             color="secondary"
-            className={classes.btnscart}
+            className="productForMain-btnscart"
             endIcon={<SendIcon />}
             fullWidth={true}
             onClick={() => handleAddCart(true)}
@@ -277,6 +322,7 @@ const ProductForMain: FC<ProductForMainProps> = ({
             Быстрый заказ
           </Button>
         </ThemeProvider>
+        {/* </StyledEngineProvider> */}
         <Box mt={3}>
           <Divider />
           <DeliveryRezult
@@ -286,7 +332,7 @@ const ProductForMain: FC<ProductForMainProps> = ({
           />
         </Box>
       </CardContent>
-    </Card>
+    </CssRootCard>
   );
 };
 

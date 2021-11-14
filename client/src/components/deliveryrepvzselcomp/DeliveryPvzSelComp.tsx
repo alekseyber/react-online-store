@@ -6,22 +6,23 @@ import {
   KeyboardEvent,
   MouseEvent,
 } from "react";
-import Box from "@material-ui/core/Box";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
-import Collapse from "@material-ui/core/Collapse";
-import Typography from "@material-ui/core/Typography";
-import ExpandLess from "@material-ui/icons/ExpandLess";
-import ExpandMore from "@material-ui/icons/ExpandMore";
-import Divider from "@material-ui/core/Divider";
-import Drawer from "@material-ui/core/Drawer";
-import IconButton from "@material-ui/core/IconButton";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import LinearProgress from "@material-ui/core/LinearProgress";
+import Box from "@mui/material/Box";
+import { useTheme } from "@mui/material/styles";
+import makeStyles from "@mui/styles/makeStyles";
+import Button from "@mui/material/Button";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import Collapse from "@mui/material/Collapse";
+import Typography from "@mui/material/Typography";
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
+import Divider from "@mui/material/Divider";
+import Drawer from "@mui/material/Drawer";
+import IconButton from "@mui/material/IconButton";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import LinearProgress from "@mui/material/LinearProgress";
 import { YMaps, Map, Placemark } from "react-yandex-maps";
 import DeliveryPvzDescr from "../deliverypvzdescr/DeliveryPvzDescr";
 import { pvzSelectVar, TPvzSelect } from "../../graphql/localVars";
@@ -38,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
     minWidth: "60vw",
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
+    position: "relative",
   },
 
   list: {
@@ -303,19 +305,19 @@ const DeliveryPvzSelComp: FC<DeliveryPvzSelCompProps> = ({ dataInput }) => {
 
   const [open, setOpen] = useState(false);
 
-  const toggleDrawer = (open: boolean) => (
-    event: TouchEvent | KeyboardEvent | MouseEvent
-  ): void => {
-    if (
-      event.type === "keydown" &&
-      ((event as KeyboardEvent).key === "Tab" ||
-        (event as KeyboardEvent).key === "Shift")
-    ) {
-      return;
-    }
+  const toggleDrawer =
+    (open: boolean) =>
+    (event: TouchEvent | KeyboardEvent | MouseEvent): void => {
+      if (
+        event.type === "keydown" &&
+        ((event as KeyboardEvent).key === "Tab" ||
+          (event as KeyboardEvent).key === "Shift")
+      ) {
+        return;
+      }
 
-    setOpen(open);
-  };
+      setOpen(open);
+    };
 
   if (pvz.length === 0) {
     return (
@@ -332,7 +334,7 @@ const DeliveryPvzSelComp: FC<DeliveryPvzSelCompProps> = ({ dataInput }) => {
   }
 
   return (
-    <div className={classes.root}>
+    <div className={classes.root} id="drawer-pvz-container">
       <Button
         onClick={toggleDrawer(true)}
         variant="contained"
@@ -366,9 +368,19 @@ const DeliveryPvzSelComp: FC<DeliveryPvzSelCompProps> = ({ dataInput }) => {
           yaMapKey={yaMapKey}
         />
       </Box>
-      <Drawer anchor="right" open={open} onClose={toggleDrawer(false)}>
+      <Drawer
+        anchor="right"
+        open={open}
+        onClose={toggleDrawer(false)}
+        PaperProps={{ style: { position: "absolute" } }}
+        BackdropProps={{ style: { position: "absolute" } }}
+        ModalProps={{
+          container: document.getElementById("drawer-pvz-container"),
+          style: { position: "absolute" },
+        }}
+      >
         <div className={classes.drawerHeader}>
-          <IconButton onClick={toggleDrawer(false)}>
+          <IconButton onClick={toggleDrawer(false)} size="large">
             {theme.direction === "rtl" ? (
               <ChevronLeftIcon />
             ) : (

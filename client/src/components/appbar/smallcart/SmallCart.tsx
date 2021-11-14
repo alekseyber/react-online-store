@@ -1,14 +1,15 @@
 import { FC, useState, SyntheticEvent } from "react";
 import { Link } from "react-router-dom";
-import Button from "@material-ui/core/Button";
-import { withStyles, makeStyles } from "@material-ui/core/styles";
-import Popover from "@material-ui/core/Popover";
-import Typography from "@material-ui/core/Typography";
-import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
-import Badge from "@material-ui/core/Badge";
-import Box from "@material-ui/core/Box";
-import Grid from "@material-ui/core/Grid";
-import Divider from "@material-ui/core/Divider";
+import Button from "@mui/material/Button";
+import withStyles from '@mui/styles/withStyles';
+import makeStyles from '@mui/styles/makeStyles';
+import Popover from "@mui/material/Popover";
+import Typography from "@mui/material/Typography";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import Badge from "@mui/material/Badge";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import Divider from "@mui/material/Divider";
 import CartList from "../../../containers/cartlist/CartList";
 import { CART_DATA_QUERY, ICartData } from "../../../graphql/gqlQuery";
 import { useQueryApp } from "../../../hooks/appolloQueryApp.hook";
@@ -113,7 +114,7 @@ const SmallCart: FC = () => {
               <Grid
                 container
                 direction="row"
-                justify="center"
+                justifyContent="center"
                 alignItems="center"
               >
                 <Button

@@ -1,5 +1,5 @@
 import { FC } from "react";
-import Typography from "@material-ui/core/Typography";
+import Typography from "@mui/material/Typography";
 import DefaultDeliveryText from "./defaultdeliverytext/DefaultDeliveryText";
 import DeliveryRegion from "./deliveryregion/DeliveryRegion";
 import DeliveryCityCarrent from "../../components/deliverycitycarrent/DeliveryCityCarrent";
@@ -42,12 +42,15 @@ const DeliveryRezult: FC<DeliveryRezultProps> = ({
   //   : true;
   // const deliverySelect = data ? data.deliverySelect : 0;
 
+ 
+
   if (loading) return <LoaderContent />;
   if (!data) return null;
 
   // const maxDeliveryHourToday = data.paramsData.maxDeliveryHourToday;
 
   const homeDat = getDeliveryDateHome(data.paramsData.maxDeliveryHourToday);
+
   const cityIdCurrent = data.cityIdCurrent;
   const status = data.deliveryData.status;
 

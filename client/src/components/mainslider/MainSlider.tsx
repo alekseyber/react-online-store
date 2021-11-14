@@ -1,142 +1,261 @@
-import { FC } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import withWidth, { isWidthUp, WithWidth } from "@material-ui/core/withWidth";
-import Grid from "@material-ui/core/Grid";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import Divider from "@material-ui/core/Divider";
-import Typography from "@material-ui/core/Typography";
-import { Image } from "../image/Image";
+import { FC, useMemo } from "react";
+import { Link } from "react-router-dom";
+import { Theme, useTheme, styled } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import Carousel from "react-material-ui-carousel";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import Button from "@mui/material/Button";
+import CardMedia from "@mui/material/CardMedia";
+import Typography from "@mui/material/Typography";
+import { getTintedColor } from "../../hooks/colorUtil.hook";
 import { TTopSlider } from "../../graphql/gqlQuery";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    marginTop: theme.spacing(1),
-  },
-  img: {
-    backgroundPosition: "center center",
-    backgroundSize: "cover",
-  },
-  fw: {
-    fontWeight: 700,
-  },
-  imgLogo: {
-    maxWidth: "100px",
-    margin: "0 auto",
-  },
-  card: {
-    maxWidth: "400px",
-    margin: "0 auto",
-    //  backgroundColor: "rgba(255,255,255,0.3)",
-    backgroundColor: "transparent",
-    border: "none",
-  },
-  topBlock: {
-    marginBottom: theme.spacing(2),
-  },
-  bottomBlock: {
-    marginTop: theme.spacing(2),
+const CssCarousel = styled(Carousel)(({ theme }) => ({
+  marginTop: theme.spacing(2),
+  marginBottom: theme.spacing(2),
+  "& .mainSlider-media": {
+    height: 0,
+    paddingTop: "100%", // 1:1
+    position: "relative",
+    transition: ".3s",
+    "&:hover": {
+      filter: "brightness(110%)",
+    },
   },
 }));
 
-interface MainSliderFProps extends WithWidth {
-  topSlider: TTopSlider;
+interface MainSliderFProps {
+  topSlider: TTopSlider[];
   baseApiUrl: string;
+  topSliderAutoPlay: boolean;
+  topSliderInterval: number;
 }
 
-const MainSliderF: FC<MainSliderFProps> = ({
-  topSlider,
-  baseApiUrl,
-  width,
-}) => {
-  const classes = useStyles();
+interface ItemMainSlidProps {
+  itemSlider: TTopSlider;
+  baseApiUrl: string;
+  isWidthUpSm: boolean;
+  index: number;
+}
 
-  const imgStyle = {
-    backgroundImage: `url(${baseApiUrl + topSlider.imgBackground})`,
-    height: topSlider.maxHeightBackground,
+class MainBoxData {
+  readonly fontColor: string;
+  readonly backgroundColor: string;
+  readonly title: string;
+  readonly description: string;
+  readonly linkHref: string;
+  readonly linkAncor: string;
+
+  public constructor(itemSlider: TTopSlider) {
+    this.fontColor = itemSlider.maxHeightBackground;
+    this.backgroundColor = itemSlider.altLogo;
+    this.title = itemSlider.topString1;
+    this.description = itemSlider.topString2;
+    this.linkHref = itemSlider.topString3;
+    this.linkAncor = itemSlider.topString4;
+  }
+}
+
+class SecondaryBoxData {
+  readonly img: string;
+  readonly linkHref: string;
+  readonly linkAncor: string;
+
+  public constructor(itemSlider: TTopSlider, second?: boolean) {
+    this.img = second ? itemSlider.imgLogo : itemSlider.imgBackground;
+    this.linkAncor = !second
+      ? itemSlider.bottomString1
+      : itemSlider.bottomString3;
+    this.linkHref = !second
+      ? itemSlider.bottomString2
+      : itemSlider.bottomString4;
+  }
+}
+
+type TItemBox = MainBoxData | SecondaryBoxData;
+type TBoxes = TItemBox[];
+
+function getMainPosition(index: number): number {
+  let mainPosition = 0;
+  mainPosition = (index + 1) % 2 === 0 ? 1 : mainPosition;
+  mainPosition = (index + 1) % 3 === 0 ? 2 : mainPosition;
+  return mainPosition;
+}
+
+interface MainBoxProps {
+  item: MainBoxData;
+}
+interface SecondaryBoxProps {
+  item: SecondaryBoxData;
+  baseApiUrl: string;
+}
+const MainBox: FC<MainBoxProps> = ({ item }) => {
+  const btnIsVisible = Boolean(item.linkAncor && item.linkHref);
+  const backgroundColorDark = getTintedColor(item.backgroundColor, 20);
+  const btnHoverSxProps = {
+    border: `3px solid ${item.fontColor}`,
+    color: item.backgroundColor,
+    backgroundColor: item.fontColor,
   };
 
   return (
-    <div className={classes.root}>
-      <Grid
-        container
-        alignItems="center"
-        className={classes.img}
-        style={imgStyle}
-      >
-        {isWidthUp("sm", width) && <Grid item md={7} lg={7}></Grid>}
-        <Grid item xs={12} md={5} lg={4}>
-          <Card className={classes.card} variant="outlined">
-            <CardContent>
-              <div className={classes.imgLogo}>
-                <Image
-                  src={baseApiUrl + topSlider.imgLogo}
-                  //   aspectRatio={(1)}
-                  disableSpinner
-                  color="transparent"
-                  alt={topSlider.altLogo}
-                />
-              </div>
-              <div className={classes.topBlock}>
-                <Typography variant="h4" component="div" align="center">
-                  {topSlider.topString1}
-                </Typography>
-                <Typography variant="h4" component="div" align="center">
-                  {topSlider.topString2}
-                </Typography>
-                {topSlider.topString3 && (
-                  <Typography variant="h4" component="div" align="center">
-                    {topSlider.topString3}
-                  </Typography>
-                )}
-                {topSlider.topString4 && (
-                  <Typography variant="h6" component="div" align="center">
-                    {topSlider.topString4}
-                  </Typography>
-                )}
-              </div>
-              <Divider />
-              <div className={classes.bottomBlock}>
-                <Typography
-                  variant="h6"
-                  component="div"
-                  align="center"
-                  color="secondary"
-                >
-                  {topSlider.bottomString1}
-                </Typography>
-                <Typography
-                  variant="h5"
-                  component="div"
-                  className={classes.fw}
-                  align="center"
-                  color="secondary"
-                >
-                  {topSlider.bottomString2}
-                </Typography>
-                {topSlider.bottomString3.length > 0 && (
-                  <Typography variant="h6" component="div" align="center">
-                    {topSlider.bottomString3}
-                  </Typography>
-                )}
-                {topSlider.bottomString4.length > 0 && (
-                  <Typography variant="h6" component="div" align="center">
-                    {topSlider.bottomString4}
-                  </Typography>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        </Grid>
-      </Grid>
-    </div>
+    <Box
+      sx={{
+        p: 4,
+        height: "100%",
+        backgroundColor: item.backgroundColor,
+        color: item.fontColor,
+        transition: ".3s",
+        "&:hover": {
+          backgroundColor: backgroundColorDark,
+          "& .MuiButton-root": btnHoverSxProps,
+        },
+      }}
+    >
+      <Typography variant="h4" gutterBottom={true}>
+        {item.title}
+      </Typography>
+      <Typography variant="h6">{item.description}</Typography>
+      {btnIsVisible && (
+        <Button
+          variant="outlined"
+          size="large"
+          component={Link}
+          to={item.linkHref}
+          sx={{
+            mt: 5,
+            color: item.fontColor,
+            border: `3px solid ${item.fontColor}`,
+            "&:hover": btnHoverSxProps,
+          }}
+        >
+          <Typography component="span" variant="h5">
+            {item.linkAncor}
+          </Typography>
+        </Button>
+      )}
+    </Box>
   );
 };
 
-// MainSliderF.propTypes = {
-//   topSlider: PropTypes.object.isRequired,
-//   baseApiUrl: PropTypes.string,
-//   width: PropTypes.string,
-// };
+const SecondaryBox: FC<SecondaryBoxProps> = ({ item, baseApiUrl }) => {
+  const btnIsVisible = Boolean(item.linkAncor && item.linkHref);
 
-export default withWidth()(MainSliderF);
+  return (
+    <CardMedia className="mainSlider-media" image={baseApiUrl + item.img}>
+      {btnIsVisible && (
+        <Button
+          component={Link}
+          to={item.linkHref}
+          variant="outlined"
+          sx={{
+            backgroundColor: "#000",
+            height: "15%",
+            width: "100%",
+            color: "#fff",
+            border: "none",
+            opacity: 0.5,
+            transition: "0.3s",
+            position: "absolute",
+            bottom: 0,
+            textTransform: "none",
+            justifyContent: "flex-start",
+            "&:hover": {
+              opacity: 0.8,
+              backgroundColor: "#000",
+              color: "#fff",
+              border: "none",
+            },
+          }}
+        >
+          <Typography component="div" variant="h5">
+            {item.linkAncor}
+          </Typography>
+        </Button>
+      )}
+    </CardMedia>
+  );
+};
+
+const ItemMainSlide: FC<ItemMainSlidProps> = ({
+  itemSlider,
+  baseApiUrl,
+  isWidthUpSm,
+  index,
+}) => {
+  const spacingRoot = isWidthUpSm ? 0 : 1;
+
+  const boxes = useMemo<TBoxes>(() => {
+    const rezult: TBoxes = [];
+
+    const mainPosition = isWidthUpSm ? getMainPosition(index) : 0;
+
+    let second = false;
+
+    for (let i = 0; i < 3; i++) {
+      if (i === mainPosition) {
+        rezult.push(new MainBoxData(itemSlider));
+        continue;
+      }
+      rezult.push(new SecondaryBoxData(itemSlider, second));
+      if (!second) {
+        second = true;
+      }
+    }
+
+    return rezult;
+  }, [itemSlider, index, isWidthUpSm]);
+
+  return (
+    <Card elevation={7}>
+      <Grid container spacing={spacingRoot}>
+        {boxes.map((item, i) => (
+          <Grid item xs={12} sm={4} key={i}>
+            {item instanceof MainBoxData ? (
+              <MainBox item={item} />
+            ) : (
+              <SecondaryBox item={item} baseApiUrl={baseApiUrl} />
+            )}
+          </Grid>
+        ))}
+      </Grid>
+    </Card>
+  );
+};
+
+const MainSlider: FC<MainSliderFProps> = ({
+  topSlider,
+  baseApiUrl,
+  topSliderAutoPlay,
+  topSliderInterval,
+}) => {
+  const theme: Theme = useTheme();
+  const isWidthUpSm = useMediaQuery(theme.breakpoints.up("sm"));
+  const isLength = topSlider.length > 1;
+
+  return (
+    <CssCarousel
+      autoPlay={isLength && topSliderAutoPlay}
+      interval={topSliderInterval || 4000}
+      // indicators={isLength}
+      navButtonsAlwaysVisible={false}
+      navButtonsAlwaysInvisible={!isLength}
+    >
+      {topSlider.map((item, index) => {
+        return (
+          <ItemMainSlide
+            itemSlider={item}
+            isWidthUpSm={isWidthUpSm}
+            index={index}
+            baseApiUrl={baseApiUrl}
+            key={index}
+          />
+        );
+      })}
+    </CssCarousel>
+  );
+};
+
+export default MainSlider;

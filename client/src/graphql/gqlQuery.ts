@@ -1134,13 +1134,13 @@ export type TMaincatalog = {
 export type TTopSlider = {
   status?: boolean;
   sortvalue?: number;
-  maxHeightBackground: number;
+  maxHeightBackground: string;
   imgLogo: string;
   altLogo: string;
   topString1: string;
   topString2: string;
   topString3: string;
-  topString4?: string;
+  topString4: string;
   bottomString1: string;
   bottomString2: string;
   bottomString3: string;
@@ -1166,7 +1166,10 @@ type TMainPage = {
   hitvisible: boolean;
   hitcount: number;
   hittitle: string;
+  title: string;
   topslidervisible: boolean;
+  topSliderAutoPlay: boolean;
+  topSliderInterval: number;
   maincatalogvisible: boolean;
   maincatalogprefix: string;
   maincatalogcount: number;
@@ -1174,7 +1177,7 @@ type TMainPage = {
   content: string;
   meta: MainPageMeta;
   maincatalog: TMaincatalog[];
-  topSlider: TTopSlider;
+  topSlider: TTopSlider[];
   mainBanner: TMainBanner;
   hitData: string[];
 };
@@ -1195,7 +1198,10 @@ export const MAIN_PAGE_QUERY = gql`
       hitvisible
       hitcount
       hittitle
+      title
       topslidervisible
+      topSliderAutoPlay
+      topSliderInterval
       maincatalogvisible
       maincatalogprefix
       maincatalogcount
@@ -1216,6 +1222,7 @@ export const MAIN_PAGE_QUERY = gql`
         topString1
         topString2
         topString3
+        topString4
         bottomString1
         bottomString2
         bottomString3

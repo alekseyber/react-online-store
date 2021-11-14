@@ -1,12 +1,12 @@
 import { FC } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import { indigo } from "@material-ui/core/colors";
-import Avatar from "@material-ui/core/Avatar";
+import makeStyles from '@mui/styles/makeStyles';
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { indigo } from "@mui/material/colors";
+import Avatar from "@mui/material/Avatar";
 import HtmlText from "../htmltext/HtmlText";
 import { TComment } from "../../graphql/gqlQuery";
 

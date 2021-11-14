@@ -1,8 +1,9 @@
 import { useContext, createContext, useMemo, FC } from "react";
-import MetaTags from "react-meta-tags";
-import Container from "@material-ui/core/Container";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
+import { Helmet } from "react-helmet";
+import { Breakpoint } from "@mui/material/styles";
+import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
+//import makeStyles from "@mui/styles/makeStyles";
 import Breadcrumbs from "../components/breadcrumbs/Breadcrumbs";
 import Filter, { IFilterProps } from "../containers/filter/Filter";
 import { useAddGet } from "../hooks/addget.hook";
@@ -15,13 +16,19 @@ import {
 import { useQueryApp } from "../hooks/appolloQueryApp.hook";
 import ErrorContent from "../components/errorcontent/ErrorContent";
 
-const useStyles = makeStyles((theme) => ({
-  title: {
-    marginTop: theme.spacing(4),
-    marginBottom: theme.spacing(2),
-    fontWeight: 700,
-  },
-}));
+// const useStyles = makeStyles((theme) => ({
+//   title: {
+//     marginTop: theme.spacing(4),
+//     marginBottom: theme.spacing(2),
+//     fontWeight: 700,
+//   },
+// }));
+
+// const CssTypographyTitle = styled(Typography)(({ theme }) => ({
+//   marginTop: theme.spacing(4),
+//   marginBottom: theme.spacing(2),
+//   fontWeight: 700,
+// }));
 
 export interface IPageBaseProps {
   name_page?: string;
@@ -38,6 +45,7 @@ export interface IPageBaseProps {
   breadcrumbs_add?: boolean;
   page?: number;
   container_fixed?: boolean;
+  maxWidth?: false | Breakpoint;
   breadcrumbs_on?: boolean;
   error?: boolean;
   category?: boolean;
@@ -52,7 +60,7 @@ const PageBaseContext = createContext<string>("/");
 export const usePageBase = () => useContext(PageBaseContext);
 
 export const PageBase: FC<IPageBaseProps> = (props) => {
-  const classes = useStyles();
+  //  const classes = useStyles();
   const addGet = useAddGet();
 
   const {
@@ -72,6 +80,7 @@ export const PageBase: FC<IPageBaseProps> = (props) => {
     page = 1,
     filterInputRezult,
     container_fixed = false,
+    maxWidth = "xl",
     error = false,
     category = false,
     Slider = null,
@@ -129,23 +138,28 @@ export const PageBase: FC<IPageBaseProps> = (props) => {
   return (
     <>
       {!error && (
-        <MetaTags>
+        <Helmet>
           <title>{pageTitle + pagePosfix}</title>
           <meta name="description" content={pageDescr + pagePosfix} />
           <meta property="og:title" content={pageTitle + pagePosfix} />
           <meta name="keywords" content={pageKeywords} />
           {canonical_on && !error && <link rel="canonical" href={canonical} />}
-        </MetaTags>
+        </Helmet>
       )}
       {Slider && <Slider />}
-      <Container fixed={container_fixed}>
+      <Container fixed={container_fixed} maxWidth={maxWidth}>
         {filter_on && !error && <Filter {...bindFilter} />}
         {title && !error && (
           <Typography
             variant="h5"
             component="h1"
             align="center"
-            className={classes.title}
+            sx={{
+              marginTop: (theme) => theme.spacing(4),
+              marginBottom: (theme) => theme.spacing(2),
+              fontWeight: 700,
+            }}
+            // className={classes.title}
           >
             {title + pagePosfix}
           </Typography>
@@ -160,41 +174,3 @@ export const PageBase: FC<IPageBaseProps> = (props) => {
     </>
   );
 };
-
-// PageBase.defaultProps = {
-//   filter_on: true,
-//   meta_full: false,
-//   breadcrumbs_data: [],
-//   canonical_on: false,
-//   breadcrumbs_add: true,
-//   page: 1,
-//   container_fixed: true,
-//   breadcrumbs_on: true,
-//   name_page: "",
-//   action_page: "",
-//   link_page: "/",
-//   error: false,
-//   filterInputRezult: [],
-// };
-
-// PageBase.propTypes = {
-//   children: PropTypes.node,
-//   name_page: PropTypes.string,
-//   action_page: PropTypes.string,
-//   link_page: PropTypes.string,
-//   title: PropTypes.string,
-//   filter_on: PropTypes.bool,
-//   meta_full: PropTypes.bool,
-//   breadcrumbs_data: PropTypes.array,
-//   meta_key: PropTypes.string,
-//   breadcrumbs_name: PropTypes.string,
-//   filterInputRezult: PropTypes.array,
-//   canonical_on: PropTypes.bool,
-//   breadcrumbs_add: PropTypes.bool,
-//   page: PropTypes.number,
-//   container_fixed: PropTypes.bool,
-//   breadcrumbs_on: PropTypes.bool,
-//   error: PropTypes.bool,
-// };
-
-//export default PageBase;

@@ -5,6 +5,10 @@ const md5 = require("js-md5");
 const Params = require("../models/params.model");
 const sharp = require("sharp");
 
+function timeout(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 function getFileName(originalname) {
   try {
     const temp = originalname.split(".");
@@ -93,7 +97,7 @@ async function saveFile(
       addPath
     );
 
-   // console.log('newDestination', newDestination)
+    // console.log('newDestination', newDestination)
     const fileBuffer = file.buffer;
 
     if (modelName === "product" || modelName === "category") {
@@ -140,7 +144,7 @@ async function saveFile(
   } catch (e) {
     rezult.err = true;
     console.error(e.message);
-  //  console.error(e);
+    //  console.error(e);
   }
 
   return rezult;
@@ -206,6 +210,7 @@ module.exports.uploadArray = async (req, res) => {
           if (!saveStatusItem.err) {
             filesName.push(saveStatusItem.returnPath);
           }
+          await timeout(1000);
         }
         if (filesName.length) {
           res.status(201).json({ filesName });

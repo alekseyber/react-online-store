@@ -1,8 +1,8 @@
 import { FC } from "react";
 //import PropTypes from "prop-types";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import Button from "@material-ui/core/Button";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import Button from "@mui/material/Button";
 import ModalTitle from "../containers/modaldialog/modaletitle/ModalTitle";
 
 interface ModalBaseProps {

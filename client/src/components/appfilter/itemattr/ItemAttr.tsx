@@ -1,10 +1,10 @@
 import { FC } from "react";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
-import CheckBoxIcon from "@material-ui/icons/CheckBox";
-import CheckCircleIcon from "@material-ui/icons/CheckCircle";
-import Brightness1Icon from "@material-ui/icons/Brightness1";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
+import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import Brightness1Icon from "@mui/icons-material/Brightness1";
 import {
   setFilterSelect,
   IFilterSelectAttr,

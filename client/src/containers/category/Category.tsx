@@ -1,7 +1,7 @@
 import { FC } from "react";
-import { Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
+import { Typography } from "@mui/material";
+import makeStyles from '@mui/styles/makeStyles';
+import Button from "@mui/material/Button";
 import ProductsGrid from "../productsgrid/ProductsGrid";
 import PageContent from "../../components/pagecontent/PageContent";
 import { useFilterProduct } from "../../hooks/filterproduct.hook";

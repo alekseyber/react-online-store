@@ -1,4 +1,4 @@
-import { makeVar } from "@apollo/client";
+import { makeVar, ReactiveVar } from "@apollo/client";
 import { showAlert } from "./localVarsApp";
 import { openAddedCart, openQOrder } from "./localVarsModal";
 import { TProductLevel2, ProductFragment } from "./gqlQuery";
@@ -58,13 +58,30 @@ type TInitialState = {
   cuponData: ICuponData;
 };
 
-//reactLocalStorage.getObject("cartData", [], true),
+const getCuponDataLocalStorageValidate = () => {
+  const initPrevCuponData = getObjectLocalStorage<ICuponData>(
+    "cuponData",
+    initialCuponData
+  );
 
-const initCartData = getObjectLocalStorage<TCartData>("cartData", []);
-const initCuponData = getObjectLocalStorage<ICuponData>(
-  "cuponData",
-  initialCuponData
-);
+  if (typeof initPrevCuponData !== "object") {
+    return initialCuponData;
+  }
+  if (
+    initPrevCuponData.discontcupon <= 1 &&
+    initPrevCuponData.discontcupon > 0 &&
+    typeof initPrevCuponData.discontcupon === "string"
+  ) {
+    return initPrevCuponData;
+  }
+
+  return initialCuponData;
+};
+
+//reactLocalStorage.getObject("cartData", [], true),
+const initPrevCartData = getObjectLocalStorage<TCartData>("cartData", []);
+const initCartData = Array.isArray(initPrevCartData) ? initPrevCartData : [];
+const initCuponData = getCuponDataLocalStorageValidate();
 
 const initialState: TInitialState = {
   cartData: initCartData,
@@ -80,7 +97,9 @@ const initialState: TInitialState = {
   cuponData: initCuponData,
 };
 
-export const cartDataVar = makeVar<TCartData>(initialState.cartData);
+export const cartDataVar: ReactiveVar<TCartData> = makeVar<TCartData>(
+  initialState.cartData
+);
 export const lastCartVar = makeVar<ILastCart>(initialState.lastCart);
 export const cuponDataVar = makeVar<ICuponData>(initialState.cuponData);
 export const countAddVar = makeVar<number>(0);
@@ -269,14 +288,12 @@ export const cartEditItem = (
 
   newItem.idItem = newItem.alias + newItem.level1 + newItem.level2;
 
-  const newCartData: IItemCartData[] = cartData.map(
-    (elItem, ind: number) => {
-      if (index === ind) {
-        return newItem;
-      }
-      return elItem;
+  const newCartData: IItemCartData[] = cartData.map((elItem, ind: number) => {
+    if (index === ind) {
+      return newItem;
     }
-  );
+    return elItem;
+  });
 
   const cartForUpdate = newCartData.filter((item: IItemCartData, i: number) => {
     if (index === i) {
@@ -297,18 +314,24 @@ const cartAddCheced = ({
   const idItem = alias + level1 + level2;
 
   const index = cartData.findIndex((item) => item.idItem === idItem);
+
   const countAdd = countAddVar();
   countAddVar(countAdd + 1);
 
+  let newcCartData = [];
+
   if (index > -1) {
-    cartData[index].qty++;
-    cartUpdate(cartData);
+    newcCartData = cartData.map((itemCartData, i) =>
+      i === index
+        ? { ...itemCartData, qty: itemCartData.qty + 1 }
+        : itemCartData
+    );
   } else {
     const qty = 1;
     const item = { idItem, alias, level1, level2, price, qty };
-    const newcCartData = [...cartData, item];
-    cartUpdate(newcCartData);
+    newcCartData = [...cartData, item];
   }
+  cartUpdate(newcCartData);
 };
 
 export const cartAddAction = (
@@ -316,6 +339,9 @@ export const cartAddAction = (
   qorder: boolean = false
 ): void | boolean => {
   const productSelect = productSelectVar();
+  if (!productSelect) {
+    return console.error("cartAddAction - productSelect - undefined");
+  }
 
   const alias = product.alias;
   const level1 = product.current.alias;

@@ -1,24 +1,29 @@
 import { FC } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
+import { styled } from "@mui/material/styles";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
 import CartNulled from "../../components/cartnulled/CartNulled";
 import CartList from "../cartlist/CartList";
 import CartSumm from "../../components/cartsumm/CartSumm";
 import CartAddCupon from "../../components/cartaddcupon/CartAddCupon";
 import AppForm from "../../components/appform/AppForm";
-import LoaderPage from "../../components/loaderpage/LoaderPage";
+//import LoaderPage from "../../components/loaderpage/LoaderPage";
+import ContentSceleton from "../../components/skeletons/ContentSceleton";
 import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 import { CART_DATA_QUERY, TPhone, ICartData } from "../../graphql/gqlQuery";
 import { useAddOrder } from "../../hooks/addOrder.hook";
 import { ICity } from "../../graphql/localVars";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    marginBottom: theme.spacing(3),
-  },
+const CssRootGrid = styled(Grid)(({ theme }) => ({
+  marginBottom: theme.spacing(3),
 }));
+
+// const useStyles = makeStyles((theme) => ({
+//   root: {
+//     marginBottom: theme.spacing(3),
+//   },
+// }));
 
 interface CartPageContentProps {
   phone: TPhone;
@@ -33,21 +38,21 @@ const CartPageContent: FC<CartPageContentProps> = ({
   categoryRootLink,
   cityDefault,
 }) => {
-  const classes = useStyles();
-
   const { data } = useQueryApp<ICartData>(CART_DATA_QUERY);
   const cartData = data ? data.cartData : [];
 
   const { loadingData, handleSubmit } = useAddOrder();
 
-  if (loadingData) return <LoaderPage />;
+  // if (loadingData) return <LoaderPage />;
+
+  if (loadingData) return <ContentSceleton />;
 
   if (cartData.length === 0) {
     return <CartNulled categoryRootLink={categoryRootLink} phone={phone} />;
   }
 
   return (
-    <Grid container spacing={2} className={classes.root}>
+    <CssRootGrid container spacing={2}>
       <Grid item xs={12} md={6}>
         <Typography variant="h5" component="h1">
           Оформить заказ
@@ -72,15 +77,8 @@ const CartPageContent: FC<CartPageContentProps> = ({
         <CartAddCupon />
         <CartSumm currSymbol={currSymbol} cityDefault={cityDefault} />
       </Grid>
-    </Grid>
+    </CssRootGrid>
   );
 };
-
-// CartPageContent.propTypes = {
-//   phone: PropTypes.object.isRequired,
-//   currSymbol: PropTypes.string.isRequired,
-//   categoryRootLink: PropTypes.string.isRequired,
-//   cityDefault: PropTypes.object.isRequired,
-// };
 
 export default CartPageContent;

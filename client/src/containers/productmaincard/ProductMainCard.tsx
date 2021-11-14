@@ -1,5 +1,5 @@
 import { FC, createRef } from "react";
-import Grid from "@material-ui/core/Grid";
+import Grid from "@mui/material/Grid";
 import { useProductDataRender } from "../../hooks/useProductDataRender.hook";
 import ProductImgCarusel from "../../components/productimgcarusel/ProductImgCarusel";
 import ProductForMain from "../../components/productformain/ProductForMain";

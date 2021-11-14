@@ -1,5 +1,5 @@
 import { FC } from "react";
-import Typography from "@material-ui/core/Typography";
+import Typography from "@mui/material/Typography";
 import AppForm from "../../../components/appform/AppForm";
 import ModalBase, { IChildrenNodeBaseProps } from "../../../hoc/ModalBase";
 import { IReturnCall, RETURN_CALL_QUERY } from "../../../graphql/gqlQuery";

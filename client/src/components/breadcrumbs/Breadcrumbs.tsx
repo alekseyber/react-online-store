@@ -1,12 +1,12 @@
 import { FC } from "react";
 import { Link, useHistory } from "react-router-dom";
-import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import Breadcrumbs from "@material-ui/core/Breadcrumbs";
-import LinkUi from "@material-ui/core/Link";
-import HomeIcon from "@material-ui/icons/Home";
-import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import makeStyles from '@mui/styles/makeStyles';
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import Breadcrumbs from "@mui/material/Breadcrumbs";
+import LinkUi from "@mui/material/Link";
+import HomeIcon from "@mui/icons-material/Home";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { TBreadcrumb } from "../../graphql/gqlQuery";
 
 

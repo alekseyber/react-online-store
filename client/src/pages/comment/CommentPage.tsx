@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from '@mui/styles/makeStyles';
 import { PageBase } from "../../hoc/PageBase";
 import CommentAdd from "../../components/commentadd/CommentAdd";
 import CommentList from "../../containers/commentlist/CommentList";

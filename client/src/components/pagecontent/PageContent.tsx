@@ -1,25 +1,35 @@
-import { ElementType, FC } from "react";
-import Paper from "@material-ui/core/Paper";
-import { Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { ElementType, FC, ReactNode } from "react";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
+import { styled } from "@mui/material/styles";
 import { useHtml } from "../../hooks/html.hook";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    marginTop: theme.spacing(5),
-    marginBottom: theme.spacing(5),
-    "& img": {
-      maxWidth: "100%",
-    },
+const CssRootDiv = styled("div")(({ theme }) => ({
+  marginTop: theme.spacing(5),
+  marginBottom: theme.spacing(5),
+  "& img": {
+    maxWidth: "100%",
   },
-  content: {
-    padding: theme.spacing(2),
-  },
-  title: {
+  "& .pageContent-title": {
     marginBottom: theme.spacing(2),
     fontWeight: 700,
   },
 }));
+
+// const useStyles = makeStyles((theme) => ({
+//   root: {
+//     marginTop: theme.spacing(5),
+//     marginBottom: theme.spacing(5),
+//     "& img": {
+//       maxWidth: "100%",
+//     },
+//   },
+//   title: {
+//     marginBottom: theme.spacing(2),
+//     fontWeight: 700,
+//   },
+// }));
 
 interface PageContentProps {
   content: string;
@@ -40,37 +50,31 @@ export const PageContent: FC<PageContentProps> = ({
   outlined = false,
   elevation = 2,
 }) => {
-  const classes = useStyles();
-  const contentReact: React.ReactNode = useHtml(content);
+  const contentReact: ReactNode = useHtml(content);
 
   if (!content && !title) {
     return null;
   }
 
-  const align = centertitle ? "center" : "inherit";
+  const alignTitle = centertitle ? "center" : "inherit";
   const variant = outlined ? "outlined" : "elevation";
 
   return (
-    <div className={classes.root}>
+    <CssRootDiv>
       {title && (
         <Typography
           variant="h6"
           component={tagtitle}
-          align={align}
-          className={classes.title}
+          align={alignTitle}
+          className="pageContent-title"
         >
           {title}
         </Typography>
       )}
-      <Paper
-        className={classes.content}
-        square={square}
-        variant={variant}
-        elevation={elevation}
-      >
-        {contentReact}
-      </Paper>
-    </div>
+      <Card square={square} variant={variant} elevation={elevation}>
+        <CardContent>{contentReact}</CardContent>
+      </Card>
+    </CssRootDiv>
   );
 };
 

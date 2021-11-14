@@ -18,15 +18,22 @@ module.exports.getMainPageData = async () => {
     }
 
     rezult.mainBanner = mainPage.mainBanner;
-    rezult.topslidervisible = false;
+    // rezult.topslidervisible = false;
+    rezult.topSlider = [];
 
-    if (mainPage.topslidervisible === true) {
-      const topslider = await Topslider.findOne({ status: true }, { _id: 0 });
-      if (topslider !== null) {
-        rezult.topSlider = topslider;
-        rezult.topslidervisible = true;
-      }
+    if (mainPage.topslidervisible) {
+      // const topslider = await Topslider.findOne({ status: true }, { _id: 0 });
+      rezult.topSlider = await Topslider.find(
+        { status: true },
+        { _id: 0 }
+      ).sort("sortvalue");
+      //
     }
+    rezult.topslidervisible = rezult.topSlider.length > 0;
+
+    rezult.topSliderAutoPlay = mainPage.topSliderAutoPlay;
+    rezult.topSliderInterval = mainPage.topSliderInterval;
+
     rezult.maincatalogvisible = false;
     if (mainPage.maincatalogvisible === true && mainPage.maincatalogcount > 0) {
       const category = await Category.find(

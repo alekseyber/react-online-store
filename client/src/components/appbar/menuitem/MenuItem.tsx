@@ -1,15 +1,16 @@
 import { FC, useState, SyntheticEvent } from "react";
-import Button from "@material-ui/core/Button";
-import { withStyles, makeStyles } from "@material-ui/core/styles";
+import Button from "@mui/material/Button";
+import withStyles from "@mui/styles/withStyles";
+import makeStyles from "@mui/styles/makeStyles";
 import clsx from "clsx";
-import Popover from "@material-ui/core/Popover";
-import Link from "@material-ui/core/Link";
-import Grid from "@material-ui/core/Grid";
-import Card from "@material-ui/core/Card";
-import CardMedia from "@material-ui/core/CardMedia";
-import CardContent from "@material-ui/core/CardContent";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import CardActionArea from "@material-ui/core/CardActionArea";
+import Popover from "@mui/material/Popover";
+import Link from "@mui/material/Link";
+import Grid from "@mui/material/Grid";
+import Card from "@mui/material/Card";
+import CardMedia from "@mui/material/CardMedia";
+import CardContent from "@mui/material/CardContent";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import CardActionArea from "@mui/material/CardActionArea";
 import { Image } from "../../image/Image";
 import {
   AppBarCategoryTreeFragment,
@@ -20,28 +21,20 @@ import { useRouter } from "../../../hooks/router.hook";
 const MenuButton = withStyles((theme) => ({
   root: {
     fontWeight: 700,
-    // padding: "0 16px",
     fontSize: ".875rem",
     minWidth: "64px",
     minHeight: "100%",
     marginRight: theme.spacing(2),
-    [theme.breakpoints.down("md")]: {
+    [theme.breakpoints.down("lg")]: {
       marginRight: theme.spacing(1),
-      //  fontSize: ".8rem",
     },
   },
 }))(Button);
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    //flexGrow: 1,
     padding: theme.spacing(2),
     overflowY: "hidden",
-  },
-  cardLink: {
-    "&:hover": {
-      textDecoration: "none",
-    },
   },
   cardRoot: {
     "&:hover": {
@@ -103,7 +96,7 @@ const MenuItemBtn: FC<MenuItemBtnProps> = ({
   const handleClick = (event: SyntheticEvent<HTMLElement>) => {
     if (anchorEl) {
       setAnchorEl(null);
-    } else {      
+    } else {
       setAnchorEl(event.currentTarget);
     }
   };
@@ -156,9 +149,9 @@ const MenuItemBtn: FC<MenuItemBtnProps> = ({
             </CardMedia>
             <CardContent>
               <Link
-                className={classes.cardLink}
                 gutterBottom
                 variant="h6"
+                underline="hover"
                 href={"/category/" + cat.alias}
                 onClick={(e: SyntheticEvent) => e.preventDefault()}
               >

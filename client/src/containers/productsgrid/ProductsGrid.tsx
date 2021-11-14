@@ -1,5 +1,7 @@
 import { FC } from "react";
 import ProductItem from "../productitem/ProductItem";
+import ProductListSceleton from "../../components/skeletons/ProductListSceleton";
+
 import {
   PaginationList,
   usePagin,
@@ -17,13 +19,8 @@ import {
   TSearchFullProduct,
 } from "../../graphql/gqlQuery";
 import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
-import LoaderPage from "../../components/loaderpage/LoaderPage";
 
-// ListProduct.propTypes = {
-//   productImgProperty: TProductImgProperty[],
-//   qualityproductImg: PropTypes.number.isRequired,
-//   currSymbol: PropTypes.string.isRequired,
-// };
+//import LoaderPage from "../../components/loaderpage/LoaderPage";
 
 type TProductItemProps =
   | ICategoryProduct
@@ -55,7 +52,7 @@ const ListProduct: FC<ProductBaseForGrid> = ({
     { ids }
   );
   if (loading) {
-    return <LoaderPage />;
+    return <ProductListSceleton container={false} />;
   }
 
   if (!data) {
@@ -81,7 +78,7 @@ const ProductsGrid: FC<ProductsGridProps> = ({ products, page = 1 }) => {
   const { data, loading } = useQueryApp<IProductsGrid>(PRODUCTS_GRID_QUERY);
 
   if (loading) {
-    return <LoaderPage />;
+    return <ProductListSceleton />;
   }
 
   if (!data) {
@@ -113,21 +110,5 @@ const ProductsGrid: FC<ProductsGridProps> = ({ products, page = 1 }) => {
     </PaginationList>
   );
 };
-
-// ProductsGrid.defaultProps = {
-//   products: [],
-//   page: 1,
-// };
-
-// ListProduct.propTypes = {
-//   productImgProperty: PropTypes.array.isRequired,
-//   qualityproductImg: PropTypes.number.isRequired,
-//   currSymbol: PropTypes.string.isRequired,
-// };
-
-// ProductsGrid.propTypes = {
-//   products: PropTypes.array,
-//   page: PropTypes.number,
-// };
 
 export default ProductsGrid;

@@ -3,7 +3,8 @@ import {
   InMemoryCache,
   InMemoryCacheConfig,
   NormalizedCacheObject,
-} from "@apollo/client";
+} from "@apollo/client"; // HttpLink,
+//import { onError } from "@apollo/client/link/error";
 import {
   sortValueVar,
   cityСurrentVar,
@@ -11,7 +12,7 @@ import {
   deliverySelectVar,
   googleReKeyVar,
   yaMapKeyVar,
-  baseApiUrlVar,  
+  baseApiUrlVar,
 } from "./graphql/localVars";
 
 import {
@@ -27,7 +28,7 @@ import {
   productSelectVar,
   cartDataVar,
   lastCartVar,
-  cuponDataVar,  
+  cuponDataVar,
 } from "./graphql/localVarsCart";
 
 import { filterSelectVar } from "./graphql/localVarsFilter";
@@ -41,57 +42,64 @@ import {
 
 const cacheConfig: InMemoryCacheConfig = {
   possibleTypes: {
-    ParamsData: [
-      "BannersProduct",
-      "ProductImgProperty",
-      "BottomLinks",
-      "TopLinks",
-      "BannersDelivery",
-      "CacheTime",
-      "CityDefault",
-      "Phone",
-    ],
-    BottomLinks: ["BottomLinksListItem"],
-    SortData: ["SortList"],
-    CategoryTree: ["CategoryTreeChilds"],
-    CategoryTreeChilds: ["CategoryTreeChilds"],
-    Filter: ["FilterGrupp"],
-    FilterGrupp: ["FAttrs", "FColorAttrs", "FSizesAttrs"],
-    DeliveryData: ["City", "DeliveryInfPvz", "DeliveryInfCourier"],
-    Product: ["ProductLevel1", "Brand"],
-    ProductLevel1: ["Bagde", "Color", "ProductLevel2"],
-    ProductLevel2: ["Size"],
-    ProductMain: [
-      "ProductFilterContent",
-      "BreadcrumbProduct",
-      "ProductGal",
-      "MetaProduct",
-    ],
-    CategoryProductList: ["CategoryProduct"], //Category
-    CategoryProduct: ["CategoryProductLevelFilter"], //Category
-    Category: ["CategoryContData", "CategoryProductsData"], //Category
-    CategoryContData: ["CategoryBreadcrumb"],
-    MainPage: ["Maincatalog", "TopSlider", "MainBanner", "MainPageMeta"],
-    SearchListData: ["SearchProductsList"],
-    SearchFull: ["SearchFullProduct"],
-    SearchFullFilter: ["SearchFullFilterSelected"],
-    Order: ["OrderCartItem"],
-    Recomacces: ["Product"],
-    FColorAttrs: ["ColorGrupp"],
-    FSizesAttrs: ["Size"],
-    CommentList: ["Comment"],
-    NewsList: ["NewsAnnonce"],
-    PvzList: ["PvzListItem"],
-    PvzListItem: [
-      "PvzListItemLocation",
-      "WorkTimeList",
-      "OfficeImageList",
-      "PvzListItemPhones",
-    ],
+    FilterAttrsUnion: ["FAttrs", "FColorAttrs", "FSizesAttrs"],
+    MutationResponse: ["BaseMutationResponse", "AddOrderMutationResponse"],
   },
+  // Types: {
+  //   ParamsData: [
+  //     "BannersProduct",
+  //     "ProductImgProperty",
+  //     "BottomLinks",
+  //     "TopLinks",
+  //     "BannersDelivery",
+  //     "CacheTime",
+  //     "CityDefault",
+  //     "Phone",
+  //   ],
+  //   BottomLinks: ["BottomLinksListItem"],
+  //   SortData: ["SortList"],
+  //   CategoryTree: ["CategoryTreeChilds"],
+  //   CategoryTreeChilds: ["CategoryTreeChilds"],
+  //   Filter: ["FilterGrupp"],
+  //   FilterGrupp: ["FAttrs", "FColorAttrs", "FSizesAttrs"],
+  //   DeliveryData: ["City", "DeliveryInfPvz", "DeliveryInfCourier"],
+  //   Product: ["ProductLevel1", "Brand"],
+  //   ProductLevel1: ["Bagde", "Color", "ProductLevel2"],
+  //   ProductLevel2: ["Size"],
+  //   ProductMain: [
+  //     "ProductFilterContent",
+  //     "BreadcrumbProduct",
+  //     "ProductGal",
+  //     "MetaProduct",
+  //   ],
+  //   CategoryProductList: ["CategoryProduct"], //Category
+  //   CategoryProduct: ["CategoryProductLevelFilter"], //Category
+  //   Category: ["CategoryContData", "CategoryProductsData"], //Category
+  //   CategoryContData: ["CategoryBreadcrumb"],
+  //   MainPage: ["Maincatalog", "TopSlider", "MainBanner", "MainPageMeta"],
+  //   SearchListData: ["SearchProductsList"],
+  //   SearchFull: ["SearchFullProduct"],
+  //   SearchFullFilter: ["SearchFullFilterSelected"],
+  //   Order: ["OrderCartItem"],
+  //   Recomacces: ["Product"],
+  //   FColorAttrs: ["ColorGrupp"],
+  //   FSizesAttrs: ["Size"],
+  //   CommentList: ["Comment"],
+  //   NewsList: ["NewsAnnonce"],
+  //   PvzList: ["PvzListItem"],
+  //   PvzListItem: [
+  //     "PvzListItemLocation",
+  //     "WorkTimeList",
+  //     "OfficeImageList",
+  //     "PvzListItemPhones",
+  //   ],
+  // },
   typePolicies: {
     CategoryProductList: {
       keyFields: ["alias", "sortValue"],
+    },
+    CategoryProduct: {
+      keyFields: ["alias"],
     },
     Category: {
       keyFields: ["alias"],
@@ -104,6 +112,9 @@ const cacheConfig: InMemoryCacheConfig = {
     },
     DeliveryData: {
       keyFields: ["cityid"],
+    },
+    City: {
+      keyFields: ["id"],
     },
     PvzList: {
       keyFields: ["cityid"],
@@ -246,7 +257,7 @@ const cacheConfig: InMemoryCacheConfig = {
         cartDataIds: {
           read() {
             const cartData = cartDataVar();
-            const cartIdsObj: {[alias: string]: number} = {};
+            const cartIdsObj: { [alias: string]: number } = {};
 
             cartData.forEach((el) => {
               if (!cartIdsObj[el.alias]) {
@@ -377,7 +388,6 @@ const cacheConfig: InMemoryCacheConfig = {
             alias: args.alias,
           });
         },
-
         category(_, { args, toReference }: any) {
           return toReference({
             __typename: "Category",
@@ -449,12 +459,15 @@ const BASE_API_URL: string = baseApiUrl();
 
 const uri: string = `${BASE_API_URL}/api/graphql`;
 
+// const httpLink = new HttpLink({ uri });
+
+// const onErrorLink = onError(({ graphQLErrors, networkError }) => {
+//   console.log("graphQLErrors", graphQLErrors);
+//   console.log("networkError", networkError);
+// });
+
 export const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
   uri,
   cache: new InMemoryCache(cacheConfig),
+  //link: onErrorLink.concat(httpLink),
 });
-
-// onError: ({ networkError, graphQLErrors }: any):void => {
-//   console.log("graphQLErrors", graphQLErrors);
-//   console.log("networkError", networkError);
-// },

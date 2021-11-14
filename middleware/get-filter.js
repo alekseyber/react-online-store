@@ -139,19 +139,19 @@ const getFilter = async () => {
       },
     ]);
 
-    const filters_query = Product.distinct(
-      "filter",
-      { _id: { $in: aggregate[0].ids } },
-      function (err, docs) {
-        if (!err) {
-          return docs;
-        } else {
-          return null;
-        }
-      }
-    );
+    // function (err, docs) {
+    //   if (!err) {
+    //     return docs;
+    //   } else {
+    //     return null;
+    //   }
+    // }
 
-    const filters = await filters_query.exec();
+    const filtersQuery = Product.distinct("filter", {
+      _id: { $in: aggregate[0].ids },
+    });
+
+    const filters = await filtersQuery.exec();
 
     const arrayToObject = (array) =>
       array.reduce((obj, item) => {
@@ -285,6 +285,7 @@ const getFilter = async () => {
     // await сache.save();
     // return cacheData.obj;
   } catch (e) {
+    //console.log(e);
     throw e;
   }
 };

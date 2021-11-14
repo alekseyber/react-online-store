@@ -1,9 +1,9 @@
 import { FC } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Icon from "@material-ui/core/Icon";
-import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography";
+import makeStyles from "@mui/styles/makeStyles";
+import Icon from "@mui/material/Icon";
+import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
 import {
   DELIVERY_BANNERS_QUERY,
   IDeliveryBanners,
@@ -18,6 +18,9 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
     //color: theme.palette.text.secondary,
     height: "100%",
+    "& .material-icons": {
+      fontSize: "30px",
+    },
   },
 }));
 
@@ -38,7 +41,7 @@ const DeliveryBanners: FC = () => {
           <Paper className={classes.paper}>
             <Grid container spacing={1}>
               <Grid item xs={3}>
-                <Icon fontSize="large">{item.icons}</Icon>
+                <Icon>{item.icons}</Icon>
               </Grid>
               <Grid item xs={9}>
                 <Typography

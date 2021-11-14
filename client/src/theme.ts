@@ -1,8 +1,7 @@
-import { red } from "@material-ui/core/colors";
-import { green } from "@material-ui/core/colors";
-import { createMuiTheme } from "@material-ui/core/styles";
+import { red, green } from "@mui/material/colors";
+import { createTheme } from "@mui/material/styles"; //, adaptV4Theme
 
-declare module "@material-ui/core/styles/createPalette" {
+declare module "@mui/material/styles/createPalette" {
   export interface Palette {
     darkprimary: Palette["primary"];
     priceprimary: Palette["primary"];
@@ -14,7 +13,7 @@ declare module "@material-ui/core/styles/createPalette" {
 }
 
 // A custom theme for this app
-const theme = createMuiTheme({
+const theme = createTheme({
   palette: {
     primary: {
       light: "#757ce8",
@@ -54,26 +53,18 @@ const theme = createMuiTheme({
       contrastText: "rgba(0, 0, 0, 0.87)",
     },
   },
-  overrides: {
+  components: {
     MuiButton: {
-      root: {
-        borderRadius: 0,
+      styleOverrides: {
+        root: { borderRadius: 0 },
       },
     },
-    // MuiPaper: {
-    //   root: {
-    //     borderRadius: 0,
-    //   },
-    // },
   },
-  // shape: {
-  //   borderRadius: 0,
-  // },
 });
 
 export default theme;
 
-export const themeBtnAddCart = createMuiTheme({
+export const themeBtnAddCart = createTheme({
   palette: {
     primary: {
       //btn add cart
@@ -88,10 +79,10 @@ export const themeBtnAddCart = createMuiTheme({
       contrastText: "#fff",
     },
   },
-  overrides: {
+  components: {
     MuiButton: {
-      root: {
-        borderRadius: 0,
+      styleOverrides: {
+        root: { borderRadius: 0 },
       },
     },
   },

@@ -1,13 +1,13 @@
 import { useState, FC, TouchEvent, KeyboardEvent, MouseEvent } from "react";
 import { Link } from "react-router-dom";
-import Button from "@material-ui/core/Button";
-import Drawer from "@material-ui/core/Drawer";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
-import CloseIcon from "@material-ui/icons/Close";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
+import Button from "@mui/material/Button";
+import Drawer from "@mui/material/Drawer";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
+import Typography from "@mui/material/Typography";
+import makeStyles from '@mui/styles/makeStyles';
 import ItemGrupp from "./itemgrupp/ItemGrupp";
 import ItemGruppMbile from "./itemgruppmobile/ItemGruppMobile";
 import {
@@ -115,53 +115,51 @@ const AppFilter: FC<AppFilterProps> = ({
     );
   };
 
-  return (
-    <>
-      {mobile && (
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={toggleDrawer(true)}
-          className={classes.btngr}
-          // size="small"
-        >
-          Фильтр
-        </Button>
-      )}
-      <Btns />
-      {!mobile &&
-        filterRezult.map((item, index) => (
-          <ItemGrupp key={index} itemGr={item} filterSelect={filterSelect} />
+  return <>
+    {mobile && (
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={toggleDrawer(true)}
+        className={classes.btngr}
+        // size="small"
+      >
+        Фильтр
+      </Button>
+    )}
+    <Btns />
+    {!mobile &&
+      filterRezult.map((item, index) => (
+        <ItemGrupp key={index} itemGr={item} filterSelect={filterSelect} />
+      ))}
+    {mobile && (
+      <Drawer anchor="bottom" open={state} onClose={toggleDrawer(false)}>
+        <AppBar position="static">
+          <Toolbar variant="dense">
+            <Typography variant="h6" className={classes.titlepanel}>
+              Фильтр
+            </Typography>
+            <Btns barOn={true} />
+            <IconButton
+              edge="end"
+              color="inherit"
+              onClick={toggleDrawer(false)}
+              className={classes.btnclose}
+              size="large">
+              <CloseIcon />
+            </IconButton>
+          </Toolbar>
+        </AppBar>
+        {filterRezult.map((item, index) => (
+          <ItemGruppMbile
+            key={index}
+            itemGr={item}
+            filterSelect={filterSelect}
+          />
         ))}
-      {mobile && (
-        <Drawer anchor="bottom" open={state} onClose={toggleDrawer(false)}>
-          <AppBar position="static">
-            <Toolbar variant="dense">
-              <Typography variant="h6" className={classes.titlepanel}>
-                Фильтр
-              </Typography>
-              <Btns barOn={true} />
-              <IconButton
-                edge="end"
-                color="inherit"
-                onClick={toggleDrawer(false)}
-                className={classes.btnclose}
-              >
-                <CloseIcon />
-              </IconButton>
-            </Toolbar>
-          </AppBar>
-          {filterRezult.map((item, index) => (
-            <ItemGruppMbile
-              key={index}
-              itemGr={item}
-              filterSelect={filterSelect}
-            />
-          ))}
-        </Drawer>
-      )}
-    </>
-  );
+      </Drawer>
+    )}
+  </>;
 };
 
 export default AppFilter;

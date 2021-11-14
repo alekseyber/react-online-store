@@ -1,5 +1,5 @@
 import { FC } from "react";
-import Typography from "@material-ui/core/Typography";
+import Typography from "@mui/material/Typography";
 import DeliveryRezulText from "../../../components/deliveryrezulttext/DeliveryRezulText";
 import DeliverySelector from "../../../components/deliveryreselector/DeliverySelector";
 import { DeliveryRezultDeliveryDataFragment } from "../../../graphql/gqlQuery";

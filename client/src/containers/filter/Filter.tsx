@@ -1,12 +1,16 @@
 import { FC } from "react";
-import withWidth, { isWidthDown, WithWidth } from "@material-ui/core/withWidth"; //isWidthDown,  isWidthUp
-import { makeStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
+import makeStyles from "@mui/styles/makeStyles";
+import { Theme, useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
 import SortBtn from "../../components/sortbtn/SortBtn";
 import FilterPanel from "../../components/appfilter/AppFilter";
 import { FILTER_QUERY, IFilter, IFilterGrupp } from "../../graphql/gqlQuery";
 import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
+
+// FIXME checkout https://mui.com/components/use-media-query/#migrating-from-withwidth
+//const withWidth = () => (WrappedComponent) => (props) => <WrappedComponent {...props} width="xs" />;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,17 +30,18 @@ export interface IFilterProps {
   filterInputRezult?: IFilterGrupp[] | undefined;
 }
 
-interface IFilterRezultProps extends IFilterProps, WithWidth {}
+interface IFilterRezultProps extends IFilterProps {}
 
 const Filter: FC<IFilterRezultProps> = ({
   filterInputRezult,
   category = false,
-  width,
   sortBtnStatus = false,
 }) => {
   const classes = useStyles();
+  const theme: Theme = useTheme();
 
-  const mobile = isWidthDown("sm", width);
+  const mobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   const elevationValue = mobile ? 3 : 0;
 
   const { data } = useQueryApp<IFilter>(FILTER_QUERY);
@@ -98,4 +103,4 @@ const Filter: FC<IFilterRezultProps> = ({
 //   // alias: null,
 // };
 
-export default withWidth()(Filter);
+export default Filter;

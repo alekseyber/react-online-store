@@ -1,0 +1,47 @@
+.font-weight-black {
+  font-weight: 700 !important;
+}
+
+.mb-1 {
+  margin-bottom: 4px !important;
+}
+
+.mt-1 {
+  margin-top: 4px !important;
+}
+
+.mb-2 {
+  margin-bottom: 8px !important;
+}
+
+.mt-2 {
+  margin-top: 8px !important;
+}
+
+.ml-1 {
+  margin-left: 4px !important;
+}
+
+.mr-1 {
+  margin-right: 4px !important;
+}
+
+.ml-2 {
+  margin-left: 8px !important;
+}
+
+.mr-2 {
+  margin-right: 8px !important;
+}
+
+.text-uppercase {
+  text-transform: uppercase !important;
+}
+
+.oldrice {
+  text-decoration: line-through;
+}
+
+.text-center {
+  text-align: center;
+}

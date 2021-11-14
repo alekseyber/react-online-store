@@ -1,6 +1,6 @@
 {
   "name": "react-online-store",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "react online store",
   "main": "app.js",
   "scripts": {
@@ -13,7 +13,8 @@
     "client:update": "npm update --prefix client",
     "clientdev": "cross-env PORT=3200 REACT_APP_NAME=react-online-store npm run client",
     "dev": "concurrently \"npm run servdev\" \"npm run clientdev\"",
-    "srvstartcldev": "concurrently \"npm run servstartdev\" \"npm run clientdev\""
+    "srvstartcldev": "concurrently \"npm run servstartdev\" \"npm run clientdev\"",
+    "geoip-lite:updatedb": "node ./node_modules/geoip-lite/scripts/updatedb.js license_key=YOUR_MAXMIND_LICENSE_KEY"
   },
   "keywords": [
     "react",
@@ -22,35 +23,36 @@
   "author": "Berestov Aleksey <alekseyber@users.noreply.github.com>",
   "license": "ISC",
   "dependencies": {
-    "apollo-server-express": "^2.19.0",
-    "apollo-server-plugin-response-cache": "^0.5.6",
-    "axios": "^0.19.2",
-    "axios-oauth-client": "^1.3.0",
-    "bcrypt-nodejs": "0.0.3",
-    "body-parser": "^1.19.0",
+    "apollo-server-express": "^3.4.0",
+    "axios": "^0.24.0",
+    "axios-oauth-client": "^1.4.4",
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "cross-env": "^7.0.2",
-    "email-templates": "^7.2.0",
+    "cross-fetch": "^3.1.4",
+    "email-templates": "^8.0.8",
     "express": "^4.17.1",
-    "express-mongo-sanitize": "^2.0.0",
+    "express-mongo-sanitize": "^2.1.0",
     "geoip-lite": "^1.4.2",
+    "graphql": "^15.7.2",
     "graphql-type-json": "^0.3.2",
     "js-md5": "^0.7.3",
     "moment": "^2.29.1",
-    "mongoose": "^5.10.15",
-    "multer": "^1.4.2",
-    "passport": "^0.4.1",
+    "mongoose": "^6.0.12",
+    "multer": "^1.4.3",
+    "passport": "^0.5.0",
     "passport-jwt": "^4.0.0",
     "pdfmake": "^0.1.68",
-    "pug": "^2.0.4",
+    "pug": "^3.0.2",
     "require-all": "^3.0.0",
-    "sharp": "^0.25.4",
-    "sitemap": "^6.3.3",
-    "xlsx": "^0.15.6",
+    "sharp": "^0.29.2",
+    "sitemap": "^7.0.0",
+    "xlsx": "^0.17.3",
     "xml2js": "^0.4.23"
   },
   "devDependencies": {
-    "concurrently": "^5.3.0",
-    "nodemon": "^2.0.6"
+    "concurrently": "^6.3.0",
+    "nodemon": "^2.0.6",
+    "typescript": "^4.4.4"
   }
 }

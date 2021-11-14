@@ -7,23 +7,23 @@ import {
   MouseEvent,
 } from "react";
 import { Link } from "react-router-dom";
-import { makeStyles } from "@material-ui/core/styles";
-import Drawer from "@material-ui/core/Drawer";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
-import CloseIcon from "@material-ui/icons/Close";
-import List from "@material-ui/core/List";
-import Divider from "@material-ui/core/Divider";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
-import HomeIcon from "@material-ui/icons/Home";
-import Icon from "@material-ui/core/Icon";
-import ExpandLess from "@material-ui/icons/ExpandLess";
-import ExpandMore from "@material-ui/icons/ExpandMore";
-import FolderIcon from "@material-ui/icons/Folder";
-import Collapse from "@material-ui/core/Collapse";
+import makeStyles from '@mui/styles/makeStyles';
+import Drawer from "@mui/material/Drawer";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
+import CloseIcon from "@mui/icons-material/Close";
+import List from "@mui/material/List";
+import Divider from "@mui/material/Divider";
+import ListItem from "@mui/material/ListItem";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import ListItemSecondaryAction from "@mui/material/ListItemSecondaryAction";
+import HomeIcon from "@mui/icons-material/Home";
+import Icon from "@mui/material/Icon";
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
+import FolderIcon from "@mui/icons-material/Folder";
+import Collapse from "@mui/material/Collapse";
 import CatalogItem from "./catalogitem/CatalogItem";
 import Search from "../search/Search";
 import {
@@ -97,7 +97,7 @@ const DrawerApp: FC<DrawerAppProps> = ({
         <List>
           <ListItem>
             <ListItemSecondaryAction>
-              <IconButton edge="end" onClick={toggleDrawer(false)}>
+              <IconButton edge="end" onClick={toggleDrawer(false)} size="large">
                 <CloseIcon />
               </IconButton>
             </ListItemSecondaryAction>
@@ -149,21 +149,19 @@ const DrawerApp: FC<DrawerAppProps> = ({
     </>
   );
 
-  return (
-    <>
-      <IconButton
-        edge="start"
-        color="inherit"
-        aria-label="open drawer"
-        onClick={toggleBtnDrawer}
-      >
-        <MenuIcon />
-      </IconButton>
-      <Drawer anchor="left" open={open} onClose={toggleDrawer(false)}>
-        <ListDrawerApp />
-      </Drawer>
-    </>
-  );
+  return <>
+    <IconButton
+      edge="start"
+      color="inherit"
+      aria-label="open drawer"
+      onClick={toggleBtnDrawer}
+      size="large">
+      <MenuIcon />
+    </IconButton>
+    <Drawer anchor="left" open={open} onClose={toggleDrawer(false)}>
+      <ListDrawerApp />
+    </Drawer>
+  </>;
 };
 
 export default DrawerApp;

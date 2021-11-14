@@ -1,6 +1,7 @@
 import { useEffect, FC } from "react";
 import { setFilterSelectByQwery } from "../../graphql/localVarsFilter";
-import LoaderPage from "../../components/loaderpage/LoaderPage";
+import ProductListSceleton from "../../components/skeletons/ProductListSceleton";
+import PageSceleton from "../../components/skeletons/PageSceleton";
 import Category from "../../containers/category/Category";
 import {
   useQuery,
@@ -36,7 +37,12 @@ const CategoryPage: FC = () => {
     }
   }, [filterIndex, query]);
 
-  if (loading) return <LoaderPage />;
+  if (loading)
+    return (
+      <PageSceleton title={true}>
+        <ProductListSceleton />
+      </PageSceleton>
+    );
   if (error) return <ErrorContent />;
 
   if (!data) {

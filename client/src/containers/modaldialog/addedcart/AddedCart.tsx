@@ -1,5 +1,5 @@
 import { FC } from "react";
-import Button from "@material-ui/core/Button";
+import Button from "@mui/material/Button";
 import AddedCartComponent from "../../../components/addedcart/AddedCart";
 import ModalBase, { IChildrenNodeBaseProps } from "../../../hoc/ModalBase";
 import { useRouter } from "../../../hooks/router.hook";

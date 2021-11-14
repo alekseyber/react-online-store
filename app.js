@@ -1,16 +1,28 @@
 const path = require("path");
 const express = require("express");
 const cors = require("cors");
-const bodyParser = require("body-parser");
+//const bodyParser = require("body-parser");
 const mongoSanitize = require("express-mongo-sanitize");
 const mongoose = require("mongoose");
 const passport = require("passport");
 const { ApolloServer } = require("apollo-server-express");
-const responseCachePlugin = require("apollo-server-plugin-response-cache");
+//const responseCachePlugin = require("apollo-server-plugin-response-cache");
+const {
+  ApolloServerPluginCacheControl,
+  ApolloServerPluginLandingPageGraphQLPlayground,
+} = require("apollo-server-core");
 const passportStrategy = require("./middleware/passport-strategy");
 const authRoutes = require("./routes/auth.routes");
-//const startRoutes = require("./routes/start.routes");
 const deliveryRoutes = require("./routes/delivery.routes");
+const satisRoutes = require("./routes/satis.routes");
+const satisuploadRoutes = require("./routes/satisupload.routes");
+const satisexcellRoutes = require("./routes/satisexcell.routes");
+const satisdeliveryRoutes = require("./routes/satisdelivery.routes");
+const satispdfRoutes = require("./routes/satispdf.routes");
+const cronosworkRoutes = require("./routes/cronoswork.routes");
+const { typeDefs, resolvers } = require("./shema/shema");
+
+// const startRoutes = require("./routes/start.routes");
 // const productsRoutes = require("./routes/products.routes");
 // const categoryRoutes = require("./routes/category.routes");
 // const mainpageRoutes = require("./routes/mainpage.routes");
@@ -19,13 +31,6 @@ const deliveryRoutes = require("./routes/delivery.routes");
 // const newsRoutes = require("./routes/news.routes");
 // const pageRoutes = require("./routes/page.routes");
 // const commentRoutes = require("./routes/comment.routes");
-const satisRoutes = require("./routes/satis.routes");
-const satisuploadRoutes = require("./routes/satisupload.routes");
-const satisexcellRoutes = require("./routes/satisexcell.routes");
-const satisdeliveryRoutes = require("./routes/satisdelivery.routes");
-const satispdfRoutes = require("./routes/satispdf.routes");
-const cronosworkRoutes = require("./routes/cronoswork.routes");
-const { typeDefs, resolvers } = require("./shema/shema");
 
 const keys = require("./keys");
 
@@ -36,10 +41,16 @@ const server = new ApolloServer({
     ip: req.ip,
   }),
   debug: process.env.NODE_ENV !== "production",
-  plugins: [responseCachePlugin()],
-  cacheControl: {
-    defaultMaxAge: 3600,
-  },
+  plugins: [
+    ApolloServerPluginCacheControl({
+      defaultMaxAge: 3600,
+    }),
+    ApolloServerPluginLandingPageGraphQLPlayground(),
+  ],
+  // plugins: [responseCachePlugin()],
+  // cacheControl: {
+  //   defaultMaxAge: 3600,
+  // },
 });
 
 const app = express();
@@ -48,8 +59,15 @@ app.use(cors());
 app.use(passport.initialize());
 passport.use(passportStrategy);
 
-app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
-app.use(bodyParser.json({ limit: "50mb", extended: true }));
+const configLimit = {
+  limit: "50mb",
+  extended: true,
+};
+app.use(express.urlencoded(configLimit));
+app.use(express.json(configLimit));
+
+// app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
+// app.use(bodyParser.json({ limit: "50mb", extended: true }));
 app.set("trust proxy", true);
 
 const API_SERVER_OFF = process.env.API_SERVER_OFF ? true : false;
@@ -61,14 +79,17 @@ app.use((_, res, next) => {
   next();
 });
 
+// app.use((req, _, next) => {
+//   req.ip = req.headers["X-Real-IP"] || req.connection.remoteAddress;
+//   next();
+// });
+
 app.use((req, _, next) => {
-  req.ip = req.headers["X-Real-IP"] || req.connection.remoteAddress;
+  req.ip = req.headers["X-Real-IP"] || req.socket.remoteAddress;
   next();
 });
 
 //app.use("/api/start", startRoutes);
-app.use("/api/auth", authRoutes);
-app.use("/api/delivery", deliveryRoutes);
 // app.use("/api/products", productsRoutes);
 // app.use("/api/category", categoryRoutes);
 // app.use("/api/mainpage", mainpageRoutes);
@@ -77,6 +98,8 @@ app.use("/api/delivery", deliveryRoutes);
 // app.use("/api/news", newsRoutes);
 // app.use("/api/page", pageRoutes);
 // app.use("/api/comment", commentRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/delivery", deliveryRoutes);
 app.use("/api/satisupload", satisuploadRoutes);
 app.use("/api/satis", satisRoutes);
 app.use("/api/satisexcell", satisexcellRoutes);
@@ -106,15 +129,15 @@ app.use(
 
 const PORT = keys.PORT || 5000;
 
-server.applyMiddleware({ app, path: "/api/graphql" });
+// , {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+//   useCreateIndex: true,
+// }
 
 async function start() {
   try {
-    await mongoose.connect(keys.MONGO_URI_R, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useCreateIndex: true,
-    });
+    await mongoose.connect(keys.MONGO_URI_R);
     console.log(`MongoDB connected, MONGO_URI_R: ${keys.MONGO_URI_R}`);
     const db = mongoose.connection;
 
@@ -125,9 +148,12 @@ async function start() {
       console.error("reconnectTries - filed", error);
     });
 
+    await server.start();
+    server.applyMiddleware({ app, path: "/api/graphql" });
+
     app.listen(PORT, () =>
       console.log(
-        `App has been started on port ${PORT}..., URL: http://localhost:${PORT}`
+        `App has been started on port ${PORT}..., URL: http://localhost:${PORT}, /api/graphql`
       )
     );
   } catch (e) {

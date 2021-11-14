@@ -7,34 +7,48 @@ import {
   FC,
   ChangeEvent,
 } from "react";
-//import PropTypes from "prop-types";
 import Pagination, {
   PaginationRenderItemParams,
-} from "@material-ui/lab/Pagination";
-import PaginationItem from "@material-ui/lab/PaginationItem";
-import Grid from "@material-ui/core/Grid";
-import { makeStyles } from "@material-ui/core/styles";
+} from "@mui/material/Pagination";
+import PaginationItem from "@mui/material/PaginationItem";
+import Grid from "@mui/material/Grid";
+//import makeStyles from "@mui/styles/makeStyles";
+import { styled } from "@mui/material/styles";
 import { useRouter } from "../hooks/router.hook";
 import { usePageBase } from "./PageBase";
 import { useAddGet } from "../hooks/addget.hook";
 import { IPropsColorSelect } from "../containers/productitem/ProductItem";
 import { TComment, TNewsAnnonce } from "../graphql/gqlQuery";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-    justifyContent: "center",
-    marginTop: theme.spacing(2),
-    "& > *": {
-      marginTop: theme.spacing(3),
-      marginBottom: theme.spacing(2),
-    },
-    "& .Mui-selected": {
-      backgroundColor: theme.palette.darkprimary.main,
-      color: theme.palette.primary.contrastText,
-    },
+const CssRootDiv = styled("div")(({ theme }) => ({
+  display: "flex",
+  justifyContent: "center",
+  marginTop: theme.spacing(2),
+  "& > *": {
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(2),
+  },
+  "& .Mui-selected": {
+    backgroundColor: theme.palette.darkprimary.main,
+    color: theme.palette.primary.contrastText,
   },
 }));
+
+// const useStyles = makeStyles((theme) => ({
+//   root: {
+//     display: "flex",
+//     justifyContent: "center",
+//     marginTop: theme.spacing(2),
+//     "& > *": {
+//       marginTop: theme.spacing(3),
+//       marginBottom: theme.spacing(2),
+//     },
+//     "& .Mui-selected": {
+//       backgroundColor: theme.palette.darkprimary.main,
+//       color: theme.palette.primary.contrastText,
+//     },
+//   },
+// }));
 
 export interface IPaginContextItem extends IPropsColorSelect {
   alias: string;
@@ -63,7 +77,6 @@ interface ItemPaginProps {
 }
 
 export const PaginationList: FC<PaginationListProps> = (props) => {
-  const classes = useStyles();
   const { replace } = useRouter();
   const linkPage = usePageBase();
   const addGet = useAddGet();
@@ -151,17 +164,17 @@ export const PaginationList: FC<PaginationListProps> = (props) => {
       </Grid>
 
       {paginationLength > 1 && (
-        <div className={classes.root}>
+        <CssRootDiv>
           <Pagination
             count={paginationLength}
             variant="outlined"
-            //   shape="rounded"
+            shape="circular"
             page={currentPage}
             onChange={handleChange}
             color="primary"
             renderItem={(item) => <ItemPagin item={item} />}
           />
-        </div>
+        </CssRootDiv>
       )}
     </>
   );

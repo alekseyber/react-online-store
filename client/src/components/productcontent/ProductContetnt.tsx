@@ -1,10 +1,10 @@
 import { FC } from "react";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
-import Divider from "@material-ui/core/Divider";
-import { makeStyles } from "@material-ui/core/styles";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import Divider from "@mui/material/Divider";
+import makeStyles from '@mui/styles/makeStyles';
 import { useHtml } from "../../hooks/html.hook";
 import { TBannersProduct, IProductContetntData } from "../../graphql/gqlQuery";
 

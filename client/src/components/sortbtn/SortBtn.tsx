@@ -1,9 +1,9 @@
 import { FC, useState, SyntheticEvent } from "react";
-import SortIcon from "@material-ui/icons/Sort";
-import IconButton from "@material-ui/core/IconButton";
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
-import { makeStyles } from "@material-ui/core/styles";
+import SortIcon from "@mui/icons-material/Sort";
+import IconButton from "@mui/material/IconButton";
+import MenuItem from "@mui/material/MenuItem";
+import Menu from "@mui/material/Menu";
+import makeStyles from '@mui/styles/makeStyles';
 import { SORT_BTN_QUERY, ISortBtn } from "../../graphql/gqlQuery";
 import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 import { sortValueVar } from "../../graphql/localVars";
@@ -44,11 +44,11 @@ const SortBtn: FC = () => {
 
   return (
     <div>
-      <IconButton onClick={handleMenu} color="inherit">
+      <IconButton onClick={handleMenu} color="inherit" size="large">
         <SortIcon />
       </IconButton>
       <Menu
-        getContentAnchorEl={null}
+     //   getContentAnchorEl={null}
         anchorEl={anchorEl}
         anchorOrigin={{
           vertical: "bottom",

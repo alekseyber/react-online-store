@@ -1,27 +1,29 @@
-import { useEffect, useCallback, FC, SyntheticEvent, ChangeEvent } from "react";
+import { useEffect, useCallback, FC, SyntheticEvent } from "react";
 import {
-  createMuiTheme,
+  createTheme,
   ThemeProvider,
-  makeStyles,
-} from "@material-ui/core/styles";
+  Theme,
+  StyledEngineProvider, 
+} from "@mui/material/styles"; // adaptV4Theme,
+import makeStyles from "@mui/styles/makeStyles";
 //import PropTypes from "prop-types";
-import ListItem from "@material-ui/core/ListItem";
-import Divider from "@material-ui/core/Divider";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
-import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
-import Avatar from "@material-ui/core/Avatar";
-import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
-import LinkUi from "@material-ui/core/Link";
-import Grid from "@material-ui/core/Grid";
-import { red } from "@material-ui/core/colors";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
+import ListItem from "@mui/material/ListItem";
+import Divider from "@mui/material/Divider";
+import ListItemText from "@mui/material/ListItemText";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
+import ListItemSecondaryAction from "@mui/material/ListItemSecondaryAction";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
+import Avatar from "@mui/material/Avatar";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import LinkUi from "@mui/material/Link";
+import Grid from "@mui/material/Grid";
+import { red } from "@mui/material/colors";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 import {
   setColorAndSizeProduct,
   cartDeleteItem,
@@ -38,6 +40,11 @@ import {
 import SizeSelector from "./sizeselector/SizeSelector";
 import ColorSelector from "./colorselector/ColorSelector";
 import { useRouter } from "../../hooks/router.hook";
+
+declare module "@mui/styles/defaultTheme" {
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  interface DefaultTheme extends Theme {}
+}
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -63,7 +70,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const theme = createMuiTheme({
+const theme = createTheme({
   palette: {
     primary: {
       main: red[500],
@@ -113,9 +120,9 @@ const CartItem: FC<CartItemProps> = ({
     }
   };
 
-  const handleChangeQty = (
-    event: ChangeEvent<{ name?: string | undefined; value: unknown }>
-  ): void => {
+  // event: ChangeEvent<{ name?: string | undefined; value: unknown }>
+  // event: SelectChangeEvent<number>, child: ReactNode) => void
+  const handleChangeQty = (event: SelectChangeEvent): void => {
     const value = event.target.value;
     if (typeof value === "string") {
       cartChangeItemCount(index, parseInt(value, 10));
@@ -179,14 +186,14 @@ const CartItem: FC<CartItemProps> = ({
         <Grid
           container
           direction="row"
-          justify="flex-start"
+          justifyContent="flex-start"
           alignItems="center"
         >
-          <FormControl className={classes.formControl}>
+          <FormControl variant="standard" className={classes.formControl}>
             <InputLabel id="qty-simple-select-label">Количество</InputLabel>
             <Select
               labelId="qty-simple-select-label"
-              value={qty}
+              value={String(qty)}
               onChange={handleChangeQty}
             >
               {new Array(N).fill("").map((_, val) => (
@@ -238,6 +245,7 @@ const CartItem: FC<CartItemProps> = ({
     <div className="mb-1">
       <LinkUi
         variant="body2"
+        underline="hover"
         className="font-weight-black"
         href={productLink}
         onClick={handleOpenProduct}
@@ -325,11 +333,18 @@ const CartItem: FC<CartItemProps> = ({
         />
 
         <ListItemSecondaryAction>
-          <ThemeProvider theme={theme}>
-            <IconButton edge="end" color="primary" onClick={handleDeletItem}>
-              <DeleteIcon />
-            </IconButton>
-          </ThemeProvider>
+          <StyledEngineProvider injectFirst>
+            <ThemeProvider theme={theme}>
+              <IconButton
+                edge="end"
+                color="primary"
+                onClick={handleDeletItem}
+                size="large"
+              >
+                <DeleteIcon />
+              </IconButton>
+            </ThemeProvider>
+          </StyledEngineProvider>
         </ListItemSecondaryAction>
       </ListItem>
       {divider_on && <Divider variant="inset" component="li" />}

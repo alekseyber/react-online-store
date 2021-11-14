@@ -1,7 +1,8 @@
 import { useEffect, FC } from "react";
-import LoaderPage from "../../components/loaderpage/LoaderPage";
 import { setColorProductAction } from "../../graphql/localVarsCart";
 import ProductMainPage from "../../containers/productmainpage/ProductMainPage";
+import ProductMainCardSceleton from "../../components/skeletons/ProductMainCardSceleton";
+import PageSceleton from "../../components/skeletons/PageSceleton";
 import { useRouter, useParamsMemo, useQuery } from "../../hooks/router.hook";
 import {
   PRODUCT_PAGE_QUERY,
@@ -43,30 +44,15 @@ const ProductPage: FC = () => {
     }
   }, [product, colors, replace]);
 
-  if (loading) return <LoaderPage />;
+  if (loading) {
+    return (
+      <PageSceleton>
+        <ProductMainCardSceleton />
+      </PageSceleton>
+    );
+  }
 
   if (data && !error) {
-    // const {
-    //   productImgProperty,
-    //   qualityproductImg,
-    //   currSymbol,
-    //   bannersProduct,
-    //   bannersProductOn,
-    // } = data.paramsData;
-
-    // const { product, productMain } = data;
-    // const baseApiUrl = data.baseApiUrl;
-
-    // const bind = {
-    //   productData: { product, productMain },
-    //   productImgProperty,
-    //   qualityproductImg,
-    //   currSymbol,
-    //   bannersProduct,
-    //   bannersProductOn,
-    //   baseApiUrl,
-    //   color: colors ? colors.toString() : null,
-    // };
     const bind = {
       data,
       color: colors ? colors.toString() : null,

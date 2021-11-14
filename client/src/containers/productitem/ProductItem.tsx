@@ -1,6 +1,6 @@
 import { useMemo, FC } from "react";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
 import ProductForCatalog from "../../components/productforcatalog/ProductForCatalog";
 import { useProductDataRender } from "../../hooks/useProductDataRender.hook";
 import {

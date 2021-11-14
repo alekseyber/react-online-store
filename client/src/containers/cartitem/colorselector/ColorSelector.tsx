@@ -1,9 +1,9 @@
 import { FC, CSSProperties } from "react";
 //import PropTypes from "prop-types";
-import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
-import DoneIcon from "@material-ui/icons/Done";
-import { makeStyles } from "@material-ui/core/styles";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import DoneIcon from "@mui/icons-material/Done";
+import makeStyles from '@mui/styles/makeStyles';
 import { cartEditItem } from "../../../graphql/localVarsCart";
 import { ProductFragment, TProductLevel1 } from "../../../graphql/gqlQuery";
 

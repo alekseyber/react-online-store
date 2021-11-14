@@ -2,7 +2,9 @@ import { FC } from "react";
 import { PageBase } from "../../hoc/PageBase";
 import { useParamsMemo } from "../../hooks/router.hook";
 import OrderInfPage from "../../components/orderinfpage/OrderInfPage";
-import LoaderPage from "../../components/loaderpage/LoaderPage";
+//import LoaderPage from "../../components/loaderpage/LoaderPage";
+import PageSceleton from "../../components/skeletons/PageSceleton";
+import ContentSceleton from "../../components/skeletons/ContentSceleton";
 import {
   ORDER_PAGE_QUERY,
   IOrderPage,
@@ -21,7 +23,12 @@ const OrderPage: FC = () => {
     true
   );
 
-  if (loading) return <LoaderPage />;
+  if (loading)
+    return (
+      <PageSceleton title={true}>
+        <ContentSceleton />
+      </PageSceleton>
+    );
 
   if (data && !error) {
     const { currSymbol } = data.paramsData;

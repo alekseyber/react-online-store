@@ -1,51 +1,47 @@
 import { useState, ChangeEvent, useRef, FC } from "react";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import ReCAPTCHA from "react-google-recaptcha";
-import InputMask from "react-input-mask";
-import TextField, {
-  FilledTextFieldProps,
-  OutlinedTextFieldProps,
-  StandardTextFieldProps,
-} from "@material-ui/core/TextField";
-import Box from "@material-ui/core/Box";
-import Button from "@material-ui/core/Button";
-import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
-import Grid from "@material-ui/core/Grid";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import FormControl from "@material-ui/core/FormControl";
-import FormLabel from "@material-ui/core/FormLabel";
+import NumberFormat from "react-number-format";
+import TextField from "@mui/material/TextField";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import { styled } from "@mui/material/styles";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
+import Grid from "@mui/material/Grid";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
 import ButtonProgress from "../buttonprogress/ButtonProgress";
 import OrderDelivery from "../../containers/orderdelivery/OrderDelivery";
 import { openOferta } from "../../graphql/localVarsModal";
 import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 import { APP_FORM_QUERY, IAppForm } from "../../graphql/gqlQuery";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    marginBottom: theme.spacing(1),
-    marginTop: theme.spacing(1),
-  },
-  row: {
+const CssForm = styled("form")(({ theme }) => ({
+  marginBottom: theme.spacing(1),
+  marginTop: theme.spacing(1),
+  "& .app-form-row": {
     marginBottom: theme.spacing(0.5),
     marginTop: theme.spacing(0.5),
   },
 }));
 
-type TVariant = "filled" | "outlined" | "standard" | undefined;
+// const useStyles = makeStyles((theme) => ({
+//   root: {
+//     marginBottom: theme.spacing(1),
+//     marginTop: theme.spacing(1),
+//   },
+//   row: {
+//     marginBottom: theme.spacing(0.5),
+//     marginTop: theme.spacing(0.5),
+//   },
+// }));
 
-declare module "react-input-mask" {
-  export interface Props {
-    label?: string;
-    helperText?: string;
-    error?: boolean;
-    variant?: TVariant;
-  }
-}
+type TVariant = "filled" | "outlined" | "standard" | undefined;
 
 interface IDataForm {
   action?: number;
@@ -58,11 +54,6 @@ interface IDataForm {
   oferta?: boolean;
   comment?: string;
 }
-
-type TTextFieldInputProps =
-  | (JSX.IntrinsicAttributes & StandardTextFieldProps)
-  | (JSX.IntrinsicAttributes & FilledTextFieldProps)
-  | (JSX.IntrinsicAttributes & OutlinedTextFieldProps);
 
 interface AppFormProps {
   handleInputSubmit: (formDataInput: any) => void;
@@ -87,10 +78,8 @@ const AppForm: FC<AppFormProps> = ({
   commentAdd = false,
   reOn = false,
 }) => {
-  const classes = useStyles();
-
-  const [checked, setChecked] = useState(true);
-  const [value, setValue] = useState(0);
+  //const [checked, setChecked] = useState(true);
+  const [value, setValueRadio] = useState(0);
 
   const { data } = useQueryApp<IAppForm>(APP_FORM_QUERY);
 
@@ -99,7 +88,12 @@ const AppForm: FC<AppFormProps> = ({
 
   const recaptchaRef = useRef<ReCAPTCHA>(null);
 
-  const { register, handleSubmit, errors, control } = useForm(); //, watch
+  const {
+    register,
+    setValue,
+    handleSubmit,
+    formState: { errors },
+  } = useForm(); //, watch
 
   const onSubmit = async (data: IDataForm): Promise<void> => {
     if (returnproduct) {
@@ -120,15 +114,18 @@ const AppForm: FC<AppFormProps> = ({
   if (errors.phone && errors.phone.type === "required") {
     helperPhoneText = "Пожалуйста, введите телефон";
   }
-  if (errors.phone && errors.phone.type === "pattern") {
-    helperPhoneText = "Пожалуйста, введите телефон";
+  if (
+    errors.phone &&
+    (errors.phone.type === "pattern" || errors.phone.type === "minLength")
+  ) {
+    helperPhoneText = "Пожалуйста, введите телефон в формате 7 ### ### ## ##";
   }
 
-  const handleChange = () => {
-    setChecked(!checked);
-  };
+  // const handleChange = () => {
+  //   setChecked(!checked);
+  // };
   const handleChangeRadio = (event: ChangeEvent<HTMLInputElement>) => {
-    setValue(parseInt(event.target.value, 10));
+    setValueRadio(parseInt(event.target.value, 10));
   };
   const handleBtnOferta = () => {
     openOferta();
@@ -139,6 +136,7 @@ const AppForm: FC<AppFormProps> = ({
   const maxComment: number = commentAdd ? 1000 : 350;
   const commentTitle: string = commentAdd ? "Отзыв" : "Комментарий";
   const commentRows = commentAdd ? 5 : 3;
+
   const commentRulles: { maxLength: number; required?: boolean } = {
     maxLength: maxComment,
   };
@@ -146,14 +144,30 @@ const AppForm: FC<AppFormProps> = ({
     commentRulles.required = true;
   }
 
+  const fieldRules = {
+    name: { required: true, maxLength: 150 },
+    street: { maxLength: 110 },
+    house: { maxLength: 20 },
+    flat: { maxLength: 20 },
+    oferta: { required: true },
+    comment: commentRulles,
+    phone: {
+      required: true,
+      minLength: 11,
+      pattern:
+        // eslint-disable-next-line no-useless-escape
+        /^((\+?7|8)[\-]?)?((\(\d{3}\))|(\d{3}))?([\-])?(\d{3}[\-]?\d{2}[\-]?\d{2})$/,
+    },
+  };
+
   return (
-    <form
-      className={classes.root}
+    <CssForm
+      // className={classes.root}
       noValidate
       autoComplete="off"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <Grid container spacing={2} className={classes.row}>
+      <Grid container spacing={2} className="app-form-row">
         <Grid item xs={12} sm={6} md={7}>
           {returnproduct && (
             <FormControl component="fieldset">
@@ -176,7 +190,7 @@ const AppForm: FC<AppFormProps> = ({
           )}
           {!returnproduct && (
             <TextField
-              inputRef={register({ required: true, maxLength: 150 })}
+              {...register("name", fieldRules.name)}
               label="Имя*"
               name="name"
               error={errors.name !== undefined}
@@ -207,26 +221,25 @@ const AppForm: FC<AppFormProps> = ({
             </Typography>
           )}
           {!commentAdd && (
-            <Controller
-              as={InputMask}
-              rules={{
-                required: true,
-                // eslint-disable-next-line
-                pattern: /^((\+?7|8)[\-]?)?((\(\d{3}\))|(\d{3}))?([\-])?(\d{3}[\-]?\d{2}[\-]?\d{2})$/,
-              }}
-              mask="9-999-999-99-99"
-              label="Телефон*"
-              name="phone"
-              error={errors.phone !== undefined}
-              helperText={helperPhoneText}
-              control={control}
+            <NumberFormat
+              {...register("phone", fieldRules.phone)}
               defaultValue=""
+              label="Телефон*"
+              type="tel"
+              // name="phone"
+              error={errors.phone !== undefined}
+              customInput={TextField}
+              format="# ### ###-##-##"
+              mask="_"
+              allowEmptyFormatting
+              helperText={helperPhoneText}
+              fullWidth
               variant={variant}
-            >
-              {(inputProps: TTextFieldInputProps) => (
-                <TextField {...inputProps} fullWidth />
-              )}
-            </Controller>
+              onValueChange={({ value }) => {
+                // const { formattedValue, value } = values;
+                setValue("phone", value);
+              }}
+            />
           )}
         </Grid>
       </Grid>
@@ -243,10 +256,10 @@ const AppForm: FC<AppFormProps> = ({
           >
             Укажите адрес доставки
           </Typography>
-          <Grid container spacing={2} className={classes.row}>
+          <Grid container spacing={2} className="app-form-row">
             <Grid item xs={12}>
               <TextField
-                inputRef={register({ maxLength: 110 })}
+                {...register("street", fieldRules.street)}
                 label="Улица"
                 name="street"
                 fullWidth
@@ -261,7 +274,7 @@ const AppForm: FC<AppFormProps> = ({
             </Grid>
             <Grid item xs={6}>
               <TextField
-                inputRef={register({ maxLength: 20 })}
+                {...register("house", fieldRules.house)}
                 label="Дом, корп., стр."
                 name="house"
                 fullWidth
@@ -276,7 +289,7 @@ const AppForm: FC<AppFormProps> = ({
             </Grid>
             <Grid item xs={6}>
               <TextField
-                inputRef={register({ maxLength: 20 })}
+                {...register("flat", fieldRules.flat)}
                 label="Кв/Оф"
                 name="flat"
                 fullWidth
@@ -297,11 +310,12 @@ const AppForm: FC<AppFormProps> = ({
           <FormControlLabel
             control={
               <Checkbox
-                checked={checked}
-                name="oferta"
+                // checked={true}
+                defaultChecked
+                // name="oferta"
                 color="primary"
-                onChange={handleChange}
-                inputRef={register({ required: true })}
+                //  onChange={handleChange}
+                {...register("oferta", fieldRules.oferta)}
               />
             }
             label={
@@ -334,8 +348,8 @@ const AppForm: FC<AppFormProps> = ({
       )}
       {commentOn && (
         <TextField
-          className={classes.row}
-          inputRef={register(commentRulles)}
+          className="app-form-row"
+          {...register("comment", fieldRules.comment)}
           label={commentTitle}
           name="comment"
           defaultValue=""
@@ -356,9 +370,8 @@ const AppForm: FC<AppFormProps> = ({
       {reOn && (
         <ReCAPTCHA ref={recaptchaRef} size="invisible" sitekey={googleReKey} />
       )}
-    </form>
+    </CssForm>
   );
 };
-
 
 export default AppForm;

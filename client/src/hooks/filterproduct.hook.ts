@@ -105,45 +105,63 @@ const useFilterProduct = ({
         });
       }
 
-      const isFilter = (value: ICategoryProduct) => {
-        const obj: { [key: string]: boolean } = {};
-        for (const key in filterSelect) {
-          obj[key] = false;
-          const itemAttrs =
-            key === "color" ? selectColors : Object.keys(filterSelect[key]);
+      const isFilterCallbackFn = (
+        itemFilterCategoryProduct: ICategoryProduct
+      ) => {
+        const filterGruppPattern: { [keyGruppFilterSelect: string]: boolean } =
+          {};
+        for (const keyGruppFilterSelect in filterSelect) {
+          filterGruppPattern[keyGruppFilterSelect] = false;
+          const itemAttrsFilterSelect =
+            keyGruppFilterSelect === "color"
+              ? selectColors
+              : Object.keys(filterSelect[keyGruppFilterSelect]);
           const colorsChek = selectColors;
 
-          itemAttrs.forEach((element) => {
-            if (key === "color") {
-              if (element in value.level1Filter.level1) {
-                obj[key] = true;
+          itemAttrsFilterSelect.forEach((itemAttrFilterSelect) => {
+            if (keyGruppFilterSelect === "color") {
+              if (
+                itemAttrFilterSelect in
+                itemFilterCategoryProduct.level1Filter.level1
+              ) {
+                filterGruppPattern[keyGruppFilterSelect] = true;
               }
-            } else if (key === "sizes") {
+            } else if (keyGruppFilterSelect === "sizes") {
               if ("color" in filterSelect) {
                 colorsChek.forEach((itemcolor) => {
-                  if (itemcolor in value.level1Filter.level1) {
-                    if (element in value.level1Filter.level1[itemcolor]) {
-                      obj[key] = true;
+                  if (
+                    itemcolor in itemFilterCategoryProduct.level1Filter.level1
+                  ) {
+                    if (
+                      itemAttrFilterSelect in
+                      itemFilterCategoryProduct.level1Filter.level1[itemcolor]
+                    ) {
+                      filterGruppPattern[keyGruppFilterSelect] = true;
                     }
                   }
                 });
               } else {
-                if (element in value.level1Filter.level2) {
-                  obj[key] = true;
+                if (
+                  itemAttrFilterSelect in
+                  itemFilterCategoryProduct.level1Filter.level2
+                ) {
+                  filterGruppPattern[keyGruppFilterSelect] = true;
                 }
               }
             } else {
-              if (element in value.filterFilter) {
-                obj[key] = true;
+              if (
+                itemAttrFilterSelect in itemFilterCategoryProduct.filterFilter
+              ) {
+                filterGruppPattern[keyGruppFilterSelect] = true;
               }
             }
           });
         }
 
         let rezultItem = true;
-        for (const k in obj) {
-          rezultItem = rezultItem && obj[k];
-          if (rezultItem === false) {
+        for (const keyFilterGruppPattern in filterGruppPattern) {
+          rezultItem = rezultItem && filterGruppPattern[keyFilterGruppPattern];
+          if (!rezultItem) {
             break;
           }
         }
@@ -151,21 +169,22 @@ const useFilterProduct = ({
         if (rezultItem) {
           rezult.colorsFilter = Object.assign(
             rezult.colorsFilter,
-            value.level1Filter.level1
+            itemFilterCategoryProduct.level1Filter.level1
           );
           rezult.level2Filter = Object.assign(
             rezult.level2Filter,
-            value.level1Filter.level2
+            itemFilterCategoryProduct.level1Filter.level2
           );
           rezult.filterFilter = Object.assign(
             rezult.filterFilter,
-            value.filterFilter
+            itemFilterCategoryProduct.filterFilter
           );
         }
 
         return rezultItem;
       };
-      rezult.productsFilter = products.filter(isFilter);
+
+      rezult.productsFilter = products.filter(isFilterCallbackFn);
 
       if (selectColors.length) {
         const productListColors: Array<ICategoryProductApplyFilter> = [];
@@ -278,13 +297,5 @@ const useFilterProduct = ({
 
   return rezult;
 };
-
-// useFilterProduct.propTypes = {
-//   colors: PropTypes.object.isRequired,
-//   filter: PropTypes.object.isRequired,
-//   level2: PropTypes.object.isRequired,
-//   products: PropTypes.array.isRequired,
-//   filterData: PropTypes.object.isRequired,
-// };
 
 export { useFilterProduct };

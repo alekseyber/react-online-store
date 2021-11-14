@@ -69,6 +69,17 @@ const {
 
 const typeDefs = gql`
   scalar JSON
+
+  enum CacheControlScope {
+    PUBLIC
+    PRIVATE
+  }
+
+  directive @cacheControl(
+    maxAge: Int
+    scope: CacheControlScope
+    inheritMaxAge: Boolean
+  ) on FIELD_DEFINITION | OBJECT | INTERFACE | UNION
   # ----ParamsData---
   type BannersProduct {
     img: String!
@@ -522,7 +533,7 @@ const typeDefs = gql`
   type TopSlider {
     status: Boolean
     sortvalue: Int
-    maxHeightBackground: Int
+    maxHeightBackground: String
     imgLogo: String
     altLogo: String
     topString1: String
@@ -554,7 +565,10 @@ const typeDefs = gql`
     hitvisible: Boolean
     hitcount: Int!
     hittitle: String
+    title: String
     topslidervisible: Boolean
+    topSliderAutoPlay: Boolean
+    topSliderInterval: Int
     maincatalogvisible: Boolean
     maincatalogprefix: String
     maincatalogcount: Int
@@ -562,7 +576,7 @@ const typeDefs = gql`
     content: String!
     meta: MainPageMeta!
     maincatalog: [Maincatalog]
-    topSlider: TopSlider
+    topSlider: [TopSlider]
     mainBanner: MainBanner
     hitData: [String]
   }

@@ -1,12 +1,13 @@
 import { useState, useEffect, FC, ChangeEvent } from "react";
-import { withStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import Autocomplete from "@material-ui/lab/Autocomplete"; //, { createFilterOptions }
-import CircularProgress from "@material-ui/core/CircularProgress";
-import IconButton from "@material-ui/core/IconButton";
-import CloseIcon from "@material-ui/icons/Close";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import Typography from "@material-ui/core/Typography";
+import { styled } from "@mui/material/styles";
+import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete"; //, { createFilterOptions }
+import CircularProgress from "@mui/material/CircularProgress";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
+import InputAdornment from "@mui/material/InputAdornment";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 import useDebounce from "../../hooks/use-debounce.hook";
 import { cityСurrentVar, ICity } from "../../graphql/localVars";
 import {
@@ -16,19 +17,17 @@ import {
 } from "../../graphql/gqlQuery";
 import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 
-const CssAutocomplete = withStyles((theme) => ({
-  root: {
-    maxWidth: 280,
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1),
-    "& .MuiAutocomplete-inputRoot": {
-      paddingRight: `${theme.spacing(0.3)}px !important`,
-    },
+const CssAutocomplete = styled(Autocomplete)(({ theme }) => ({
+  maxWidth: 280,
+  marginTop: theme.spacing(1),
+  marginBottom: theme.spacing(1),
+  "& .MuiAutocomplete-inputRoot": {
+    paddingRight: `${theme.spacing(0.3)} !important`,
   },
-  listbox: {
-    maxHeight: "46vh!important",
-  },
-}))(Autocomplete);
+  // listbox: {
+  //   maxHeight: "46vh!important",
+  // },
+}));
 
 interface DeliveryCityInputProps {
   variant?: "filled" | "outlined" | "standard" | undefined;
@@ -61,14 +60,6 @@ const DeliveryCityInput: FC<DeliveryCityInputProps> = ({
     if (e) {
       setSearchTerm(val);
     }
-    // if (e) {
-    // //  e.persist();
-    //   if (val) {
-    //     setSearchTerm(val); //e.target.value
-    //   } else {
-    //     setSearchTerm("");
-    //   }
-    // }
   };
   const handleClearInput = () => {
     setSearchTerm("");
@@ -82,24 +73,23 @@ const DeliveryCityInput: FC<DeliveryCityInputProps> = ({
     <CssAutocomplete
       onChange={(_, newValue) => handleSelect(newValue as ICity)}
       getOptionLabel={(option) => (option as ICity).cityName}
-      renderOption={(option) => (
-        <div>
-          <Typography variant="body1" component="div">
-            {(option as ICity).cityName}
-          </Typography>
-          <Typography variant="body2" component="div" gutterBottom>
-            {(option as ICity).oblName}
-          </Typography>
-        </div>
+      renderOption={(props, option) => (
+        <Box component="li" {...props} key={String((option as ICity).id)}>
+          <div>
+            <Typography variant="body1" component="div">
+              {(option as ICity).cityName}
+            </Typography>
+            <Typography variant="body2" component="div" gutterBottom>
+              {(option as ICity).oblName}
+            </Typography>
+          </div>
+        </Box>
       )}
       blurOnSelect={true}
       clearOnBlur={true}
-      getOptionSelected={(option, value) => {
-        const opt = option as ICity;
-        const valSel = value as ICity;
-
-        return opt.cityName === valSel.cityName;
-      }}
+      isOptionEqualToValue={(option, value) =>
+        (option as ICity).cityName === (value as ICity).cityName
+      }
       options={options as ICity[]}
       loading={loading}
       forcePopupIcon={false}
@@ -138,13 +128,5 @@ const DeliveryCityInput: FC<DeliveryCityInputProps> = ({
     />
   );
 };
-
-// DeliveryCityInput.defaultProps = {
-//   variant: "outlined",
-// };
-
-// DeliveryCityInput.propTypes = {
-//   variant: PropTypes.string,
-// };
 
 export default DeliveryCityInput;

@@ -1,10 +1,10 @@
 import { FC, useState, SyntheticEvent } from "react";
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
-import Button from "@material-ui/core/Button";
+import MenuItem from "@mui/material/MenuItem";
+import Menu from "@mui/material/Menu";
+import Button from "@mui/material/Button";
 import clsx from "clsx";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import { makeStyles } from "@material-ui/core/styles";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import makeStyles from '@mui/styles/makeStyles';
 import ItemAttr from "../itemattr/ItemAttr";
 import { ItemGruppProps } from "../AppFilter";
 
@@ -89,7 +89,7 @@ const ItemGrupp: FC<ItemGruppProps> = ({ itemGr, filterSelect }) => {
         {icon}
       </Button>
       <Menu
-        getContentAnchorEl={null}
+     //   getContentAnchorEl={null} /does not exist on type 'IntrinsicAttributes & MenuProps'
         anchorEl={anchorEl}
         anchorOrigin={{
           vertical: "bottom",

@@ -1,5 +1,5 @@
 import { useMemo, FC } from "react";
-import Dialog from "@material-ui/core/Dialog";
+import Dialog from "@mui/material/Dialog";
 import { hideDialog, IModal } from "../../graphql/localVarsModal";
 import SizeChartContent from "./sizechartcontent/SizeChartContent";
 import AddedCart from "./addedcart/AddedCart";

@@ -1,6 +1,6 @@
 import { useMemo, FC } from "react";
-import Grid from "@material-ui/core/Grid";
-import { makeStyles } from "@material-ui/core/styles";
+import Grid from "@mui/material/Grid";
+import { styled } from "@mui/material/styles";
 import ProductContetnt from "../../components/productcontent/ProductContetnt";
 import ProductItem from "../productitem/ProductItem";
 import RecentlyViewed from "../recentlyviewed/RecentlyViewed";
@@ -13,11 +13,9 @@ import {
   IProductContetntData,
 } from "../../graphql/gqlQuery";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(5),
-  },
+const CssRootDiv = styled("div")(({ theme }) => ({
+  marginTop: theme.spacing(2),
+  marginBottom: theme.spacing(5),
 }));
 
 interface ProductMainPageProps {
@@ -26,8 +24,6 @@ interface ProductMainPageProps {
 }
 
 const ProductMainPage: FC<ProductMainPageProps> = ({ data, color }) => {
-  const classes = useStyles();
-
   const {
     productImgProperty,
     qualityproductImg,
@@ -115,7 +111,7 @@ const ProductMainPage: FC<ProductMainPageProps> = ({ data, color }) => {
 
   return (
     <PageBase {...bind}>
-      <div className={classes.root}>
+      <CssRootDiv>
         <ProductMainCard
           imgproperty={productImgProperty}
           baseurl={baseApiUrl}
@@ -152,20 +148,9 @@ const ProductMainPage: FC<ProductMainPageProps> = ({ data, color }) => {
           quality={qualityproductImg}
           currsymbol={currSymbol}
         />
-      </div>
+      </CssRootDiv>
     </PageBase>
   );
 };
-
-// ProductMainPage.propTypes = {
-//   color: PropTypes.oneOfType([PropTypes.oneOf([undefined]), PropTypes.string]),
-//   productData: PropTypes.object.isRequired,
-//   productImgProperty: PropTypes.array.isRequired,
-//   qualityproductImg: PropTypes.number.isRequired,
-//   currSymbol: PropTypes.string.isRequired,
-//   bannersProduct: PropTypes.array.isRequired,
-//   bannersProductOn: PropTypes.bool,
-//   baseApiUrl: PropTypes.string.isRequired,
-// };
 
 export default ProductMainPage;

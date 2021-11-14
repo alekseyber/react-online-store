@@ -1,7 +1,9 @@
 import { useMemo, FC } from "react";
 import ProductsGrid from "../../containers/productsgrid/ProductsGrid";
-import LoaderContent from "../../components/loadercontent/LoaderContent";
+//import LoaderContent from "../../components/loadercontent/LoaderContent";
 import NullPageContent from "../../components/nullpagecontent/NullPageContent";
+import ProductListSceleton from "../../components/skeletons/ProductListSceleton";
+
 import {
   SEARCH_FULL_QUERY,
   ISearchFull,
@@ -28,8 +30,10 @@ const Search: FC<ISearchFullVar> = ({ q }) => {
     return [];
   }, [data]);
 
+  //<LoaderContent text="Поиск на сервере..." />
+
   if (loading) {
-    return <LoaderContent text="Поиск на сервере..." />;
+    return <ProductListSceleton />;
   }
 
   if (productList.length === 0) {

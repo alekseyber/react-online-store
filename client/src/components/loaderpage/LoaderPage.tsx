@@ -1,31 +1,24 @@
-import { FC } from "react";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
-import CircularProgress from "@material-ui/core/CircularProgress";
+//import { FC } from "react";
+import { styled } from "@mui/material/styles";
+import CircularProgress from "@mui/material/CircularProgress";
 
-const ColorCircularProgress = withStyles({
-  root: {
+const CssRoot = styled("div")({
+  flexGrow: 1,
+  height: "60vh",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  "& .MuiCircularProgress-root": {
     color: "#00695c",
   },
-})(CircularProgress);
+});
 
-const useStyles = makeStyles(() => ({
-  root: {
-    flexGrow: 1,
-    height: "60vh",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-}));
-
-const LoaderPage: FC = () => {
-  const classes = useStyles();
-
+function LoaderPage() {
   return (
-    <div className={classes.root}>
-      <ColorCircularProgress size={30} thickness={5} />
-    </div>
+    <CssRoot>
+      <CircularProgress size={30} thickness={5} disableShrink />
+    </CssRoot>
   );
-};
+}
 
 export default LoaderPage;

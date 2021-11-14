@@ -138,7 +138,7 @@ const productValidate = async (alias, level1_alias, level2_alias) => {
       return false;
     }
   } catch (e) {
-    console.error(e.message); 
+    console.error(e.message);
     return false;
   }
 };
@@ -254,7 +254,6 @@ const cuponValidate = async (cupon_id) => {
         rezult.cupon_id = doc._id;
       }
     }
-    
   } catch (e) {
     console.error(e.message); //e.message
   } finally {
@@ -374,7 +373,7 @@ module.exports.sentOrderData = async (inputData, ip) => {
       orderNum,
       orderId: doc._id,
       summa: order.summa,
-    };    
+    };
 
     // const rezultOrder = {
     //   order: orderNum,
@@ -430,10 +429,11 @@ module.exports.fetchOrderByIdData = async (id) => {
       throw new NotFoundError("Заказ не найден");
     }
 
-    await doc
-      .populate("orderStatus_id", "title")
-      .populate("acquirer_id", "status_block")
-      .execPopulate();
+    await doc.populate("orderStatus_id", "title");
+    await doc.populate("acquirer_id", "status_block");
+    // .populate("orderStatus_id", "title")
+    // .populate("acquirer_id", "status_block")
+    //  .execPopulate();
 
     if (doc.acquirer_id.status_block === false && doc.hiddenClient === false) {
       const rezult = {};
@@ -451,7 +451,8 @@ module.exports.fetchOrderByIdData = async (id) => {
     }
     throw new NotFoundError("Заказ не найден");
   } catch (e) {
-    throw new NotFoundError("Заказ не найден");
+    // console.log(e)
+    throw new NotFoundError(e.message);
     //  globalErrorCheck(e);
   }
 };

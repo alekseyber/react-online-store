@@ -1,9 +1,13 @@
 import { useState, FC } from "react";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import common from "@material-ui/core/colors/common";
-import grey from "@material-ui/core/colors/grey";
-import BrokenImage from "@material-ui/icons/BrokenImage";
-import { makeStyles } from "@material-ui/core/styles";
+//import CircularProgress from "@mui/material/CircularProgress";
+import common from "@mui/material/colors/common";
+import grey from "@mui/material/colors/grey";
+import BrokenImage from "@mui/icons-material/BrokenImage";
+//import { styled } from "@mui/material/styles";
+import makeStyles from "@mui/styles/makeStyles";
+import Skeleton from "@mui/material/Skeleton";
+
+//<CircularProgress size={48} disableShrink />
 
 /**
  * Images are ugly until they're loaded. Materialize it with material image! It will fade in like the material image loading pattern suggests.
@@ -99,7 +103,15 @@ const defaultProps = {
   errorIcon: (
     <BrokenImage style={{ width: 48, height: 48, color: grey[300] }} />
   ),
-  loading: <CircularProgress size={48} />,
+
+  loading: (
+    <Skeleton
+      variant="rectangular"
+      width="100%"
+      height="100%"
+      animation="wave"
+    />
+  ),
   alt: "",
   style: {},
   imageStyle: {},
@@ -170,8 +182,14 @@ export const Image: FC<ImageProps> = (props) => {
     iconContainerStyle,
   };
 
-  // const useStyles = makeStyles(() => getStyles());
   const classes = useStyles(propsStyles);
+
+  // const CssStyleRootComponent = styled("div")({
+  //   backgroundColor: propsStyles.color,
+  //   paddingTop: `calc(1 / ${propsStyles.aspectRatio} * 100%)`,
+  //   position: "relative",
+  //   ...propsStyles.style,
+  // });
 
   const handleLoadImage = () => {
     setState((prev) => ({ ...prev, imageLoaded: true }));
@@ -188,9 +206,9 @@ export const Image: FC<ImageProps> = (props) => {
       }
     }
   };
-
+  //className={classes.root}
   return (
-    <div className={classes.root} onClick={onClick}>
+    <div onClick={onClick} className={classes.root}>
       <img
         {...imageProp}
         className={classes.image}

@@ -1,26 +1,21 @@
 import { createRef, FC } from "react";
-//import { makeStyles } from "@material-ui/core/styles";
 import AlertApp from "../../components/alertapp/AlertApp";
 import TopBarApp from "../../components/topbar/TopBar";
 import AppBarApp from "../../components/appbar/AppBar";
 import ModalDialog from "../../containers/modaldialog/ModalDialog";
 import AppFooter from "../../components/appfooter/AppFooter";
 import BackToTop from "../../components/backtotop/BackToTop";
-import LoaderComponent from "../../components/loader/Loader";
+import AppBarSceleton from "../../components/skeletons/AppBarSceleton";
+import FooterSceleton from "../../components/skeletons/FooterSceleton";
+import PageSceleton from "../../components/skeletons/PageSceleton";
+import ProductListSceleton from "../../components/skeletons/ProductListSceleton";
 import RouterToTop from "../../components/routettotop/RouterToTop";
 import ErrorContent from "../../components/errorcontent/ErrorContent";
 import { LAYOUT_QUERY, ILayout } from "../../graphql/gqlQuery";
 import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 import { sortValueVar, cityСurrentVar } from "../../graphql/localVars";
 
-// const useStyles = makeStyles({
-//   topbl: {
-//    // minHeight: 88,
-//   },
-// });
-
 const Layout: FC = ({ children }) => {
-  //const classes = useStyles();
   const refDiv = createRef<HTMLDivElement>();
   const onCompleted = ({ sortData, deliveryStart }: ILayout) => {
     if (sortData) {
@@ -43,22 +38,36 @@ const Layout: FC = ({ children }) => {
   if (error) {
     return <ErrorContent />;
   }
-
-  if (loading) {
-    return <LoaderComponent />;
-  }
+  
 
   return (
     <>
-      <TopBarApp />
-      <AppBarApp />
-      <div ref={refDiv}></div>
+      {loading ? (
+        <AppBarSceleton />
+      ) : (
+        <>
+          <TopBarApp />
+          <AppBarApp />
+        </>
+      )}
+      <div ref={refDiv} />
       <AlertApp />
       <ModalDialog />
-      {children}
-      <AppFooter />
-      <BackToTop anchor={refDiv} />
-      <RouterToTop />
+      {loading ? (
+        <>
+          <PageSceleton title={true}>
+            <ProductListSceleton />
+          </PageSceleton>
+          <FooterSceleton />
+        </>
+      ) : (
+        <>
+          {children}
+          <AppFooter />
+          <BackToTop anchor={refDiv} />
+          <RouterToTop />
+        </>
+      )}
     </>
   );
 };

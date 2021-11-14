@@ -1,26 +1,34 @@
-import { useState, FC } from "react";
+import { FC, memo, useEffect, useCallback, useState } from "react"; //, useCallback
 import Carousel from "react-material-ui-carousel";
-import CardMedia from "@material-ui/core/CardMedia";
-import { makeStyles } from "@material-ui/core/styles";
+import CardMedia from "@mui/material/CardMedia";
+import { styled } from "@mui/material/styles";
 import { Image } from "../image/Image";
 import { IProductGalItem } from "../../hooks/useProductDataRender.hook";
 
-const useStyles = makeStyles((theme) => ({
-  productcarusel: {
-    height: "100%",
-    overflow: "hidden",
-    "& .MuiIconButton-root": {      
-      backgroundColor: "#ccc",
-      "&:hover": {  
-        backgroundColor: "#999",
-      },
+interface IStateCarusel {
+  caruselIndex: number;
+  thumbIndex: number;
+}
+
+const initialState: IStateCarusel = {
+  caruselIndex: 0,
+  thumbIndex: 0,
+};
+
+const CssCarousel = styled(Carousel)({
+  overflow: "hidden",
+  "& .MuiIconButton-root": {
+    backgroundColor: "#ccc",
+    "&:hover": {
+      backgroundColor: "#999",
     },
   },
-  productthumb: {
-    display: "flex",
-    justifyContent: "center",
-  },
-  imagethumb: {
+});
+
+const CssProductThumb = styled("div")(({ theme }) => ({
+  display: "flex",
+  justifyContent: "center",
+  "& .productthumb-imagethumb": {
     "& > img": {
       maxWidth: "40px",
       border: "1px solid #ccc",
@@ -30,6 +38,12 @@ const useStyles = makeStyles((theme) => ({
       },
     },
     margin: theme.spacing(0.4),
+    cursor: "pointer",
+  },
+  "& .productthumb-imagethumb.imagethumb-activ": {
+    "& > img": {
+      border: "1px solid #000",
+    },
   },
 }));
 
@@ -44,84 +58,119 @@ interface ItemThumbProps {
 }
 
 interface CaruselElProps {
-  startAt: number;
+  altText: string;
+  gal: IProductGalItem[];
+  handleChange: (payload: number) => void;
+  indexStart: number;
 }
 
-const ProductImgCarusel: FC<ProductImgCaruselProps> = ({ gal, title }) => {
-  const classes = useStyles();
-  //const initial = 0;
-  //const [renderToggle, setRenderToggle] = useState(initial);
-  const [start, setStart] = useState(0);
-
-  const handleChange = (active: number) => {
-    // const toogle = active === start;
-    setStart(active);
-    // if (toogle) {
-    //   setRenderToggle(!renderToggle);
-    // }
-  };
-
-  const countImg = gal.length;
-
-  const CaruselEl: FC<CaruselElProps> = ({ startAt }) => {
-    const ItemSlide: FC<ItemThumbProps> = ({ item, posistion }) => {
-      const altText = `${title} ${posistion + 1} из ${countImg}`;
-
-      return (
-        <CardMedia>
-          <Image
-            // className={classes.media}
-            src={item.img}
-            srcset={item.srcset}
-            title={altText}
-            alt={altText}
-            //  disableSpinner
-          />
-        </CardMedia>
-      );
-    };
-
+const CaruselEl: FC<CaruselElProps> = memo(function CaruselEl({
+  altText,
+  gal,
+  handleChange,
+  indexStart,
+}) {
+  const ItemSlide: FC<ItemThumbProps> = ({ item, posistion }) => {
+    const altTextMain = `${altText} ${posistion + 1} из ${gal.length}`;
     return (
-      <Carousel
-        className={classes.productcarusel}
-        autoPlay={false}
-        timeout={0}
-        indicators={true}
-        navButtonsAlwaysVisible={true}
-        // onChange={(_, active) => { setCurrentImg(active) }}
-        index={startAt}
-      >
-        {gal.map((item, index) => {
-          return <ItemSlide item={item} posistion={index} key={index} />;
-        })}
-      </Carousel>
+      <CardMedia>
+        <Image
+          src={item.img}
+          srcset={item.srcset}
+          title={altTextMain}
+          alt={altTextMain}
+        />
+      </CardMedia>
     );
   };
 
-  const ItemThumb: FC<ItemThumbProps> = ({ item, posistion }) => {
-    const altText = `Thumb ${title} ${posistion + 1} из ${countImg}`;
+  return (
+    <CssCarousel
+      autoPlay={false}      
+      indicators={false}
+      navButtonsAlwaysVisible={true}
+      onChange={(now) => {
+        const payload = now || 0;
+        handleChange(payload);
+      }}
+      index={indexStart}
+    >
+      {gal.map((item, index) => {
+        return <ItemSlide item={item} posistion={index} key={index} />;
+      })}
+    </CssCarousel>
+  );
+});
 
+const CaruselThumb: FC<CaruselElProps> = ({
+  altText,
+  gal,
+  handleChange,
+  indexStart,
+}) => {
+  const ItemThumb: FC<ItemThumbProps> = ({ item, posistion }) => {
+    const className =
+      indexStart === posistion
+        ? "productthumb-imagethumb imagethumb-activ"
+        : "productthumb-imagethumb";
+
+    const altTextThumb = `Thumb ${altText} ${posistion + 1} из ${gal.length}`;
     return (
       <div
-        className={classes.imagethumb}
+        className={className}
         onClick={() => {
           handleChange(posistion);
         }}
       >
-        <img alt={altText} src={item.imgThumb} />
+        <img alt={altTextThumb} src={item.imgThumb} />
       </div>
     );
   };
 
   return (
-    <div>
-      <CaruselEl startAt={start} />
-      <div className={classes.productthumb}>
-        {gal.map((item, index) => {
-          return <ItemThumb item={item} posistion={index} key={index} />;
-        })}
-      </div>
-    </div>
+    <CssProductThumb>
+      {gal.map((item, index) => {
+        return <ItemThumb item={item} posistion={index} key={index} />;
+      })}
+    </CssProductThumb>
+  );
+};
+
+const ProductImgCarusel: FC<ProductImgCaruselProps> = ({ gal, title }) => {
+  const [state, setState] = useState<IStateCarusel>(initialState);
+  const { thumbIndex, caruselIndex } = state;
+
+  const handleChangeThumb = useCallback((payload: number) => {
+    setState((prevState) => ({
+      ...prevState,
+      thumbIndex: payload,
+      caruselIndex: payload,
+    }));
+  }, []);
+
+  const handleChangeCarusel = useCallback((payload: number) => {
+    setState((prevState) => ({ ...prevState, thumbIndex: payload }));
+  }, []);
+
+  useEffect(() => {
+    return setState((prevState) => ({ ...prevState, ...initialState }));
+  }, [gal]);
+
+  return (
+    <>
+      <CaruselEl
+        altText={title}
+        gal={gal}
+        handleChange={handleChangeCarusel}
+        indexStart={caruselIndex}
+      />
+      <CaruselThumb
+        altText={title}
+        gal={gal}
+        handleChange={handleChangeThumb}
+        indexStart={thumbIndex}
+      />
+    </>
   );
 };
 

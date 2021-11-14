@@ -1,11 +1,11 @@
 import { FC } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import LinkUi from "@material-ui/core/Link";
+import makeStyles from '@mui/styles/makeStyles';
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardActionArea from "@mui/material/CardActionArea";
+import LinkUi from "@mui/material/Link";
 import HtmlText from "../htmltext/HtmlText";
 import { useRouter } from "../../hooks/router.hook";
 import { TNewsAnnonce } from "../../graphql/gqlQuery";

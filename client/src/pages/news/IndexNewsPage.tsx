@@ -1,7 +1,8 @@
 import { useMemo, FC } from "react";
 import { PageBase } from "../../hoc/PageBase";
 import { useGetQueryPage } from "../../hooks/router.hook";
-import LoaderPage from "../../components/loaderpage/LoaderPage";
+import ProductListSceleton from "../../components/skeletons/ProductListSceleton";
+import PageSceleton from "../../components/skeletons/PageSceleton";
 import NullPageContent from "../../components/nullpagecontent/NullPageContent";
 import NewsGrid from "../../containers/newsgrid/NewsGrid";
 import {
@@ -35,7 +36,12 @@ const IndexNewsPage: FC = () => {
     return rezult;
   }, [data]);
 
-  if (loading) return <LoaderPage />;
+  if (loading)
+    return (
+      <PageSceleton title={true}>
+        <ProductListSceleton news={true} />
+      </PageSceleton>
+    );
 
   const bind = !error
     ? {
