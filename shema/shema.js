@@ -533,18 +533,18 @@ const typeDefs = gql`
   type TopSlider {
     status: Boolean
     sortvalue: Int
-    maxHeightBackground: String
-    imgLogo: String
-    altLogo: String
-    topString1: String
-    topString2: String
-    topString3: String
-    topString4: String
-    bottomString1: String
-    bottomString2: String
-    bottomString3: String
-    bottomString4: String
-    imgBackground: String
+    mainFontColor: String
+    mainBackgroundColor: String
+    mainTitle: String
+    mainDescription: String
+    mainLinkHref: String
+    mainLinkAncor: String
+    secondImg1: String
+    secondLinkHref1: String
+    secondLinkAncor1: String
+    secondImg2: String
+    secondLinkHref2: String
+    secondLinkAncor2: String
   }
 
   type MainBanner {

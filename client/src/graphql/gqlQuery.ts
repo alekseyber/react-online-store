@@ -1134,18 +1134,18 @@ export type TMaincatalog = {
 export type TTopSlider = {
   status?: boolean;
   sortvalue?: number;
-  maxHeightBackground: string;
-  imgLogo: string;
-  altLogo: string;
-  topString1: string;
-  topString2: string;
-  topString3: string;
-  topString4: string;
-  bottomString1: string;
-  bottomString2: string;
-  bottomString3: string;
-  bottomString4: string;
-  imgBackground: string;
+  mainFontColor: string;
+  mainBackgroundColor: string;
+  mainTitle: string;
+  mainDescription: string;
+  mainLinkHref: string;
+  mainLinkAncor: string;
+  secondImg1: string;
+  secondLinkHref1: string;
+  secondLinkAncor1: string;
+  secondImg2: string;
+  secondLinkHref2: string;
+  secondLinkAncor2: string;
 };
 
 export type TMainBanner = {
@@ -1217,18 +1217,18 @@ export const MAIN_PAGE_QUERY = gql`
         title
       }
       topSlider {
-        imgLogo
-        altLogo
-        topString1
-        topString2
-        topString3
-        topString4
-        bottomString1
-        bottomString2
-        bottomString3
-        bottomString4
-        imgBackground
-        maxHeightBackground
+        mainFontColor
+        mainBackgroundColor
+        mainTitle
+        mainDescription
+        mainLinkHref
+        mainLinkAncor
+        secondImg1
+        secondLinkHref1
+        secondLinkAncor1
+        secondImg2
+        secondLinkHref2
+        secondLinkAncor2
       }
       mainBanner {
         visible

@@ -49,12 +49,12 @@ class MainBoxData {
   readonly linkAncor: string;
 
   public constructor(itemSlider: TTopSlider) {
-    this.fontColor = itemSlider.maxHeightBackground;
-    this.backgroundColor = itemSlider.altLogo;
-    this.title = itemSlider.topString1;
-    this.description = itemSlider.topString2;
-    this.linkHref = itemSlider.topString3;
-    this.linkAncor = itemSlider.topString4;
+    this.fontColor = itemSlider.mainFontColor || "fffff";
+    this.backgroundColor = itemSlider.mainBackgroundColor || "771818";
+    this.title = itemSlider.mainTitle;
+    this.description = itemSlider.mainDescription;
+    this.linkHref = itemSlider.mainLinkHref;
+    this.linkAncor = itemSlider.mainLinkAncor;
   }
 }
 
@@ -63,14 +63,14 @@ class SecondaryBoxData {
   readonly linkHref: string;
   readonly linkAncor: string;
 
-  public constructor(itemSlider: TTopSlider, second?: boolean) {
-    this.img = second ? itemSlider.imgLogo : itemSlider.imgBackground;
-    this.linkAncor = !second
-      ? itemSlider.bottomString1
-      : itemSlider.bottomString3;
-    this.linkHref = !second
-      ? itemSlider.bottomString2
-      : itemSlider.bottomString4;
+  public constructor(itemSlider: TTopSlider, first?: boolean) {
+    this.img = first ? itemSlider.secondImg1 : itemSlider.secondImg2;
+    this.linkAncor = first
+      ? itemSlider.secondLinkAncor1
+      : itemSlider.secondLinkAncor2;
+    this.linkHref = first
+      ? itemSlider.secondLinkHref1
+      : itemSlider.secondLinkHref2;
   }
 }
 
@@ -95,9 +95,9 @@ const MainBox: FC<MainBoxProps> = ({ item }) => {
   const btnIsVisible = Boolean(item.linkAncor && item.linkHref);
   const backgroundColorDark = getTintedColor(item.backgroundColor, 20);
   const btnHoverSxProps = {
-    border: `3px solid ${item.fontColor}`,
-    color: item.backgroundColor,
-    backgroundColor: item.fontColor,
+    border: `3px solid #${item.fontColor}`,
+    color: `#${item.backgroundColor}`,
+    backgroundColor: `#${item.fontColor}`,
   };
 
   return (
@@ -105,8 +105,8 @@ const MainBox: FC<MainBoxProps> = ({ item }) => {
       sx={{
         p: 4,
         height: "100%",
-        backgroundColor: item.backgroundColor,
-        color: item.fontColor,
+        backgroundColor: `#${item.backgroundColor}`,
+        color: `#${item.fontColor}`,
         transition: ".3s",
         "&:hover": {
           backgroundColor: backgroundColorDark,
@@ -126,8 +126,8 @@ const MainBox: FC<MainBoxProps> = ({ item }) => {
           to={item.linkHref}
           sx={{
             mt: 5,
-            color: item.fontColor,
-            border: `3px solid ${item.fontColor}`,
+            color: `#${item.fontColor}`,
+            border: `3px solid #${item.fontColor}`,
             "&:hover": btnHoverSxProps,
           }}
         >
@@ -192,17 +192,15 @@ const ItemMainSlide: FC<ItemMainSlidProps> = ({
 
     const mainPosition = isWidthUpSm ? getMainPosition(index) : 0;
 
-    let second = false;
+    let first = true;
 
     for (let i = 0; i < 3; i++) {
       if (i === mainPosition) {
         rezult.push(new MainBoxData(itemSlider));
         continue;
       }
-      rezult.push(new SecondaryBoxData(itemSlider, second));
-      if (!second) {
-        second = true;
-      }
+      rezult.push(new SecondaryBoxData(itemSlider, first));
+      first = false;
     }
 
     return rezult;

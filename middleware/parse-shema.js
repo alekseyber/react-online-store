@@ -260,8 +260,8 @@ const userEnum = {
 // текстовые поля, которые являются img, если true - возможность загрузки, в противном только отображение
 const imgField = {
   topslider: {
-    imgLogo: true,
-    imgBackground: true,
+    secondImg1: true,
+    secondImg2: true,
   },
   product: {
     img: true,
@@ -405,9 +405,9 @@ const typeText = {
     colorkey: "colorpicker",
   },
   topslider: {
-    altLogo: "colorpicker",
-    maxHeightBackground: "colorpicker",
-    topString2: "textarea",
+    mainFontColor: "colorpicker",
+    mainBackgroundColor: "colorpicker",
+    mainDescription: "textarea",
   },
 };
 

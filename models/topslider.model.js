@@ -10,51 +10,51 @@ const topsliderSchema = new Schema({
     default: 0,
     index: true,
   },
-  imgBackground: {
+  mainFontColor: {
     type: String,
-    required: true,
+    default: "fffff",
   },
-  maxHeightBackground: {
+  mainBackgroundColor: {
     type: String,
-    default: "",
-  }, //min: 200,max: 1200
-  imgLogo: {
-    type: String,
-    default: "",
+    default: "771818",
   },
-  altLogo: {
+  mainTitle: {
     type: String,
     default: "",
   },
-  topString1: {
+  mainDescription: {
     type: String,
     default: "",
   },
-  topString2: {
+  mainLinkHref: {
     type: String,
     default: "",
   },
-  topString3: {
+  mainLinkAncor: {
     type: String,
     default: "",
   },
-  topString4: {
+  secondLinkHref1: {
     type: String,
     default: "",
   },
-  bottomString1: {
+  secondLinkAncor1: {
     type: String,
     default: "",
   },
-  bottomString2: {
+  secondLinkHref2: {
     type: String,
     default: "",
   },
-  bottomString3: {
+  secondLinkAncor2: {
     type: String,
     default: "",
   },
-  bottomString4: {
+  secondImg1: {
+    type: String,
+    default: "",
+  },
+  secondImg2: {
     type: String,
     default: "",
   },
