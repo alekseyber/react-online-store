@@ -1,4 +1,4 @@
-import { FC, useMemo } from "react";
+import { FC, useMemo, SyntheticEvent } from "react";
 import { Link } from "react-router-dom";
 import { Theme, useTheme, styled } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -10,6 +10,7 @@ import Button from "@mui/material/Button";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { getTintedColor } from "../../hooks/colorUtil.hook";
+import { useRouter } from "../../hooks/router.hook";
 import { TTopSlider } from "../../graphql/gqlQuery";
 
 const CssCarousel = styled(Carousel)(({ theme }) => ({
@@ -21,7 +22,10 @@ const CssCarousel = styled(Carousel)(({ theme }) => ({
     position: "relative",
     transition: ".3s",
     "&:hover": {
-      filter: "brightness(110%)",
+      filter: "brightness(115%)",
+      "& .MuiButton-root": {
+        backgroundColor: "rgba(0,0,0,.8)",
+      },
     },
   },
 }));
@@ -141,30 +145,42 @@ const MainBox: FC<MainBoxProps> = ({ item }) => {
 };
 
 const SecondaryBox: FC<SecondaryBoxProps> = ({ item, baseApiUrl }) => {
+  const { history } = useRouter();
   const btnIsVisible = Boolean(item.linkAncor && item.linkHref);
 
+  const handleBoxClick = () => {
+    if (item.linkHref) {
+      history.push(item.linkHref);
+    }
+  };
+
   return (
-    <CardMedia className="mainSlider-media" image={baseApiUrl + item.img}>
+    <CardMedia
+      onClick={handleBoxClick}
+      className="mainSlider-media"
+      image={baseApiUrl + item.img}
+    >
       {btnIsVisible && (
         <Button
           component={Link}
           to={item.linkHref}
           variant="outlined"
+          onClick={(event: SyntheticEvent) => event.stopPropagation()}
           sx={{
-            backgroundColor: "#000",
+            backgroundColor: "rgba(0,0,0,.6)",
             height: "15%",
             width: "100%",
             color: "#fff",
             border: "none",
-            opacity: 0.5,
+            //opacity: 0.5,
             transition: "0.3s",
             position: "absolute",
             bottom: 0,
             textTransform: "none",
             justifyContent: "flex-start",
             "&:hover": {
-              opacity: 0.8,
-              backgroundColor: "#000",
+              //opacity: 0.8,
+              backgroundColor: "rgba(0,0,0,.8)",
               color: "#fff",
               border: "none",
             },
