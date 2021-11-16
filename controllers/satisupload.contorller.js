@@ -87,7 +87,7 @@ async function saveFile(
     const addPath = !modelName ? "" : modelName;
     const addReturnPath = addPath ? `/${addPath}` : "";
     const filename = getFileName(file.originalname);
-    let returnPath = `/static/static/images${addReturnPath}/${filename}`;
+    let returnPath = `/static/images${addReturnPath}/${filename}`;
     let newDestination = path.resolve(
       __dirname,
       "..",

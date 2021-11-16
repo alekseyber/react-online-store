@@ -12,7 +12,7 @@ const topsliderSchema = new Schema({
   },
   mainFontColor: {
     type: String,
-    default: "fffff",
+    default: "FFFFFF",
   },
   mainBackgroundColor: {
     type: String,
