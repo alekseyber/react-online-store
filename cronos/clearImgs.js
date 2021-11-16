@@ -127,7 +127,7 @@ module.exports = async () => {
             throw new Error('Params не доступен, выполнение прервано');
         }
 
-        const pathStatic = path.resolve(__dirname, '../..', 'static');
+        const pathStatic = path.resolve(__dirname, '..', 'static');
                 
         const products = await getProducts();
         const category = await getCategory();
