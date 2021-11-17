@@ -41,6 +41,7 @@ interface ItemMainSlidProps {
   itemSlider: TTopSlider;
   baseApiUrl: string;
   isWidthUpMd: boolean;
+  isWidthUpLg: boolean;
   index: number;
 }
 
@@ -90,12 +91,14 @@ function getMainPosition(index: number): number {
 
 interface MainBoxProps {
   item: MainBoxData;
+  isWidthUpLg: boolean;
 }
 interface SecondaryBoxProps {
   item: SecondaryBoxData;
   baseApiUrl: string;
+  // isWidthUpLg: boolean;
 }
-const MainBox: FC<MainBoxProps> = ({ item }) => {
+const MainBox: FC<MainBoxProps> = ({ item, isWidthUpLg }) => {
   const btnIsVisible = Boolean(item.linkAncor && item.linkHref);
   const backgroundColorDark = getTintedColor(item.backgroundColor, 20);
   const btnHoverSxProps = {
@@ -118,7 +121,7 @@ const MainBox: FC<MainBoxProps> = ({ item }) => {
         },
       }}
     >
-      <Typography variant="h5" gutterBottom={true}>
+      <Typography variant={isWidthUpLg ? "h4" : "h5"} gutterBottom={true}>
         {item.title}
       </Typography>
       <Typography variant="subtitle1">{item.description}</Typography>
@@ -135,7 +138,10 @@ const MainBox: FC<MainBoxProps> = ({ item }) => {
             "&:hover": btnHoverSxProps,
           }}
         >
-          <Typography component="span" variant="subtitle1">
+          <Typography
+            component="span"
+            variant={isWidthUpLg ? "h6" : "subtitle1"}
+          >
             {item.linkAncor}
           </Typography>
         </Button>
@@ -144,7 +150,11 @@ const MainBox: FC<MainBoxProps> = ({ item }) => {
   );
 };
 
-const SecondaryBox: FC<SecondaryBoxProps> = ({ item, baseApiUrl }) => {
+const SecondaryBox: FC<SecondaryBoxProps> = ({
+  item,
+  baseApiUrl,
+  // isWidthUpLg,
+}) => {
   const { history } = useRouter();
   const btnIsVisible = Boolean(item.linkAncor && item.linkHref);
 
@@ -171,20 +181,29 @@ const SecondaryBox: FC<SecondaryBoxProps> = ({ item, baseApiUrl }) => {
             height: "15%",
             width: "100%",
             color: "#fff",
-            border: "none",            
+            border: "none",
             transition: "0.3s",
             position: "absolute",
             bottom: 0,
             textTransform: "none",
             justifyContent: "flex-start",
-            "&:hover": {              
+            "&:hover": {
               backgroundColor: "rgba(0,0,0,.8)",
               color: "#fff",
               border: "none",
             },
+            "& .MuiTypography-root": {
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            },
           }}
         >
-          <Typography component="div" variant="subtitle1">
+          <Typography
+            component="div"
+            // variant={isWidthUpLg ? "h6" : "subtitle1"}
+            variant="h6"
+          >
             {item.linkAncor}
           </Typography>
         </Button>
@@ -197,6 +216,7 @@ const ItemMainSlide: FC<ItemMainSlidProps> = ({
   itemSlider,
   baseApiUrl,
   isWidthUpMd,
+  isWidthUpLg,
   index,
 }) => {
   const spacingRoot = isWidthUpMd ? 0 : 1;
@@ -232,7 +252,7 @@ const ItemMainSlide: FC<ItemMainSlidProps> = ({
             key={i}
           >
             {item instanceof MainBoxData ? (
-              <MainBox item={item} />
+              <MainBox item={item} isWidthUpLg={isWidthUpLg} />
             ) : (
               <SecondaryBox item={item} baseApiUrl={baseApiUrl} />
             )}
@@ -251,6 +271,8 @@ const MainSlider: FC<MainSliderFProps> = ({
 }) => {
   const theme: Theme = useTheme();
   const isWidthUpMd = useMediaQuery(theme.breakpoints.up("md"));
+  const isWidthUpLg = useMediaQuery(theme.breakpoints.up("lg"));
+
   const isLength = topSlider.length > 1;
 
   return (
@@ -266,6 +288,7 @@ const MainSlider: FC<MainSliderFProps> = ({
           <ItemMainSlide
             itemSlider={item}
             isWidthUpMd={isWidthUpMd}
+            isWidthUpLg={isWidthUpLg}
             index={index}
             baseApiUrl={baseApiUrl}
             key={index}
