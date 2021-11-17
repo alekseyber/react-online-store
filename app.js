@@ -20,6 +20,7 @@ const satisexcellRoutes = require("./routes/satisexcell.routes");
 const satisdeliveryRoutes = require("./routes/satisdelivery.routes");
 const satispdfRoutes = require("./routes/satispdf.routes");
 const cronosworkRoutes = require("./routes/cronoswork.routes");
+const yandexRoutes = require("./routes/yandex.routes");
 const { typeDefs, resolvers } = require("./shema/shema");
 
 // const startRoutes = require("./routes/start.routes");
@@ -106,6 +107,7 @@ app.use("/api/satisexcell", satisexcellRoutes);
 app.use("/api/satisdelivery", satisdeliveryRoutes);
 app.use("/api/satispdf", satispdfRoutes);
 app.use("/api/cronoswork", cronosworkRoutes);
+app.use("/api/yandex", yandexRoutes);
 
 app.use(express.static(path.join(__dirname, "static")));
 app.use(express.static(path.join(__dirname, "staticroot")));

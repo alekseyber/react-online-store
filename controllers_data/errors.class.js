@@ -61,6 +61,15 @@ class OrderError extends Error {
   }
 }
 
+class YandexTokenError extends Error {
+  constructor(message = "Authorization token not found.") {
+    super(message);
+    this.status = 400;
+    this.name = this.constructor.name;
+    Error.captureStackTrace(this, this.constructor);
+  }
+}
+
 const globalErrorCheck = (e) => {
   if (e instanceof NotFoundError) {
     throw new NotFoundError(e.message);
@@ -118,4 +127,5 @@ module.exports = {
   getErrorStatus,
   globalErrorCheck,
   SuccessClass,
+  YandexTokenError,
 };

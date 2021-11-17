@@ -65,6 +65,13 @@ npm install in /client folder.
 
 npm update in /client folder.
 
+
+### API GraphQL URI
+/api/graphql
+
+### Order transfer and checkout request yandex turbo API POST URI
+/api/yandex/order/accept
+
 ## App Variables
 
 ### Server
@@ -73,6 +80,7 @@ MONGO_URI_R<br />
 JWT_R<br />
 PORT_R<br />
 API_SERVER_OFF - server return status 503
+
 
 ### Client
 
