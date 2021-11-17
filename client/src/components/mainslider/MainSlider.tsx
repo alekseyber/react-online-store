@@ -40,7 +40,7 @@ interface MainSliderFProps {
 interface ItemMainSlidProps {
   itemSlider: TTopSlider;
   baseApiUrl: string;
-  isWidthUpSm: boolean;
+  isWidthUpMd: boolean;
   index: number;
 }
 
@@ -118,10 +118,10 @@ const MainBox: FC<MainBoxProps> = ({ item }) => {
         },
       }}
     >
-      <Typography variant="h4" gutterBottom={true}>
+      <Typography variant="h5" gutterBottom={true}>
         {item.title}
       </Typography>
-      <Typography variant="h6">{item.description}</Typography>
+      <Typography variant="subtitle1">{item.description}</Typography>
       {btnIsVisible && (
         <Button
           variant="outlined"
@@ -135,7 +135,7 @@ const MainBox: FC<MainBoxProps> = ({ item }) => {
             "&:hover": btnHoverSxProps,
           }}
         >
-          <Typography component="span" variant="h5">
+          <Typography component="span" variant="subtitle1">
             {item.linkAncor}
           </Typography>
         </Button>
@@ -171,22 +171,20 @@ const SecondaryBox: FC<SecondaryBoxProps> = ({ item, baseApiUrl }) => {
             height: "15%",
             width: "100%",
             color: "#fff",
-            border: "none",
-            //opacity: 0.5,
+            border: "none",            
             transition: "0.3s",
             position: "absolute",
             bottom: 0,
             textTransform: "none",
             justifyContent: "flex-start",
-            "&:hover": {
-              //opacity: 0.8,
+            "&:hover": {              
               backgroundColor: "rgba(0,0,0,.8)",
               color: "#fff",
               border: "none",
             },
           }}
         >
-          <Typography component="div" variant="h5">
+          <Typography component="div" variant="subtitle1">
             {item.linkAncor}
           </Typography>
         </Button>
@@ -198,15 +196,15 @@ const SecondaryBox: FC<SecondaryBoxProps> = ({ item, baseApiUrl }) => {
 const ItemMainSlide: FC<ItemMainSlidProps> = ({
   itemSlider,
   baseApiUrl,
-  isWidthUpSm,
+  isWidthUpMd,
   index,
 }) => {
-  const spacingRoot = isWidthUpSm ? 0 : 1;
+  const spacingRoot = isWidthUpMd ? 0 : 1;
 
   const boxes = useMemo<TBoxes>(() => {
     const rezult: TBoxes = [];
 
-    const mainPosition = isWidthUpSm ? getMainPosition(index) : 0;
+    const mainPosition = isWidthUpMd ? getMainPosition(index) : 0;
 
     let first = true;
 
@@ -220,13 +218,19 @@ const ItemMainSlide: FC<ItemMainSlidProps> = ({
     }
 
     return rezult;
-  }, [itemSlider, index, isWidthUpSm]);
+  }, [itemSlider, index, isWidthUpMd]);
 
   return (
     <Card elevation={7}>
       <Grid container spacing={spacingRoot}>
         {boxes.map((item, i) => (
-          <Grid item xs={12} sm={4} key={i}>
+          <Grid
+            item
+            xs={12}
+            sm={item instanceof MainBoxData ? 12 : 6}
+            md={4}
+            key={i}
+          >
             {item instanceof MainBoxData ? (
               <MainBox item={item} />
             ) : (
@@ -246,7 +250,7 @@ const MainSlider: FC<MainSliderFProps> = ({
   topSliderInterval,
 }) => {
   const theme: Theme = useTheme();
-  const isWidthUpSm = useMediaQuery(theme.breakpoints.up("sm"));
+  const isWidthUpMd = useMediaQuery(theme.breakpoints.up("md"));
   const isLength = topSlider.length > 1;
 
   return (
@@ -261,7 +265,7 @@ const MainSlider: FC<MainSliderFProps> = ({
         return (
           <ItemMainSlide
             itemSlider={item}
-            isWidthUpSm={isWidthUpSm}
+            isWidthUpMd={isWidthUpMd}
             index={index}
             baseApiUrl={baseApiUrl}
             key={index}

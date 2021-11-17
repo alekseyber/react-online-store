@@ -24,7 +24,7 @@ const CssAppBar = styled(AppBar)(({ theme }) => ({
     display: "flex",
     justifyContent: "center",
     [theme.breakpoints.down("md")]: {
-      flexGrow: "0.8",
+      flexGrow: 0.8,
     },
   },
   "& .appbar-logoimg": {
@@ -120,7 +120,7 @@ const AppBarApp: FC = () => {
   const { data } = useQueryApp<IAppBar>(APP_BAR_QUERY); //loading,
 
   const theme: Theme = useTheme();
-  const isWidthDownSm = useMediaQuery(theme.breakpoints.down("sm"));
+  const isWidthDownMd = useMediaQuery(theme.breakpoints.down("md"));
   const isWidthUpMd = useMediaQuery(theme.breakpoints.up("md"));
 
   // const trigger = useScrollTrigger(options);
@@ -137,7 +137,7 @@ const AppBarApp: FC = () => {
   return (
     <CssAppBar position="sticky">
       <Toolbar>
-        {isWidthDownSm && (
+        {isWidthDownMd && (
           <div className="appbar-tollger">
             <DrawerApp
               shop_name_rus={shop_name_rus}
