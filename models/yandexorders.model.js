@@ -12,7 +12,7 @@ const yandexordersSchema = new Schema(
       type: Boolean,
       default: true,
     },
-    id: {
+    orderId: {
       type: Schema.ObjectId,
       ref: Order,
     },

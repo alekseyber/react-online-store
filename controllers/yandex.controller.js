@@ -21,23 +21,29 @@ const yandexTokenValidate = async (tokenCandidat) => {
 };
 
 const getYandexOrder = async (yandexId) => {
-  const yandexOrder = await Yandexorders.findOne(
+  const yandexOrderDoc = await Yandexorders.findOne(
     { yandexId },
-    { _id: 0, accepted: 1, id: 1 }
+    { accepted: 1, orderId: 1 }
   );
-  if (!yandexOrder) {
-    return false;
+  if (!yandexOrderDoc) {
+    const yandexOrderNew = new Yandexorders({ yandexId });
+    const yandexOrderDocNew = await yandexOrderNew.save();
+    return {
+      order: { accepted: true, id: yandexOrderDocNew._id },
+      yandexOrderDoc: yandexOrderDocNew,
+      isAccepted: false,
+    };
   }
 
   const order = {
-    accepted: yandexOrder.accepted,
-    id: yandexOrder.id,
+    accepted: yandexOrderDoc.accepted,
+    id: yandexOrderDoc._id,
   };
 
-  if (!yandexOrder.accepted) {
-    rezult.order.reason = "OUT_OF_DATE";
+  if (!yandexOrderDoc.accepted) {
+    order.reason = "OUT_OF_DATE";
   }
-  return { order };
+  return { order, yandexOrderDoc, isAccepted: true };
 };
 
 const getProductItem = async (id) => {
@@ -70,12 +76,27 @@ const yandexOrderGetCart = async (orderCandidat) => {
 
 class OrderData {
   constructor(orderCandidat, cart) {
-    this.name = "Яндекс Турбо";
-    this.phone = "79990000000";
+    const name = orderCandidat.buyer
+      ? orderCandidat.buyer.name
+      : "Яндекс Турбо";
+    const phone = orderCandidat.buyer
+      ? orderCandidat.buyer.phone
+      : "79990000000";
+    const email = orderCandidat.buyer ? orderCandidat.buyer.email : "";
+    const delivery = orderCandidat.delivery ? orderCandidat.buyer.price : "";
+
+    this.name = String(name);
+    this.phone = String(phone);
     this.street = "";
     this.house = "";
     this.flat = "";
-    this.comment = `ЯТурбо | paymentType: ${orderCandidat.paymentType} | paymentMethod: ${orderCandidat.paymentMethod} | Доставка: ${orderCandidat.delivery.price} | dev: ${orderCandidat.paymentMethod} | ${orderCandidat.notes}`;
+    this.comment = `ЯТурбо | paymentT: ${String(
+      orderCandidat.paymentType
+    )} | paymentM: ${String(orderCandidat.paymentMethod)} | Дост.: ${String(
+      delivery
+    )} | dev: ${String(orderCandidat.paymentMethod)} | email: ${String(
+      email
+    )} | ${String(orderCandidat.notes)}`;
     this.discontcupon = 1;
     this.cupon = "";
     this.pvzSelectStatus = false;
@@ -87,48 +108,67 @@ class OrderData {
   }
 }
 
-module.exports.yandexTurboOrder = async (req, res) => {
+const setOrderAcceptedOff = async (order, yandexOrderDoc) => {
+  order.accepted = false;
+  order.reason = "OUT_OF_DATE";
+  yandexOrderDoc.accepted = false;
+  await yandexOrderDoc.save();
+  return order;
+};
+
+module.exports.yandexTurboOrderAccept = async (req, res) => {
   try {
-    const orderRezultNoAccepted = {
-      order: {
-        accepted: false,
-        reason: "OUT_OF_DATE",
-      },
-    };
     await yandexTokenValidate(req.header("Authorization"));
+
     const orderCandidat = req.body.order;
-    const orderBeenAccepted = await getYandexOrder(orderCandidat.id);
-    if (orderBeenAccepted) {
-      return res.status(200).json(orderBeenAccepted);
+    const { order, yandexOrderDoc, isAccepted } = await getYandexOrder(
+      orderCandidat.id
+    );
+
+    if (isAccepted) {
+      return res.status(200).json({ order });
     }
+
     const cart = await yandexOrderGetCart(orderCandidat);
     if (!cart.length) {
-      return res.status(200).json(orderRezultNoAccepted);
+      const orderNoAccepted = await setOrderAcceptedOff(order, yandexOrderDoc);
+      return res.status(200).json({ order: orderNoAccepted });
     }
-
-    const orderInputData = new OrderData(orderCandidat, cart);
-
-    const orderRezult = await sentOrderData(orderInputData, req.ip);
-
-    if (!orderRezult.success) {
-      return res.status(200).json(orderRezultNoAccepted);
-    }
-
-    const id = orderRezult.order.orderId;
-    const yandexNewOrder = new Yandexorders({
-      yandexId: orderCandidat.id,
-      id,
-    });
-    await yandexNewOrder.save();
-
-    const order = {
-      accepted: true,
-      id,
-    };
 
     res.status(200).json({ order });
   } catch (e) {
-   // console.log(e.message);
+    getErrorStatus(e, res);
+  }
+};
+
+module.exports.yandexTurboOrderStatus = async (req, res) => {
+  try {
+    await yandexTokenValidate(req.header("Authorization"));
+    const orderCandidat = req.body.order;
+
+    const { order, yandexOrderDoc, isAccepted } = await getYandexOrder(
+      orderCandidat.id
+    );
+
+    if ((isAccepted && !order.accepted) || yandexOrderDoc.orderId) {
+      return res.status(200).json({ order });
+    }
+
+    const cart = await yandexOrderGetCart(orderCandidat);
+    if (!cart.length) {
+      const orderNoAccepted = await setOrderAcceptedOff(order, yandexOrderDoc);
+      return res.status(200).json({ order: orderNoAccepted });
+    }
+
+    const orderInputData = new OrderData(orderCandidat, cart);
+    const orderRezult = await sentOrderData(orderInputData, req.ip);
+    yandexOrderDoc.orderId = orderRezult.order.orderId;
+    if (orderRezult.success) {
+      await yandexOrderDoc.save();
+    }
+    res.status(200).json({ order });
+  } catch (e) {
+    // console.log(e.message);
     getErrorStatus(e, res);
   }
 };

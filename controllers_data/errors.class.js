@@ -64,7 +64,7 @@ class OrderError extends Error {
 class YandexTokenError extends Error {
   constructor(message = "Authorization token not found.") {
     super(message);
-    this.status = 400;
+    this.status = 403;
     this.name = this.constructor.name;
     Error.captureStackTrace(this, this.constructor);
   }
