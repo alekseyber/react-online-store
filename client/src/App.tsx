@@ -1,5 +1,5 @@
 import { FC, useEffect } from "react";
-import { BrowserRouter as Router } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import TagManager from "react-gtm-module";
 import { useRoutes } from "./router/index";
 import Layout from "./containers/layout/Layout";
@@ -43,9 +43,9 @@ const App: FC = () => {
 
   return (
     <div id="root">
-      <Router>
+      <BrowserRouter>
         <Layout>{routes}</Layout>
-      </Router>
+      </BrowserRouter>
     </div>
   );
 };

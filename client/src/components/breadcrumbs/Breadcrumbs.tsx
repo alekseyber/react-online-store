@@ -1,6 +1,5 @@
 import { FC } from "react";
-import { Link, useHistory } from "react-router-dom";
-import makeStyles from '@mui/styles/makeStyles';
+import { Link, useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
@@ -8,28 +7,47 @@ import LinkUi from "@mui/material/Link";
 import HomeIcon from "@mui/icons-material/Home";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { TBreadcrumb } from "../../graphql/gqlQuery";
+import { styled } from "@mui/material/styles";
 
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(2),
-  },
-  link: {
+const CssRootDiv = styled("div")(({ theme }) => ({
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  marginTop: theme.spacing(3),
+  marginBottom: theme.spacing(2),
+  "& .appBreadcrumbs-link": {
     display: "flex",
   },
-  icon: {
+  "& .appBreadcrumbs-icon": {
     marginRight: theme.spacing(0.5),
     width: 20,
     height: 20,
   },
-  backbtn: {
+  "& .appBreadcrumbs-backbtn": {
     marginLeft: theme.spacing(2),
   },
 }));
+
+// const useStyles = makeStyles((theme) => ({
+//   root: {
+//     display: "flex",
+//     justifyContent: "space-between",
+//     alignItems: "center",
+//     marginTop: theme.spacing(3),
+//     marginBottom: theme.spacing(2),
+//   },
+//   link: {
+//     display: "flex",
+//   },
+//   icon: {
+//     marginRight: theme.spacing(0.5),
+//     width: 20,
+//     height: 20,
+//   },
+//   backbtn: {
+//     marginLeft: theme.spacing(2),
+//   },
+// }));
 
 interface IPageBaseProps {
   breadcrumbsData: TBreadcrumb[];
@@ -50,26 +68,23 @@ const Item: FC<ItemProps> = ({ el }) => {
   );
 };
 
-export const AppBreadcrumbs: FC<IPageBaseProps> = ({
-  breadcrumbsData,
-}) => {
-  const classes = useStyles();
-  const history = useHistory();
+export const AppBreadcrumbs: FC<IPageBaseProps> = ({ breadcrumbsData }) => {
+  const navigate = useNavigate();
 
   const handleBackClick = () => {
-    history.goBack();
+    navigate(-1);
   };
 
   return (
-    <div className={classes.root}>
+    <CssRootDiv>
       <Breadcrumbs>
         <LinkUi
           color="inherit"
           component={Link}
           to="/"
-          className={classes.link}
+          className="appBreadcrumbs-link"
         >
-          <HomeIcon className={classes.icon} />
+          <HomeIcon className="appBreadcrumbs-icon" />
         </LinkUi>
         {breadcrumbsData.map((el, index) => (
           <Item key={index} el={el} />
@@ -78,13 +93,12 @@ export const AppBreadcrumbs: FC<IPageBaseProps> = ({
       <Button
         startIcon={<ArrowBackIcon />}
         onClick={handleBackClick}
-        className={classes.backbtn}
+        className="appBreadcrumbs-backbtn"
       >
         Назад
       </Button>
-    </div>
+    </CssRootDiv>
   );
 };
-
 
 export default AppBreadcrumbs;

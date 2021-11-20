@@ -1,17 +1,19 @@
-import { useEffect, FC, useContext } from "react";
-import { ContextAnalitics } from "../../hoc/AnaliticsProvider";
-import { useRouter } from "../../hooks/router.hook";
+import { useEffect, FC } from "react";
+import { useLocation } from "react-router-dom";
+//import { ContextAnalitics } from "../../hoc/AnaliticsProvider";
+//import { useRouter } from "../../hooks/router.hook";
 
 const RouterToTop: FC = () => {
-  const { pathname } = useRouter();
-  const { gaAddPage } = useContext(ContextAnalitics);
+  let location = useLocation();
+  // const { pathname } = useRouter();
+  // const { gaAddPage } = useContext(ContextAnalitics);
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    if (gaAddPage) {
-      gaAddPage(pathname);
-    }
-  }, [pathname, gaAddPage]);
+    // if (gaAddPage) {
+    //   gaAddPage(pathname);
+    // }
+  }, [location]);
 
   return null;
 };

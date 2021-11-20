@@ -1,4 +1,5 @@
 import { FC, SyntheticEvent } from "react";
+import { useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 //import makeStyles from '@mui/styles/makeStyles';
 import Grid from "@mui/material/Grid";
@@ -9,7 +10,7 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import { TMaincatalog } from "../../graphql/gqlQuery";
-import { useRouter } from "../../hooks/router.hook";
+
 
 const CssRootGrid = styled(Grid)(({ theme }) => ({
   marginTop: theme.spacing(2),
@@ -111,10 +112,10 @@ const MainCatalog: FC<MainCatalogProps> = ({
   categoryImgBase,
 }) => {
   // const classes = useStyles();
-  const { history } = useRouter();
+  let navigate = useNavigate();
 
   const handleTo = (to: string): void => {
-    history.push("/category/" + to);
+    navigate("/category/" + to);
   };
 
   const preventDefault = (event: SyntheticEvent) => {

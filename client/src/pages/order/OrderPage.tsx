@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { PageBase } from "../../hoc/PageBase";
-import { useParamsMemo } from "../../hooks/router.hook";
+import { useIdParams } from "../../hooks/use-alias-params.hook";
 import OrderInfPage from "../../components/orderinfpage/OrderInfPage";
 //import LoaderPage from "../../components/loaderpage/LoaderPage";
 import PageSceleton from "../../components/skeletons/PageSceleton";
@@ -13,8 +13,7 @@ import {
 import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 
 const OrderPage: FC = () => {
-  const { params } = useParamsMemo<{ id: string }>();
-  const id = params.id;
+  const id = useIdParams();
 
   const { data, loading, error } = useQueryApp<IOrderPage, IOrderPageVar>(
     ORDER_PAGE_QUERY,

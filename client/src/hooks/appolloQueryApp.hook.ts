@@ -7,7 +7,7 @@ import {
   QueryHookOptions,
   ApolloError,
 } from "@apollo/client";
-import { useRouter } from "./router.hook";
+import { useNavigate } from "react-router-dom";
 import { showAlert, setErrorApp, clearErrorApp } from "../graphql/localVarsApp";
 
 interface IErrorResponse {
@@ -72,7 +72,7 @@ const useQueryApp = <TData = any, TVariables = OperationVariables>(
     TVariables
   >(QUERY, options);
 
-  const { replace } = useRouter();
+  let navigate = useNavigate();
 
   useEffect(() => {
     if (global && error) {
@@ -83,7 +83,7 @@ const useQueryApp = <TData = any, TVariables = OperationVariables>(
       if (redirect) {
         const { status } = parseError(error);
         if (status === 404) {
-          replace("/404");
+          navigate("/404", { replace: true });
         } else {
           showAlert(error.message, "error");
         }
@@ -95,7 +95,7 @@ const useQueryApp = <TData = any, TVariables = OperationVariables>(
     return () => {
       clearErrorApp();
     };
-  }, [global, error, redirect, refetch, replace]);
+  }, [global, error, redirect, refetch, navigate]);
 
   return {
     loading,

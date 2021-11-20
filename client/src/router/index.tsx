@@ -1,5 +1,5 @@
 import { ReactNode, Suspense, lazy } from "react";
-import { Switch, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import PageSceleton from "../components/skeletons/PageSceleton";
 import ProductListSceleton from "../components/skeletons/ProductListSceleton";
 
@@ -46,23 +46,23 @@ export const useRoutes = (): ReactNode => {
         </PageSceleton>
       }
     >
-      <Switch>
-        <Route exact path="/" component={MainPage} />
-        <Route exact path="/category/:alias" component={CategoryPage} />
-        <Route exact path="/product/:alias" component={ProductPage} />
-        <Route exact path="/cart" component={CartPage} />
-        <Route exact path="/delivery" component={DeliveryPage} />
-        <Route exact path="/order/done" component={OrderDonePage} />
-        <Route exact path="/order/:id" component={OrderPage} />
-        <Route exact path="/addcart/:id" component={AddCartPage} />
-        <Route exact path="/page/:alias" component={PagePage} />
-        <Route exact path="/returnproduct" component={ReturnProductPage} />
-        <Route exact path="/search" component={SearchPage} />
-        <Route exact path="/comment" component={CommentPage} />
-        <Route exact path="/news/:alias" component={NewsPage} />
-        <Route exact path="/news" component={IndexNewsPage} />
-        <Route path="*" component={PageFoundPage} />
-      </Switch>
+      <Routes>
+        <Route path="/" element={<MainPage />} />
+        <Route path="/category/:alias" element={<CategoryPage />} />
+        <Route path="/product/:alias" element={<ProductPage />} />
+        <Route path="/cart" element={<CartPage />} />
+        <Route path="/delivery" element={<DeliveryPage />} />
+        <Route path="/order/done" element={<OrderDonePage />} />
+        <Route path="/order/:id" element={<OrderPage />} />
+        <Route path="/addcart/:id" element={<AddCartPage />} />
+        <Route path="/page/:alias" element={<PagePage />} />
+        <Route path="/returnproduct" element={<ReturnProductPage />} />
+        <Route path="/search" element={<SearchPage />} />
+        <Route path="/comment" element={<CommentPage />} />
+        <Route path="/news/:alias" element={<NewsPage />} />
+        <Route path="/news" element={<IndexNewsPage />} />
+        <Route path="*" element={<PageFoundPage />} />
+      </Routes>
     </Suspense>
   );
 };

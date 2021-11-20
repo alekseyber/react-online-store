@@ -2,7 +2,7 @@ import { FC } from "react";
 //import LoaderPage from "../../components/loaderpage/LoaderPage";
 import PageSceleton from "../../components/skeletons/PageSceleton";
 import ContentSceleton from "../../components/skeletons/ContentSceleton";
-import { useParamsMemo } from "../../hooks/router.hook";
+import { useAliasParams } from "../../hooks/use-alias-params.hook";
 import { PageBase } from "../../hoc/PageBase";
 import PageContent from "../../components/pagecontent/PageContent";
 import ErrorContent from "../../components/errorcontent/ErrorContent";
@@ -14,8 +14,8 @@ import {
 import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 
 const NewsPage: FC = () => {
-  const { params } = useParamsMemo<{ alias: string }>();
-  const { alias } = params;
+
+  const alias = useAliasParams();
 
   const { data, loading, error } = useQueryApp<INewsPage, INewsPageVar>(
     NEWS_PAGE_QUERY,

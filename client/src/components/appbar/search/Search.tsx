@@ -1,4 +1,5 @@
 import { useState, FC, ChangeEvent } from "react";
+import { useNavigate } from "react-router-dom";
 //import { styled } from "@mui/material/styles";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
@@ -7,7 +8,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import SearchIcon from "@mui/icons-material/Search";
 import InputAdornment from "@mui/material/InputAdornment";
 import useDebounce from "../../../hooks/use-debounce.hook";
-import { useRouter } from "../../../hooks/router.hook";
+
 import {
   SEARCH_QUERY,
   ISearch,
@@ -116,7 +117,7 @@ interface SearchProps {
 }
 
 const Search: FC<SearchProps> = ({ fclose }) => {
-  const { push } = useRouter();
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
 
   const q = useDebounce(searchTerm, 500);
@@ -138,7 +139,7 @@ const Search: FC<SearchProps> = ({ fclose }) => {
     if (newValue) {
       if (newValue.link) {
         // setSearchTerm("");
-        push(newValue.link);
+        navigate(newValue.link);
 
         if (fclose) {
           fclose();

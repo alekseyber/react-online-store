@@ -1,10 +1,10 @@
 import { FC, SyntheticEvent } from "react";
-import makeStyles from '@mui/styles/makeStyles';
-import withStyles from '@mui/styles/withStyles';
+import makeStyles from "@mui/styles/makeStyles";
+import withStyles from "@mui/styles/withStyles";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import { TMainBanner } from "../../graphql/gqlQuery";
-import { useRouter } from "../../hooks/router.hook";
+import { useNavigate } from "react-router-dom";
 
 const CssButton = withStyles({
   root: {
@@ -58,7 +58,7 @@ interface MainBannerProps {
 
 export const MainBanner: FC<MainBannerProps> = ({ mainBanner, baseApiUrl }) => {
   const classes = useStyles();
-  const { history } = useRouter();
+  const navigate = useNavigate();
 
   if (!mainBanner.visible) {
     return null;
@@ -66,7 +66,7 @@ export const MainBanner: FC<MainBannerProps> = ({ mainBanner, baseApiUrl }) => {
 
   const handleTo = (event: SyntheticEvent, to: string): void => {
     event.preventDefault();
-    history.push(to);
+    navigate(to);
   };
 
   return (

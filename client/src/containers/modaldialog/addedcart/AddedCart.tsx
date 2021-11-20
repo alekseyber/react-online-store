@@ -1,19 +1,20 @@
 import { FC } from "react";
+import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import AddedCartComponent from "../../../components/addedcart/AddedCart";
 import ModalBase, { IChildrenNodeBaseProps } from "../../../hoc/ModalBase";
-import { useRouter } from "../../../hooks/router.hook";
+
 import { ADDED_CART_MODAL_QUERY, IAddedCart } from "../../../graphql/gqlQuery";
 import { useQueryApp } from "../../../hooks/appolloQueryApp.hook";
 import LoaderContent from "../../../components/loadercontent/LoaderContent";
 
 const AddedCart: FC<IChildrenNodeBaseProps> = ({ handleClose }) => {
-  const { history } = useRouter();
+  let navigate = useNavigate();
 
   const { data, loading } = useQueryApp<IAddedCart>(ADDED_CART_MODAL_QUERY);
 
   const handleOpenOrder = () => {
-    history.push("/cart");
+    navigate("/cart");
     handleClose();
   };
   const lastCart = data ? data.lastCart : null;

@@ -1,4 +1,5 @@
 import { FC, useMemo, SyntheticEvent } from "react";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { Theme, useTheme, styled } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -10,7 +11,6 @@ import Button from "@mui/material/Button";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { getTintedColor } from "../../hooks/colorUtil.hook";
-import { useRouter } from "../../hooks/router.hook";
 import { TTopSlider } from "../../graphql/gqlQuery";
 
 const CssCarousel = styled(Carousel)(({ theme }) => ({
@@ -155,12 +155,12 @@ const SecondaryBox: FC<SecondaryBoxProps> = ({
   baseApiUrl,
   // isWidthUpLg,
 }) => {
-  const { history } = useRouter();
+  let navigate = useNavigate();
   const btnIsVisible = Boolean(item.linkAncor && item.linkHref);
 
   const handleBoxClick = () => {
     if (item.linkHref) {
-      history.push(item.linkHref);
+      navigate(item.linkHref);
     }
   };
 

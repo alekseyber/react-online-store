@@ -7,14 +7,13 @@ import {
   FC,
   ChangeEvent,
 } from "react";
+import { useNavigate } from "react-router-dom";
 import Pagination, {
   PaginationRenderItemParams,
 } from "@mui/material/Pagination";
 import PaginationItem from "@mui/material/PaginationItem";
 import Grid from "@mui/material/Grid";
-//import makeStyles from "@mui/styles/makeStyles";
 import { styled } from "@mui/material/styles";
-import { useRouter } from "../hooks/router.hook";
 import { usePageBase } from "./PageBase";
 import { useAddGet } from "../hooks/addget.hook";
 import { IPropsColorSelect } from "../containers/productitem/ProductItem";
@@ -77,7 +76,7 @@ interface ItemPaginProps {
 }
 
 export const PaginationList: FC<PaginationListProps> = (props) => {
-  const { replace } = useRouter();
+  let navigate = useNavigate();
   const linkPage = usePageBase();
   const addGet = useAddGet();
 
@@ -147,9 +146,9 @@ export const PaginationList: FC<PaginationListProps> = (props) => {
 
   useEffect(() => {
     if (paginationLength < page) {
-      replace("/404");
+      navigate("/404", { replace: true });
     }
-  }, [paginationLength, page, replace]);
+  }, [paginationLength, page, navigate]);
 
   if (totalList === 0) {
     return null;

@@ -1,4 +1,5 @@
 import { FC, useState, SyntheticEvent } from "react";
+import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import withStyles from "@mui/styles/withStyles";
 import makeStyles from "@mui/styles/makeStyles";
@@ -16,7 +17,6 @@ import {
   AppBarCategoryTreeFragment,
   TCategoryTreeChilds,
 } from "../../../graphql/gqlQuery";
-import { useRouter } from "../../../hooks/router.hook";
 
 const MenuButton = withStyles((theme) => ({
   root: {
@@ -91,7 +91,7 @@ const MenuItemBtn: FC<MenuItemBtnProps> = ({
   const [anchorEl, setAnchorEl] = useState<(EventTarget & HTMLElement) | null>(
     null
   );
-  const history = useRouter();
+  const navigate = useNavigate();
 
   const handleClick = (event: SyntheticEvent<HTMLElement>) => {
     if (anchorEl) {
@@ -109,7 +109,7 @@ const MenuItemBtn: FC<MenuItemBtnProps> = ({
     if (e) {
       e.preventDefault();
     }
-    history.push("/category/" + to);
+    navigate("/category/" + to);
     handleClose();
   };
 

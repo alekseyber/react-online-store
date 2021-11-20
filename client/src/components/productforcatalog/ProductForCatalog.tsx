@@ -1,4 +1,5 @@
 import { FC, SyntheticEvent } from "react";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import Card from "@mui/material/Card";
@@ -9,7 +10,6 @@ import LinkUi from "@mui/material/Link";
 import DoneIcon from "@mui/icons-material/Done";
 import { Image } from "../image/Image";
 import { setColorProductAction } from "../../graphql/localVarsCart";
-import { useRouter } from "../../hooks/router.hook";
 import { IProductRezult } from "../../hooks/useProductDataRender.hook";
 import { TProductLevel1 } from "../../graphql/gqlQuery";
 
@@ -98,7 +98,7 @@ const ProductForCatalog: FC<ProductForCatalogProps> = ({
   product,
   currsymbol,
 }) => {
-  const { history } = useRouter();
+  let navigate = useNavigate();
 
   const handleCardClick = () => {
     if (product.current.alias !== product.stateSelectColor) {
@@ -108,7 +108,7 @@ const ProductForCatalog: FC<ProductForCatalogProps> = ({
         product.current.level2
       );
     }
-    history.push(product.link);
+    navigate(product.link);
   };
 
   //event: ChangeEvent<HTMLInputElement>

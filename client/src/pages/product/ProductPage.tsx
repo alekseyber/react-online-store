@@ -1,9 +1,10 @@
 import { useEffect, FC } from "react";
+import { useNavigate } from "react-router-dom";
 import { setColorProductAction } from "../../graphql/localVarsCart";
 import ProductMainPage from "../../containers/productmainpage/ProductMainPage";
 import ProductMainCardSceleton from "../../components/skeletons/ProductMainCardSceleton";
 import PageSceleton from "../../components/skeletons/PageSceleton";
-import { useRouter, useParamsMemo, useQuery } from "../../hooks/router.hook";
+import { useQuery } from "../../hooks/router.hook";
 import {
   PRODUCT_PAGE_QUERY,
   IProductPage,
@@ -11,13 +12,14 @@ import {
 } from "../../graphql/gqlQuery";
 import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 import ErrorContent from "../../components/errorcontent/ErrorContent";
+import { useAliasParams } from "../../hooks/use-alias-params.hook";
 
 const ProductPage: FC = () => {
-  const { replace } = useRouter();
-  const { params } = useParamsMemo<{ alias: string }>();
+  const navigate = useNavigate();
+  const alias = useAliasParams();
+
   const query = useQuery(true);
 
-  const { alias } = params;
   const colors = query.colors || null;
 
   const { data, loading, error } = useQueryApp<IProductPage, IProductPageVars>(
@@ -39,10 +41,10 @@ const ProductPage: FC = () => {
       if (level1) {
         setColorProductAction(product.alias, colorsPattern, level1.level2);
       } else {
-        replace("/404");
+        navigate("/404", { replace: true });
       }
     }
-  }, [product, colors, replace]);
+  }, [product, colors, navigate]);
 
   if (loading) {
     return (

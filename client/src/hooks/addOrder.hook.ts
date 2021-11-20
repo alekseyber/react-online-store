@@ -1,4 +1,5 @@
 import { useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import { USE_ADD_ORDER_QUERY, IUseAddOrder } from "../graphql/gqlQuery";
 import { useQueryApp } from "./appolloQueryApp.hook";
 import { showAlert } from "../graphql/localVarsApp";
@@ -12,7 +13,7 @@ import {
   AddOrderMutationInput,
 } from "../graphql/gqlMutation";
 import { FormDataClass, useMutationApp } from "./appolloMutationApp.hook";
-import { useRouter } from "./router.hook";
+
 
 export interface IFormDataInput {
   name: string;
@@ -88,7 +89,8 @@ const useAddOrder = (qorder: boolean = false) => {
   const { data, loading: loadingData } = useQueryApp<IUseAddOrder>(
     USE_ADD_ORDER_QUERY
   );
-  const { push } = useRouter();
+  const navigate = useNavigate();
+  
 
   const onCompleted = (inputData: AddOrderMutation) => {
     orderDoneVar({
@@ -99,7 +101,7 @@ const useAddOrder = (qorder: boolean = false) => {
     if (qorder) {
       hideDialog();
     }
-    push("/order/done");
+    navigate("/order/done");
     cartClear();
   };
 

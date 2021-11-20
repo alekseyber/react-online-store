@@ -5,7 +5,6 @@ import PageSceleton from "../../components/skeletons/PageSceleton";
 import Category from "../../containers/category/Category";
 import {
   useQuery,
-  useParamsMemo,
   TStringifiableRecordArrayParams,
 } from "../../hooks/router.hook";
 import {
@@ -15,10 +14,11 @@ import {
 } from "../../graphql/gqlQuery";
 import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 import ErrorContent from "../../components/errorcontent/ErrorContent";
+import { useAliasParams } from "../../hooks/use-alias-params.hook";
 
 const CategoryPage: FC = () => {
-  const { params } = useParamsMemo<{ alias: string }>();
-  const { alias } = params;
+  const alias = useAliasParams();
+
   const query = useQuery(true) as TStringifiableRecordArrayParams;
 
   const { data, loading, error } = useQueryApp<ICategoryPage, ICategoryPageVar>(

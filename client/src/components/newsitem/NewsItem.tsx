@@ -1,4 +1,5 @@
 import { FC } from "react";
+import { useNavigate } from "react-router-dom";
 import makeStyles from '@mui/styles/makeStyles';
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
@@ -7,7 +8,6 @@ import CardContent from "@mui/material/CardContent";
 import CardActionArea from "@mui/material/CardActionArea";
 import LinkUi from "@mui/material/Link";
 import HtmlText from "../htmltext/HtmlText";
-import { useRouter } from "../../hooks/router.hook";
 import { TNewsAnnonce } from "../../graphql/gqlQuery";
 
 const useStyles = makeStyles((theme) => ({
@@ -42,12 +42,12 @@ interface NewsItemProps {
 
 const NewsItem: FC<NewsItemProps> = ({ item }) => {
   const classes = useStyles();
-  const { history } = useRouter();
+  let navigate = useNavigate();
 
   const linkItem = "/news/" + item.alias;
 
   const handleCardClick = () => {
-    history.push(linkItem);
+    navigate(linkItem);
   };
 
   return (

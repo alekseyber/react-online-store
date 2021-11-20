@@ -1,4 +1,5 @@
 import { useEffect, useMemo, FC, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import CopyToClipboard from "react-copy-to-clipboard";
 import makeStyles from '@mui/styles/makeStyles';
@@ -8,7 +9,6 @@ import Typography from "@mui/material/Typography";
 import LinkUi from "@mui/material/Link";
 import Button from "@mui/material/Button";
 import { PageBase } from "../../hoc/PageBase";
-import { useRouter } from "../../hooks/router.hook";
 import { showAlert } from "../../graphql/localVarsApp";
 import { ORDER_DONE_PAGE_QUERY, IOrderDonePage } from "../../graphql/gqlQuery";
 import { orderDoneVar } from "../../graphql/localVarsOrder";
@@ -34,7 +34,7 @@ const useStyles = makeStyles({
 
 const OrderDonePage: FC = () => {
   const classes = useStyles();
-  const { replace } = useRouter();
+  const navigate = useNavigate(); 
   const { trigger } = useContext(ContextAnalitics);
 
   const copyHandler = () => {
@@ -49,14 +49,14 @@ const OrderDonePage: FC = () => {
 
   useEffect(() => {
     if (!orderDone && !loading) {
-      replace("/404");
+      navigate("/404", { replace: true });      
     }
     return () => {
       if (orderDone) {
         orderDoneVar(null);
       }
     };
-  }, [replace, loading, orderDone]);
+  }, [navigate, loading, orderDone]);
 
   const { orderDoneText, baseUrl, baseApiUrl, currSymbol } = useMemo(() => {
     const rezult = {

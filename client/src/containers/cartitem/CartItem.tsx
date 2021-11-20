@@ -1,12 +1,12 @@
 import { useEffect, useCallback, FC, SyntheticEvent } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   createTheme,
   ThemeProvider,
   Theme,
   StyledEngineProvider, 
-} from "@mui/material/styles"; // adaptV4Theme,
+} from "@mui/material/styles";
 import makeStyles from "@mui/styles/makeStyles";
-//import PropTypes from "prop-types";
 import ListItem from "@mui/material/ListItem";
 import Divider from "@mui/material/Divider";
 import ListItemText from "@mui/material/ListItemText";
@@ -39,7 +39,7 @@ import {
 
 import SizeSelector from "./sizeselector/SizeSelector";
 import ColorSelector from "./colorselector/ColorSelector";
-import { useRouter } from "../../hooks/router.hook";
+
 
 declare module "@mui/styles/defaultTheme" {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -102,7 +102,7 @@ const CartItem: FC<CartItemProps> = ({
   product,
 }) => {
   const classes = useStyles();
-  const { history } = useRouter();
+  let navigate = useNavigate();
 
   const { alias, level1, level2, qty, price } = itemcart;
 
@@ -114,7 +114,7 @@ const CartItem: FC<CartItemProps> = ({
     event.preventDefault();
     event.stopPropagation();
     setColorAndSizeProduct(alias, level1, level2);
-    history.push(productLink);
+    navigate(productLink);
     if (handleClose) {
       handleClose();
     }
