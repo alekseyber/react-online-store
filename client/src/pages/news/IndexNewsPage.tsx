@@ -12,6 +12,12 @@ import {
 } from "../../graphql/gqlQuery";
 import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 
+interface IndexNewsPageData {
+  list: TNewsAnnonce[];
+  countPage: number;
+  newsSectionName: string;
+}
+
 const IndexNewsPage: FC = () => {
   const page = useGetQueryPage();
 
@@ -19,22 +25,22 @@ const IndexNewsPage: FC = () => {
     INDEX_NEWS_PAGE_QUERY
   );
 
-  const { list, countPage } = useMemo<{
-    list: TNewsAnnonce[];
-    countPage: number;
-  }>(() => {
-    const rezult: { list: TNewsAnnonce[]; countPage: number } = {
-      list: [],
-      countPage: 10,
-    };
+  const { list, countPage, newsSectionName } =
+    useMemo<IndexNewsPageData>(() => {
+      const rezult: IndexNewsPageData = {
+        list: [],
+        countPage: 10,
+        newsSectionName: "",
+      };
 
-    if (data) {
-      rezult.list = data.newsList.list;
-      rezult.countPage = data.paramsData.count_page_news;
-    }
+      if (data) {
+        rezult.list = data.newsList.list;
+        rezult.countPage = data.paramsData.count_page_news;
+        rezult.newsSectionName = data.paramsData.newsSectionName;
+      }
 
-    return rezult;
-  }, [data]);
+      return rezult;
+    }, [data]);
 
   if (loading)
     return (
@@ -45,10 +51,10 @@ const IndexNewsPage: FC = () => {
 
   const bind = !error
     ? {
-        name_page: "Новости, блог",
-        action_page: "Новости, блог",
-        link_page: "/Новости, блог",
-        title: "Новости, блог",
+        name_page: newsSectionName,
+        action_page: newsSectionName,
+        link_page: "/news",
+        title: newsSectionName,
         filter_on: true,
         page,
         canonical_on: true,

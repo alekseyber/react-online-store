@@ -677,6 +677,7 @@ const CommentList = {
 
 interface IndexNewsPageFragment {
   count_page_news: number;
+  newsSectionName: string;
 }
 
 const IndexNewsPage = {
@@ -684,6 +685,7 @@ const IndexNewsPage = {
     paramsData: gql`
       fragment IndexNewsPageFragment on ParamsData {
         count_page_news
+        newsSectionName
       }
     `,
   },
@@ -1698,6 +1700,9 @@ export interface INewsPageVar {
 
 export interface INewsPage {
   news: News;
+  paramsData: {
+    newsSectionName: string;
+  };
 }
 
 export const NEWS_PAGE_QUERY = gql`
@@ -1709,6 +1714,9 @@ export const NEWS_PAGE_QUERY = gql`
       meta_description
       meta_keywords
       content
+    }
+    paramsData {
+      newsSectionName
     }
   }
 `;

@@ -185,7 +185,7 @@ const typeDefs = gql`
     cacheTime: CacheTime!
     cityDefault: CityDefault!
     phone: Phone!
-    #select: Boolean
+    newsSectionName: String
   }
   # ----colors---
   type ColorGrupp @cacheControl(maxAge: 36000) {

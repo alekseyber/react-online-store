@@ -14,7 +14,6 @@ import {
 import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 
 const NewsPage: FC = () => {
-
   const alias = useAliasParams();
 
   const { data, loading, error } = useQueryApp<INewsPage, INewsPageVar>(
@@ -24,11 +23,12 @@ const NewsPage: FC = () => {
     true
   );
 
-  if (loading) return (
-    <PageSceleton title={true}>
-      <ContentSceleton />
-    </PageSceleton>
-  );
+  if (loading)
+    return (
+      <PageSceleton title={true}>
+        <ContentSceleton />
+      </PageSceleton>
+    );
   if (error) return <ErrorContent />;
 
   if (!data) {
@@ -46,6 +46,14 @@ const NewsPage: FC = () => {
     meta_full: true,
     meta_key: pageData.meta_keywords,
     breadcrumbs_name: pageData.title,
+    breadcrumbs_data: [
+      {
+        text: data.paramsData.newsSectionName,
+        disabled: false,
+        href: "/news",
+        level: 2,
+      },
+    ],
   };
 
   return (

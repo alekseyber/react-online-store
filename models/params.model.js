@@ -283,6 +283,10 @@ const paramsSchema = new Schema({
       default: 36000,
     },
   },
+  newsSectionName: {
+    type: String,
+    default: "Новости, блог",
+  },
 });
 
 module.exports = model("params", paramsSchema);
