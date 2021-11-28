@@ -83,7 +83,7 @@ const CartList: FC<CartListProps> = ({ full = false, handleClose }) => {
       {cartData.map((itemcart, index) => (
         <CartItem
           itemcart={itemcart}
-          key={index}
+          key={itemcart.idItem}
           divider_on={count - 1 !== index}
           productImgProperty={productImgProperty}
           currsymbol={currSymbol}

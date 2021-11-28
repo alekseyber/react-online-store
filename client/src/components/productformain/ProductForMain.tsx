@@ -203,8 +203,8 @@ const ProductForMain: FC<ProductForMainProps> = ({
         <Typography variant="subtitle1" component="div" color="textSecondary">
           Выберите цвет:
         </Typography>
-        {product.level1Arr.map((item, index) => (
-          <ColorItem key={index} item={item} />
+        {product.level1Arr.map((item) => (
+          <ColorItem key={item.alias} item={item} />
         ))}
       </div>
     );

@@ -1,5 +1,5 @@
 import { FC } from "react";
-import makeStyles from "@mui/styles/makeStyles";
+import { styled } from "@mui/material/styles";
 import { Theme, useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import AppBar from "@mui/material/AppBar";
@@ -9,20 +9,27 @@ import FilterPanel from "../../components/appfilter/AppFilter";
 import { FILTER_QUERY, IFilter, IFilterGrupp } from "../../graphql/gqlQuery";
 import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 
-// FIXME checkout https://mui.com/components/use-media-query/#migrating-from-withwidth
-//const withWidth = () => (WrappedComponent) => (props) => <WrappedComponent {...props} width="xs" />;
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-    top: theme.spacing(2),
-    paddingBottom: theme.spacing(1),
-    zIndex: 200,
-  },
-  wrap: {
+const CssAppBar = styled(AppBar)(({ theme }) => ({
+  flexGrow: 1,
+  top: theme.spacing(2),
+  paddingBottom: theme.spacing(1),
+  zIndex: 200,
+  "& > .MuiToolbar-root": {
     justifyContent: "space-between",
   },
 }));
+
+// const useStyles = makeStyles((theme) => ({
+//   root: {
+//     flexGrow: 1,
+//     top: theme.spacing(2),
+//     paddingBottom: theme.spacing(1),
+//     zIndex: 200,
+//   },
+//   wrap: {
+//     justifyContent: "space-between",
+//   },
+// }));
 
 export interface IFilterProps {
   category?: boolean;
@@ -37,7 +44,6 @@ const Filter: FC<IFilterRezultProps> = ({
   category = false,
   sortBtnStatus = false,
 }) => {
-  const classes = useStyles();
   const theme: Theme = useTheme();
 
   const mobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -63,13 +69,12 @@ const Filter: FC<IFilterRezultProps> = ({
   }
 
   return (
-    <AppBar
+    <CssAppBar
       position="relative"
-      color="transparent"
-      className={classes.root}
+      color="transparent"      
       elevation={elevationValue}
     >
-      <Toolbar variant="dense" className={classes.wrap}>
+      <Toolbar variant="dense">
         <div>
           <FilterPanel
             filterRezult={rezult}
@@ -82,7 +87,7 @@ const Filter: FC<IFilterRezultProps> = ({
         </div>
         {sortBtnStatus && <SortBtn />}
       </Toolbar>
-    </AppBar>
+    </CssAppBar>
   );
 };
 

@@ -163,7 +163,7 @@ const TopBarApp: FC = () => {
           >
             {topLinks.map((item, index) => (
               <LinkUi
-                key={index}
+                key={index + item.url}
                 component={Link}
                 to={item.url}
                 color="inherit"

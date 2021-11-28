@@ -7,7 +7,7 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
-import makeStyles from '@mui/styles/makeStyles';
+import makeStyles from "@mui/styles/makeStyles";
 import ItemGrupp from "./itemgrupp/ItemGrupp";
 import ItemGruppMbile from "./itemgruppmobile/ItemGruppMobile";
 import {
@@ -59,19 +59,19 @@ const AppFilter: FC<AppFilterProps> = ({
 
   const [state, setState] = useState(false);
 
-  const toggleDrawer = (open: boolean) => (
-    event: TouchEvent | KeyboardEvent | MouseEvent
-  ): void => {
-    if (
-      event.type === "keydown" &&
-      ((event as KeyboardEvent).key === "Tab" ||
-        (event as KeyboardEvent).key === "Shift")
-    ) {
-      return;
-    }
+  const toggleDrawer =
+    (open: boolean) =>
+    (event: TouchEvent | KeyboardEvent | MouseEvent): void => {
+      if (
+        event.type === "keydown" &&
+        ((event as KeyboardEvent).key === "Tab" ||
+          (event as KeyboardEvent).key === "Shift")
+      ) {
+        return;
+      }
 
-    setState(open);
-  };
+      setState(open);
+    };
 
   const handleClear = () => {
     removeFilterSelect();
@@ -115,60 +115,58 @@ const AppFilter: FC<AppFilterProps> = ({
     );
   };
 
-  return <>
-    {mobile && (
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={toggleDrawer(true)}
-        className={classes.btngr}
-        // size="small"
-      >
-        Фильтр
-      </Button>
-    )}
-    <Btns />
-    {!mobile &&
-      filterRezult.map((item, index) => (
-        <ItemGrupp key={index} itemGr={item} filterSelect={filterSelect} />
-      ))}
-    {mobile && (
-      <Drawer anchor="bottom" open={state} onClose={toggleDrawer(false)}>
-        <AppBar position="static">
-          <Toolbar variant="dense">
-            <Typography variant="h6" className={classes.titlepanel}>
-              Фильтр
-            </Typography>
-            <Btns barOn={true} />
-            <IconButton
-              edge="end"
-              color="inherit"
-              onClick={toggleDrawer(false)}
-              className={classes.btnclose}
-              size="large">
-              <CloseIcon />
-            </IconButton>
-          </Toolbar>
-        </AppBar>
-        {filterRezult.map((item, index) => (
-          <ItemGruppMbile
-            key={index}
+  return (
+    <>
+      {mobile && (
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={toggleDrawer(true)}
+          className={classes.btngr}
+          // size="small"
+        >
+          Фильтр
+        </Button>
+      )}
+      <Btns />
+      {!mobile &&
+        filterRezult.map((item) => (
+          <ItemGrupp
+            key={item.alias}
             itemGr={item}
             filterSelect={filterSelect}
           />
         ))}
-      </Drawer>
-    )}
-  </>;
+      {mobile && (
+        <Drawer anchor="bottom" open={state} onClose={toggleDrawer(false)}>
+          <AppBar position="static">
+            <Toolbar variant="dense">
+              <Typography variant="h6" className={classes.titlepanel}>
+                Фильтр
+              </Typography>
+              <Btns barOn={true} />
+              <IconButton
+                edge="end"
+                color="inherit"
+                onClick={toggleDrawer(false)}
+                className={classes.btnclose}
+                size="large"
+              >
+                <CloseIcon />
+              </IconButton>
+            </Toolbar>
+          </AppBar>
+          {filterRezult.map((item) => (
+            <ItemGruppMbile
+              key={item.alias}
+              itemGr={item}
+              filterSelect={filterSelect}
+            />
+          ))}
+        </Drawer>
+      )}
+    </>
+  );
 };
 
 export default AppFilter;
-
-// AppFilter.propTypes = {
-//   filterRezult: PropTypes.array.isRequired,
-//   filterSelect: PropTypes.object.isRequired,
-//   category: PropTypes.bool.isRequired,
-//   rootCategory: PropTypes.string.isRequired,
-//   btnClear: PropTypes.bool.isRequired,
-//   mobile: PropTypes.bool.isRequired,
-// };

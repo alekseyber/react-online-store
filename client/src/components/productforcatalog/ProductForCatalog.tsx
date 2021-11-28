@@ -162,8 +162,8 @@ const ProductForCatalog: FC<ProductForCatalogProps> = ({
 
     return (
       <>
-        {product.level1Arr.map((item, index) => (
-          <ColorItem key={index} item={item} />
+        {product.level1Arr.map((item) => (
+          <ColorItem key={item.alias} item={item} />
         ))}
       </>
     );

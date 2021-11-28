@@ -128,7 +128,7 @@ const OrderInfPage: FC<OrderInfPageProps> = ({
                   <TableCell align="center" className={classes.img}>
                     <img alt="img" src={baseApiUrl + row.img} />
                   </TableCell>
-                  {/* component="th" scope="row" */}
+                  
                   <TableCell>
                     <LinkUi component={Link} to={row.link}>
                       {row.title}

@@ -76,13 +76,13 @@ const RecentlyViewed: FC<RecentlyViewedProps> = ({
         Недавно просмотренные
       </Typography>
       <Grid container spacing={2}>
-        {products.map((item, index) => (
+        {products.map((item) => (
           <ProductItem
             item={item}
             imgproperty={imgproperty}
             quality={quality}
             currsymbol={currsymbol}
-            key={index}
+            key={item}
           />
         ))}
       </Grid>

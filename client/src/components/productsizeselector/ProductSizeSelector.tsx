@@ -1,7 +1,7 @@
 import { FC, Dispatch, SetStateAction } from "react";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import makeStyles from '@mui/styles/makeStyles';
+import { styled } from "@mui/material/styles";
 import { setSizeProduct } from "../../graphql/localVarsCart";
 import { openSizeChart } from "../../graphql/localVarsModal";
 import {
@@ -12,13 +12,19 @@ import {
 } from "../../graphql/gqlQuery";
 import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 
-const useStyles = makeStyles((theme) => ({
-  btns: {
-    "& > *": {
-      margin: theme.spacing(0.5),
-    },
+const CssRootDiv = styled("div")(({ theme }) => ({
+  "& .MuiButton-root": {
+    margin: theme.spacing(0.5),
   },
 }));
+
+// const useStyles = makeStyles((theme) => ({
+//   btns: {
+//     "& > *": {
+//       margin: theme.spacing(0.5),
+//     },
+//   },
+// }));
 
 interface ProductSizeSelectorProps {
   level2: TProductLevel2[];
@@ -39,8 +45,6 @@ const ProductSizeSelector: FC<ProductSizeSelectorProps> = ({
   set_error,
   sizesgroup_id,
 }) => {
-  const classes = useStyles();
-
   const { data } = useQueryApp<ISelectSize, ISelectSizeVar>(SELECT_SIZE_QUERY, {
     alias,
   });
@@ -89,11 +93,11 @@ const ProductSizeSelector: FC<ProductSizeSelectorProps> = ({
           *Размер можно скорректировать при подтверждении заказа менеджером
         </Typography>
       )}
-      <div className={classes.btns}>
-        {level2.map((itemsize, index) => (
-          <SizeItem key={index} item={itemsize} />
+      <CssRootDiv>
+        {level2.map((itemsize) => (
+          <SizeItem key={itemsize.alias} item={itemsize} />
         ))}
-      </div>
+      </CssRootDiv>
       {sizesgroup_id && (
         <Button onClick={handleSizeChart} size="small" className="mt-1">
           Размерная сетка

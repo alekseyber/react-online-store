@@ -17,8 +17,11 @@ const NewsGrid: FC<NewsGridProps> = ({ news, page = 1, countPage = 10 }) => {
 
     return (
       <>
-        {paginationRezult.map((item, index) => (
-          <NewsItem item={item as TNewsAnnonce} key={index} />
+        {paginationRezult.map((item) => (
+          <NewsItem
+            item={item as TNewsAnnonce}
+            key={(item as TNewsAnnonce).alias}
+          />
         ))}
       </>
     );

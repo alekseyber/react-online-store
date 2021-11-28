@@ -44,7 +44,7 @@ const SortBtn: FC = () => {
 
   return (
     <div>
-      <IconButton onClick={handleMenu} color="inherit" size="large">
+      <IconButton onClick={handleMenu} color="inherit">
         <SortIcon />
       </IconButton>
       <Menu
@@ -63,9 +63,9 @@ const SortBtn: FC = () => {
         onClose={handleClose}
         className={classes.root}
       >
-        {sortList.map((item, index) => (
+        {sortList.map((item) => (
           <MenuItem
-            key={index}
+            key={item._id}
             onClick={() => handleSetItem(item._id)}
             selected={item._id === sortValue}
             dense

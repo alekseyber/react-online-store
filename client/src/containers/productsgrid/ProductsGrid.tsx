@@ -61,13 +61,18 @@ const ListProduct: FC<ProductBaseForGrid> = ({
 
   return (
     <>
-      {paginationRezult.map((item, index) => (
+      {paginationRezult.map((item) => (
         <ProductItem
           item={item as IPaginContextItem | string}
           imgproperty={productImgProperty}
           quality={qualityproductImg}
           currsymbol={currSymbol}
-          key={index}
+          key={
+            typeof item === "string"
+              ? item
+              : (item as IPaginContextItem).alias +
+                (item as IPaginContextItem).colorselect
+          }
         />
       ))}
     </>
