@@ -7,6 +7,7 @@ import RecentlyViewed from "../recentlyviewed/RecentlyViewed";
 import Breadcrumbs from "../../components/breadcrumbs/Breadcrumbs";
 import ProductMainCard from "../productmaincard/ProductMainCard";
 import { PageBase } from "../../hoc/PageBase";
+import { getLinkByRoutePath } from "../../router";
 import {
   IProductPage,
   TBreadcrumb,
@@ -46,16 +47,16 @@ const ProductMainPage: FC<ProductMainPageProps> = ({ data, color }) => {
     if (productMain) {
       let addColor = "";
 
-      if (color) {
-        if (color !== product.color_default) {
-          addColor = `?color=${color}`;
-        }
+      if (color && color !== product.color_default) {
+        addColor = `?colors=${color}`;
       }
 
       rezult.title = productMain.meta.title;
       rezult.description = productMain.meta.description;
       rezult.keywords = productMain.meta.keywords;
-      rezult.canonical = `/product/${product.alias}${addColor}`;
+      rezult.canonical =
+        getLinkByRoutePath("PRODUCT_PAGE", product.alias) + addColor;
+      
     }
 
     return rezult;

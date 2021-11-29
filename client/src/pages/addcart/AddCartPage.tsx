@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useIdParams } from "../../hooks/use-alias-params.hook";
 import LoaderPage from "../../components/loaderpage/LoaderPage";
 import { cartAddPageAction } from "../../graphql/localVarsCart";
+import { getLinkByRoutePath } from "../../router";
 import {
   CART_ADD_PAGE_QUERY,
   ICartAddPage,
@@ -38,7 +39,7 @@ const AddCartPage: FC = () => {
   const bind: IPageBaseProps = {
     name_page: "Добавление товара в корзину",
     action_page: "Добавление в корзину",
-    link_page: "/addcard",
+    link_page: getLinkByRoutePath("ADD_CART_PAGE", id),
     title: "Добавление товара в корзину",
     filter_on: false,
   };

@@ -4,7 +4,7 @@ import {
   createTheme,
   ThemeProvider,
   Theme,
-  StyledEngineProvider, 
+  StyledEngineProvider,
 } from "@mui/material/styles";
 import makeStyles from "@mui/styles/makeStyles";
 import ListItem from "@mui/material/ListItem";
@@ -39,7 +39,7 @@ import {
 
 import SizeSelector from "./sizeselector/SizeSelector";
 import ColorSelector from "./colorselector/ColorSelector";
-
+import { getLinkByRoutePath } from "../../router";
 
 declare module "@mui/styles/defaultTheme" {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -161,7 +161,7 @@ const CartItem: FC<CartItemProps> = ({
     return null;
   }
 
-  const productLink: string = `/product/${alias}`;
+  const productLink: string = getLinkByRoutePath("PRODUCT_PAGE", alias);
   const level2SelectTrue: boolean =
     product.product_model === 1 || product.product_model === 4;
 

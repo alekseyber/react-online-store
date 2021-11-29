@@ -28,6 +28,7 @@ import {
   useMutationApp,
 } from "../../hooks/appolloMutationApp.hook";
 import { returnProductStatusVar } from "../../graphql/localVarsOrder";
+import { RouteNames } from "../../router";
 
 const ReturnProductPage: FC = () => {
   const { data, loading, error } = useQueryApp<IReturnProductPage>(
@@ -76,7 +77,7 @@ const ReturnProductPage: FC = () => {
   const bind = {
     name_page: "Возврат/обмен",
     action_page: "Отправить заявку на возврат/обмен",
-    link_page: "/returnproduct",
+    link_page: RouteNames.RETURN_PRODUCT_PAGE,
     title: "Отправить заявку на возврат/обмен",
     filter_on: true,
   };

@@ -17,6 +17,7 @@ import {
   AppBarCategoryTreeFragment,
   TCategoryTreeChilds,
 } from "../../../graphql/gqlQuery";
+import { getLinkByRoutePath } from "../../../router";
 
 const MenuButton = withStyles((theme) => ({
   root: {
@@ -109,7 +110,7 @@ const MenuItemBtn: FC<MenuItemBtnProps> = ({
     if (e) {
       e.preventDefault();
     }
-    navigate("/category/" + to);
+    navigate(getLinkByRoutePath("CATEGORY_PAGE", to));
     handleClose();
   };
 
@@ -121,7 +122,7 @@ const MenuItemBtn: FC<MenuItemBtnProps> = ({
       <MenuButton
         size="medium"
         onClick={(e) => handleTo(item.alias, e)}
-        href={"/category/" + item.alias}
+        href={getLinkByRoutePath("CATEGORY_PAGE", item.alias)}
       >
         {item.title}
       </MenuButton>
@@ -152,7 +153,7 @@ const MenuItemBtn: FC<MenuItemBtnProps> = ({
                 gutterBottom
                 variant="h6"
                 underline="hover"
-                href={"/category/" + cat.alias}
+                href={getLinkByRoutePath("CATEGORY_PAGE", cat.alias)}
                 onClick={(e: SyntheticEvent) => e.preventDefault()}
               >
                 {title}

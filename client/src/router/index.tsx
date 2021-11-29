@@ -57,8 +57,16 @@ export enum RouteNames {
   COMMENT_PAGE = "/comment",
   NEWS_PAGE = "/news/:alias",
   INDEX_NEWS_PAGE = "/news",
+  NO_FOUND_PAGE = "/404",
   PAGE_FOUND_PAGE = "*",
 }
+
+export const getLinkByRoutePath = (
+  routeName: keyof typeof RouteNames,
+  param: string = ""
+): string => {
+  return RouteNames[routeName].split(":")[0] + param;
+};
 
 const appRoutes: IRoute[] = [
   { path: RouteNames.MAIN_PAGE, Element: MainPage },
@@ -75,6 +83,7 @@ const appRoutes: IRoute[] = [
   { path: RouteNames.COMMENT_PAGE, Element: CommentPage },
   { path: RouteNames.NEWS_PAGE, Element: NewsPage },
   { path: RouteNames.INDEX_NEWS_PAGE, Element: IndexNewsPage },
+  { path: RouteNames.NO_FOUND_PAGE, Element: PageFoundPage },
   { path: RouteNames.PAGE_FOUND_PAGE, Element: PageFoundPage },
 ];
 

@@ -12,6 +12,7 @@ import SmallCart from "./smallcart/SmallCart";
 import Search from "./search/Search";
 import { APP_BAR_QUERY, IAppBar } from "../../graphql/gqlQuery";
 import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
+import { RouteNames } from "../../router";
 
 const CssAppBar = styled(AppBar)(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
@@ -146,7 +147,7 @@ const AppBarApp: FC = () => {
             />
           </div>
         )}
-        <Link to="/" className="appbar-logo">
+        <Link to={RouteNames.MAIN_PAGE} className="appbar-logo">
           <img
             src={baseApiUrl + logoimg}
             className="appbar-logoimg"

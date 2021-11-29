@@ -8,6 +8,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { TBreadcrumb } from "../../graphql/gqlQuery";
 import { styled } from "@mui/material/styles";
+import { RouteNames } from "../../router";
 
 const CssRootDiv = styled("div")(({ theme }) => ({
   display: "flex",
@@ -81,7 +82,7 @@ export const AppBreadcrumbs: FC<IPageBaseProps> = ({ breadcrumbsData }) => {
         <LinkUi
           color="inherit"
           component={Link}
-          to="/"
+          to={RouteNames.MAIN_PAGE}
           className="appBreadcrumbs-link"
         >
           <HomeIcon className="appBreadcrumbs-icon" />

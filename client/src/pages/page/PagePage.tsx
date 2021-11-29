@@ -1,5 +1,5 @@
 import { FC } from "react";
-//import LoaderPage from "../../components/loaderpage/LoaderPage";
+import { getLinkByRoutePath } from "../../router";
 import PageSceleton from "../../components/skeletons/PageSceleton";
 import ContentSceleton from "../../components/skeletons/ContentSceleton";
 import { useAliasParams } from "../../hooks/use-alias-params.hook";
@@ -40,7 +40,7 @@ const PagePage: FC = () => {
   const bind = {
     name_page: pageData.meta_title,
     action_page: pageData.meta_description,
-    link_page: "/page/" + alias,
+    link_page: getLinkByRoutePath("PAGE_PAGE", alias),
     title: pageData.title,
     filter_on: true,
     meta_full: true,

@@ -12,6 +12,7 @@ import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 import ErrorContent from "../../components/errorcontent/ErrorContent";
 import ProductListSceleton from "../../components/skeletons/ProductListSceleton";
 import PageSceleton from "../../components/skeletons/PageSceleton";
+import { RouteNames } from "../../router";
 
 const CssHitsDiv = styled("div")(({ theme }) => ({
   marginTop: theme.spacing(5),
@@ -42,17 +43,11 @@ const MainPage: FC = () => {
   const categoryImgBase = baseApiUrl + categoryImgProperty;
   const mainData = data.mainPage;
 
-  // const Slider: FC = () => {
-  //   return mainData.topslidervisible ? (
-  //     <MainSlider topSlider={mainData.topSlider} baseApiUrl={baseApiUrl} />
-  //   ) : null;
-  // };
-
   const bind: IPageBaseProps = {
     name_page: mainData.meta.title,
     action_page: mainData.meta.description,
     meta_key: mainData.meta.keywords,
-    link_page: "/",
+    link_page: RouteNames.MAIN_PAGE,
     meta_full: true,
     canonical_on: true,
     breadcrumbs_on: false,
@@ -69,9 +64,7 @@ const MainPage: FC = () => {
 
   return (
     <PageBase {...bind}>
-      {mainData.topslidervisible && (
-        <MainSlider {...bindTopSlider} />
-      )}
+      {mainData.topslidervisible && <MainSlider {...bindTopSlider} />}
       {mainData.maincatalogvisible && (
         <MainCatalog
           maincatalog={mainData.maincatalog}

@@ -8,6 +8,7 @@ import SortBtn from "../../components/sortbtn/SortBtn";
 import FilterPanel from "../../components/appfilter/AppFilter";
 import { FILTER_QUERY, IFilter, IFilterGrupp } from "../../graphql/gqlQuery";
 import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
+import { getLinkByRoutePath } from "../../router";
 
 const CssAppBar = styled(AppBar)(({ theme }) => ({
   flexGrow: 1,
@@ -59,7 +60,10 @@ const Filter: FC<IFilterRezultProps> = ({
   const filterSelect = data.filterSelect;
   const btnClear = Object.keys(filterSelect).length > 0;
 
-  const rootCategory = "/category/" + data.categoryTree.alias;
+  const rootCategory = getLinkByRoutePath(
+    "CATEGORY_PAGE",
+    data.categoryTree.alias
+  );
   const rezult = filterInputRezult
     ? filterInputRezult
     : data.filterData.filterRezult; //
@@ -71,7 +75,7 @@ const Filter: FC<IFilterRezultProps> = ({
   return (
     <CssAppBar
       position="relative"
-      color="transparent"      
+      color="transparent"
       elevation={elevationValue}
     >
       <Toolbar variant="dense">

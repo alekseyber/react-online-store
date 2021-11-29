@@ -1,25 +1,23 @@
 import { FC } from "react";
-import makeStyles from '@mui/styles/makeStyles';
+import { styled } from "@mui/material/styles";
 import { PageBase } from "../../hoc/PageBase";
 import CommentAdd from "../../components/commentadd/CommentAdd";
 import CommentList from "../../containers/commentlist/CommentList";
+import { RouteNames } from "../../router";
 import { useGetQueryPage } from "../../hooks/router.hook";
 
-const useStyles = makeStyles({
-  root: {
-    maxWidth: 750,
-    margin: "0 auto",
-  },
+const CssRootDiv = styled("div")({
+  maxWidth: 750,
+  margin: "0 auto",
 });
 
 const CommentPage: FC = () => {
-  const classes = useStyles();
   const page = useGetQueryPage();
 
   const bind = {
     name_page: "Отзывы",
     action_page: "Отзывы",
-    link_page: "/comment",
+    link_page: RouteNames.COMMENT_PAGE,
     title: "Отзывы",
     filter_on: true,
     page,
@@ -28,10 +26,10 @@ const CommentPage: FC = () => {
 
   return (
     <PageBase {...bind}>
-      <div className={classes.root}>
+      <CssRootDiv>
         <CommentAdd />
         <CommentList page={page} />
-      </div>
+      </CssRootDiv>
     </PageBase>
   );
 };

@@ -1,5 +1,5 @@
 //import { useMemo } from "react";
-//import PropTypes from "prop-types";
+import { getLinkByRoutePath } from "../router";
 import {
   TProductImgProperty,
   ProductFragment,
@@ -100,8 +100,10 @@ const useProductDataRender = ({
   if (!productDataInput) {
     return null;
   }
-
-  const link: string = "/product/" + productDataInput.alias;
+  const link: string = getLinkByRoutePath(
+    "PRODUCT_PAGE",
+    productDataInput.alias
+  );
 
   let current: TProductLevel1 | null | undefined = null;
 

@@ -7,7 +7,7 @@ import {
   MouseEvent,
 } from "react";
 import { Link } from "react-router-dom";
-import makeStyles from '@mui/styles/makeStyles';
+import makeStyles from "@mui/styles/makeStyles";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -30,6 +30,7 @@ import {
   AppBarCategoryTreeFragment,
   TTopLinks,
 } from "../../../graphql/gqlQuery";
+import { RouteNames } from "../../../router";
 
 const useStyles = makeStyles((theme) => ({
   list: {
@@ -68,19 +69,19 @@ const DrawerApp: FC<DrawerAppProps> = ({
     setGrOpen((prev) => !prev);
   };
 
-  const toggleDrawer = (open: boolean) => (
-    event: TouchEvent | KeyboardEvent | MouseEvent
-  ): void => {
-    if (
-      event.type === "keydown" &&
-      ((event as KeyboardEvent).key === "Tab" ||
-        (event as KeyboardEvent).key === "Shift")
-    ) {
-      return;
-    }
+  const toggleDrawer =
+    (open: boolean) =>
+    (event: TouchEvent | KeyboardEvent | MouseEvent): void => {
+      if (
+        event.type === "keydown" &&
+        ((event as KeyboardEvent).key === "Tab" ||
+          (event as KeyboardEvent).key === "Shift")
+      ) {
+        return;
+      }
 
-    setOpen(open);
-  };
+      setOpen(open);
+    };
 
   const toggleBtnDrawer = () => {
     setOpen((prev) => !prev);
@@ -102,7 +103,7 @@ const DrawerApp: FC<DrawerAppProps> = ({
               </IconButton>
             </ListItemSecondaryAction>
           </ListItem>
-          <ListItem button component={Link} to="/">
+          <ListItem button component={Link} to={RouteNames.MAIN_PAGE}>
             <ListItemIcon>
               <HomeIcon />
             </ListItemIcon>
@@ -149,19 +150,22 @@ const DrawerApp: FC<DrawerAppProps> = ({
     </>
   );
 
-  return <>
-    <IconButton
-      edge="start"
-      color="inherit"
-      aria-label="open drawer"
-      onClick={toggleBtnDrawer}
-      size="large">
-      <MenuIcon />
-    </IconButton>
-    <Drawer anchor="left" open={open} onClose={toggleDrawer(false)}>
-      <ListDrawerApp />
-    </Drawer>
-  </>;
+  return (
+    <>
+      <IconButton
+        edge="start"
+        color="inherit"
+        aria-label="open drawer"
+        onClick={toggleBtnDrawer}
+        size="large"
+      >
+        <MenuIcon />
+      </IconButton>
+      <Drawer anchor="left" open={open} onClose={toggleDrawer(false)}>
+        <ListDrawerApp />
+      </Drawer>
+    </>
+  );
 };
 
 export default DrawerApp;

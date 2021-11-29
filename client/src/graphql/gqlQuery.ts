@@ -419,7 +419,7 @@ type Color = {
 };
 
 type Brand = {
-  brand_id?: string;
+  brand_id: string;
   title: string;
   img: string;
 };
@@ -479,6 +479,7 @@ const ProductBaseFragment = {
         old_price
         sizesgroup_id
         brandItem @client {
+          brand_id
           title
           img
         }

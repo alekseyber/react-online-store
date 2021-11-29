@@ -2,7 +2,8 @@ import { useEffect, useMemo, FC, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import CopyToClipboard from "react-copy-to-clipboard";
-import makeStyles from '@mui/styles/makeStyles';
+// import makeStyles from "@mui/styles/makeStyles";
+import { styled } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
@@ -16,12 +17,26 @@ import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 import LoaderPage from "../../components/loaderpage/LoaderPage";
 import ErrorContent from "../../components/errorcontent/ErrorContent";
 import { ContextAnalitics, IreachGoalData } from "../../hoc/AnaliticsProvider";
+import { RouteNames, getLinkByRoutePath } from "../../router";
 
-const useStyles = makeStyles({
-  root: {
-    minHeight: "30vh",
-  },
-  imgwr: {
+// const useStyles = makeStyles({
+//   root: {
+//     minHeight: "30vh",
+//   },
+//   imgwr: {
+//     textAlign: "center",
+//     marginTop: 10,
+//     "& > img": {
+//       width: "auto",
+//       maxWidth: "100%",
+//       height: "auto",
+//     },
+//   },
+// });
+
+const CssCardRoot = styled(Card)({
+  minHeight: "30vh",
+  "& .orderDone-imgwr": {
     textAlign: "center",
     marginTop: 10,
     "& > img": {
@@ -33,8 +48,7 @@ const useStyles = makeStyles({
 });
 
 const OrderDonePage: FC = () => {
-  const classes = useStyles();
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const { trigger } = useContext(ContextAnalitics);
 
   const copyHandler = () => {
@@ -49,7 +63,7 @@ const OrderDonePage: FC = () => {
 
   useEffect(() => {
     if (!orderDone && !loading) {
-      navigate("/404", { replace: true });      
+      navigate("/404", { replace: true });
     }
     return () => {
       if (orderDone) {
@@ -93,21 +107,20 @@ const OrderDonePage: FC = () => {
 
   const orderId = orderDone ? orderDone.orderId : "";
   const orderNumber = orderDone ? orderDone.orderNumber : "";
-  const linkOrder = `/order/${orderId}`;
+  //const linkOrder = `/order/${orderId}`;
+  const linkOrder = getLinkByRoutePath("ORDER_PAGE", orderId);
 
-  // const { orderDoneText, baseUrl } = data.paramsData;
-  // const baseApiUrl = data.baseApiUrl;
   const bind = {
     name_page: "Заказ получен",
     action_page: "Заказ получен",
-    link_page: "/order/done",
+    link_page: RouteNames.ORDER_DONE_PAGE,
     title: `Заказ № ${orderNumber} получен.`,
     filter_on: false,
   };
 
   return (
     <PageBase {...bind}>
-      <Card className={classes.root}>
+      <CssCardRoot>
         <CardContent>
           <Typography variant="body1" gutterBottom>
             {orderDoneText}
@@ -129,7 +142,7 @@ const OrderDonePage: FC = () => {
               Копировать ссылку
             </Button>
           </CopyToClipboard>
-          <div className={classes.imgwr}>
+          <div className="orderDone-imgwr">
             <img
               alt={bind.title}
               src={`${baseApiUrl}/static/images/rabbit.png`}
@@ -137,7 +150,7 @@ const OrderDonePage: FC = () => {
             />
           </div>
         </CardContent>
-      </Card>
+      </CssCardRoot>
     </PageBase>
   );
 };

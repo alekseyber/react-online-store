@@ -6,11 +6,12 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Collapse from "@mui/material/Collapse";
-import makeStyles from '@mui/styles/makeStyles';
+import makeStyles from "@mui/styles/makeStyles";
 import {
   AppBarCategoryTreeFragment,
   TCategoryTreeChilds,
 } from "../../../../graphql/gqlQuery";
+import { getLinkByRoutePath } from "../../../../router";
 
 const useStyles = makeStyles((theme) => ({
   nested: {
@@ -35,7 +36,11 @@ const CatalogItem: FC<CatalogItemProps> = ({ root = false, item }) => {
 
   if (root || item.childs.length === 0 || !item.childs) {
     return (
-      <ListItem button component={Link} to={"/category/" + item.alias}>
+      <ListItem
+        button
+        component={Link}
+        to={getLinkByRoutePath("CATEGORY_PAGE", item.alias)}
+      >
         <ListItemText primary={item.title} />
       </ListItem>
     );
@@ -55,7 +60,7 @@ const CatalogItem: FC<CatalogItemProps> = ({ root = false, item }) => {
             button
             className={classes.nested}
             component={Link}
-            to={"/category/" + item.alias}
+            to={getLinkByRoutePath("CATEGORY_PAGE", item.alias)}
           >
             <ListItemText primary={titleAll} />
           </ListItem>
@@ -65,7 +70,7 @@ const CatalogItem: FC<CatalogItemProps> = ({ root = false, item }) => {
               key={index + "left"}
               className={classes.nested}
               component={Link}
-              to={"/category/" + itemEl.alias}
+              to={getLinkByRoutePath("CATEGORY_PAGE", itemEl.alias)}
             >
               <ListItemText primary={itemEl.title} />
             </ListItem>

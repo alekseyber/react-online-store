@@ -9,6 +9,7 @@ import { removeFilterSelect } from "../../graphql/localVarsFilter";
 import { PageBase } from "../../hoc/PageBase";
 import { useGetQueryPage } from "../../hooks/router.hook";
 import { ICategoryPage } from "../../graphql/gqlQuery";
+import { getLinkByRoutePath } from "../../router";
 
 const useStyles = makeStyles((theme) => ({
   products: {
@@ -59,7 +60,9 @@ const Category: FC<CategoryProps> = ({ data, alias }) => {
     filterData,
   });
   const productsTotal = productsData.products.length;
-  const canonical = `/category/${alias}`;
+  
+  //const canonical = `/category/${alias}`;
+  const canonical = getLinkByRoutePath("CATEGORY_PAGE", alias);
 
   const handleClear = () => {
     removeFilterSelect();

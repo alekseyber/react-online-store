@@ -11,6 +11,7 @@ import {
   TNewsAnnonce,
 } from "../../graphql/gqlQuery";
 import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
+import { RouteNames } from "../../router";
 
 interface IndexNewsPageData {
   list: TNewsAnnonce[];
@@ -53,7 +54,7 @@ const IndexNewsPage: FC = () => {
     ? {
         name_page: newsSectionName,
         action_page: newsSectionName,
-        link_page: "/news",
+        link_page: RouteNames.INDEX_NEWS_PAGE,
         title: newsSectionName,
         filter_on: true,
         page,

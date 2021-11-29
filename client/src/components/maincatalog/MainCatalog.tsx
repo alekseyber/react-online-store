@@ -10,7 +10,7 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import { TMaincatalog } from "../../graphql/gqlQuery";
-
+import { getLinkByRoutePath } from "../../router";
 
 const CssRootGrid = styled(Grid)(({ theme }) => ({
   marginTop: theme.spacing(2),
@@ -115,7 +115,7 @@ const MainCatalog: FC<MainCatalogProps> = ({
   let navigate = useNavigate();
 
   const handleTo = (to: string): void => {
-    navigate("/category/" + to);
+    navigate(getLinkByRoutePath("CATEGORY_PAGE", to));
   };
 
   const preventDefault = (event: SyntheticEvent) => {
@@ -141,7 +141,7 @@ const MainCatalog: FC<MainCatalogProps> = ({
                 <div className="mainCatalog-mediain">
                   <Link
                     variant="h5"
-                    href={"/category/" + item.alias}
+                    href={getLinkByRoutePath("CATEGORY_PAGE", item.alias)}
                     color="inherit"
                     underline="none"
                     onClick={preventDefault}

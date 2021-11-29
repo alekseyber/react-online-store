@@ -12,6 +12,7 @@ import {
   INewsPageVar,
 } from "../../graphql/gqlQuery";
 import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
+import { RouteNames, getLinkByRoutePath } from "../../router";
 
 const NewsPage: FC = () => {
   const alias = useAliasParams();
@@ -40,7 +41,7 @@ const NewsPage: FC = () => {
   const bind = {
     name_page: pageData.meta_title,
     action_page: pageData.meta_description,
-    link_page: "/news/" + alias,
+    link_page: getLinkByRoutePath("NEWS_PAGE", alias),
     title: pageData.title,
     filter_on: true,
     meta_full: true,
@@ -50,7 +51,7 @@ const NewsPage: FC = () => {
       {
         text: data.paramsData.newsSectionName,
         disabled: false,
-        href: "/news",
+        href: RouteNames.INDEX_NEWS_PAGE,
         level: 2,
       },
     ],

@@ -20,7 +20,7 @@ const ProductPage: FC = () => {
 
   const query = useQuery(true);
 
-  const colors = query.colors || null;
+  const colors = query.colors || null; 
 
   const { data, loading, error } = useQueryApp<IProductPage, IProductPageVars>(
     PRODUCT_PAGE_QUERY,

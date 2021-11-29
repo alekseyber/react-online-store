@@ -15,6 +15,7 @@ import {
 } from "../graphql/gqlQuery";
 import { useQueryApp } from "../hooks/appolloQueryApp.hook";
 import ErrorContent from "../components/errorcontent/ErrorContent";
+import { RouteNames } from "../router";
 
 // const useStyles = makeStyles((theme) => ({
 //   title: {
@@ -56,7 +57,7 @@ export interface IPageBaseProps {
 // export interface IPageBaseElementAttributesProperty extends IPageBaseProps {}
 // }
 
-const PageBaseContext = createContext<string>("/");
+const PageBaseContext = createContext<string>(RouteNames.MAIN_PAGE);
 export const usePageBase = () => useContext(PageBaseContext);
 
 export const PageBase: FC<IPageBaseProps> = (props) => {
@@ -67,7 +68,7 @@ export const PageBase: FC<IPageBaseProps> = (props) => {
     children,
     name_page = "",
     action_page = "",
-    link_page = "/",
+    link_page = RouteNames.MAIN_PAGE,
     title,
     filter_on = true,
     meta_full = false,

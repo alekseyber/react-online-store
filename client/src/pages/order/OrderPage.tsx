@@ -2,7 +2,7 @@ import { FC } from "react";
 import { PageBase } from "../../hoc/PageBase";
 import { useIdParams } from "../../hooks/use-alias-params.hook";
 import OrderInfPage from "../../components/orderinfpage/OrderInfPage";
-//import LoaderPage from "../../components/loaderpage/LoaderPage";
+import { getLinkByRoutePath } from "../../router";
 import PageSceleton from "../../components/skeletons/PageSceleton";
 import ContentSceleton from "../../components/skeletons/ContentSceleton";
 import {
@@ -36,7 +36,7 @@ const OrderPage: FC = () => {
     const bind = {
       name_page: `Заказ № ${data.order.orderNum}`,
       action_page: `Заказ № ${data.order.orderNum}`,
-      link_page: "/order",
+      link_page: getLinkByRoutePath("ORDER_PAGE", id),
       title: `Заказ № ${data.order.orderNum}.`,
       filter_on: true,
     };

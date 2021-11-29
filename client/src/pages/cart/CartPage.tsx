@@ -4,12 +4,13 @@ import CartPageContent from "../../containers/cartpagecontent/CartPageContent";
 import { CART_PAGE_QUERY, ICartPage } from "../../graphql/gqlQuery";
 import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
 import ErrorContent from "../../components/errorcontent/ErrorContent";
+import { RouteNames, getLinkByRoutePath } from "../../router";
 
 const CartPage: FC = () => {
   const bind = {
     name_page: "Корзина",
     action_page: "Оформить заказ",
-    link_page: "/cart",
+    link_page: RouteNames.CART_PAGE,
     filter_on: false,
   };
 
@@ -25,7 +26,7 @@ const CartPage: FC = () => {
 
   const { phone, currSymbol, cityDefault } = data.paramsData;
   const { alias } = data.categoryTree;
-  const categoryRootLink = `/category/${alias}`;
+  const categoryRootLink = getLinkByRoutePath("CATEGORY_PAGE", alias);
 
   const bindCartPageContent = {
     phone,

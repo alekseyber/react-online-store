@@ -2,6 +2,7 @@ import { FC } from "react";
 import { useQuery } from "../../hooks/router.hook";
 import { PageBase } from "../../hoc/PageBase";
 import Search from "../../containers/search/Search";
+import { RouteNames } from "../../router";
 
 const SearchPage: FC = () => {
   const query = useQuery();
@@ -12,7 +13,7 @@ const SearchPage: FC = () => {
   const bind = {
     name_page: "Поиск",
     action_page: title,
-    link_page: "/search",
+    link_page: RouteNames.SEARCH_PAGE,
     title,
     filter_on: true,
   };
