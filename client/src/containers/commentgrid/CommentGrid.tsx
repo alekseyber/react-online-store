@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { PaginationList, usePagin } from "../../hoc/Paginationlist";
 import CommentItem from "../../components/commentitem/CommentItem";
+import List from "../../components/listapp/List";
 import { TComment } from "../../graphql/gqlQuery";
 
 interface CommentGridProps {
@@ -18,11 +19,12 @@ const CommentGrid: FC<CommentGridProps> = ({
     const paginationRezult = usePagin();
 
     return (
-      <>
-        {paginationRezult.map((item, index) => (
-          <CommentItem item={item as TComment} key={index} />
-        ))}
-      </>
+      <List
+        items={paginationRezult}
+        renderItem={(item: TComment) => (
+          <CommentItem item={item} key={item._id} />
+        )}
+      />
     );
   };
 
@@ -38,17 +40,5 @@ const CommentGrid: FC<CommentGridProps> = ({
     </PaginationList>
   );
 };
-
-// CommentGrid.defaultProps = {
-//   comments: [],
-//   page: 1,
-//   countPage: 10,
-// };
-
-// CommentGrid.propTypes = {
-//   comments: PropTypes.array,
-//   page: PropTypes.number,
-//   countPage: PropTypes.number,
-// };
 
 export default CommentGrid;

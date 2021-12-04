@@ -6,18 +6,17 @@ import {
   createContext,
   FC,
   ChangeEvent,
+  ReactNode,
 } from "react";
 import { useNavigate } from "react-router-dom";
 import Pagination, {
   PaginationRenderItemParams,
 } from "@mui/material/Pagination";
 import PaginationItem from "@mui/material/PaginationItem";
-import Grid from "@mui/material/Grid";
+import Grid, { GridSpacing } from "@mui/material/Grid";
 import { styled } from "@mui/material/styles";
 import { usePageBase } from "./PageBase";
 import { useAddGet } from "../hooks/addget.hook";
-import { IPropsColorSelect } from "../containers/productitem/ProductItem";
-import { TComment, TNewsAnnonce } from "../graphql/gqlQuery";
 
 const CssRootDiv = styled("div")(({ theme }) => ({
   display: "flex",
@@ -28,54 +27,30 @@ const CssRootDiv = styled("div")(({ theme }) => ({
     marginBottom: theme.spacing(2),
   },
   "& .Mui-selected": {
-    backgroundColor: theme.palette.darkprimary.main,
-    color: theme.palette.primary.contrastText,
+    backgroundColor: `${theme.palette.darkprimary.main}!important`,
+    color: `${theme.palette.primary.contrastText}!important`,
+    "&:hover": {
+      cursor: "default!important",
+    },
   },
 }));
 
-// const useStyles = makeStyles((theme) => ({
-//   root: {
-//     display: "flex",
-//     justifyContent: "center",
-//     marginTop: theme.spacing(2),
-//     "& > *": {
-//       marginTop: theme.spacing(3),
-//       marginBottom: theme.spacing(2),
-//     },
-//     "& .Mui-selected": {
-//       backgroundColor: theme.palette.darkprimary.main,
-//       color: theme.palette.primary.contrastText,
-//     },
-//   },
-// }));
-
-export interface IPaginContextItem extends IPropsColorSelect {
-  alias: string;
-}
-
-//export type TPaginContextItem = IPaginContextItem | string;
-
-const PaginContext = createContext<
-  Array<IPaginContextItem | string | TComment | TNewsAnnonce>
->([]);
+const PaginContext = createContext<any[]>([]);
 export const usePagin = () => useContext(PaginContext);
 
-// interface IInputList {
-// 	inputList<T>: T;
-// }
-
-export interface PaginationListProps {
-  inputList: any[];
+export interface PaginationListProps<T> {
+  inputList: T[];
+  children: ReactNode;
   countPage?: number;
   page?: number;
-  spacingGrid?: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+  spacingGrid?: GridSpacing | undefined;
 }
 
 interface ItemPaginProps {
   item: PaginationRenderItemParams;
 }
 
-export const PaginationList: FC<PaginationListProps> = (props) => {
+export function PaginationList<T>(props: PaginationListProps<T>) {
   let navigate = useNavigate();
   const linkPage = usePageBase();
   const addGet = useAddGet();
@@ -136,11 +111,6 @@ export const PaginationList: FC<PaginationListProps> = (props) => {
       }
     }
 
-    // const href =
-    //   item.page === 1
-    //     ? linkPage
-    //     : addGet(linkPage, "page", item.page.toString());
-
     return <PaginationItem component="a" href={href} {...item} />;
   };
 
@@ -177,19 +147,4 @@ export const PaginationList: FC<PaginationListProps> = (props) => {
       )}
     </>
   );
-};
-
-// PaginationList.defaultProps = {
-//   countPage: 8,
-//   inputList: [],
-//   page: 1,
-//   spacingGrid: 2,
-// };
-
-// PaginationList.propTypes = {
-//   children: PropTypes.node.isRequired,
-//   countPage: PropTypes.number,
-//   inputList: PropTypes.array,
-//   page: PropTypes.number,
-//   spacingGrid: PropTypes.number,
-// };
+}

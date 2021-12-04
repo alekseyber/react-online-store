@@ -1,12 +1,9 @@
 import { FC } from "react";
-import ProductItem from "../productitem/ProductItem";
+import ProductItem, { IPropsColorSelect } from "../productitem/ProductItem";
 import ProductListSceleton from "../../components/skeletons/ProductListSceleton";
+import List from "../../components/listapp/List";
 
-import {
-  PaginationList,
-  usePagin,
-  IPaginContextItem,
-} from "../../hoc/Paginationlist";
+import { PaginationList, usePagin } from "../../hoc/Paginationlist";
 import {
   PRODUCTS_GRID_QUERY,
   LIST_PRODUCT_QUERY,
@@ -19,6 +16,10 @@ import {
   TSearchFullProduct,
 } from "../../graphql/gqlQuery";
 import { useQueryApp } from "../../hooks/appolloQueryApp.hook";
+
+interface IPaginContextItem extends IPropsColorSelect {
+  alias: string;
+}
 
 //import LoaderPage from "../../components/loaderpage/LoaderPage";
 
@@ -60,10 +61,11 @@ const ListProduct: FC<ProductBaseForGrid> = ({
   }
 
   return (
-    <>
-      {paginationRezult.map((item) => (
+    <List
+      items={paginationRezult}
+      renderItem={(item: IPaginContextItem | string) => (
         <ProductItem
-          item={item as IPaginContextItem | string}
+          item={item}
           imgproperty={productImgProperty}
           quality={qualityproductImg}
           currsymbol={currSymbol}
@@ -74,8 +76,8 @@ const ListProduct: FC<ProductBaseForGrid> = ({
                 (item as IPaginContextItem).colorselect
           }
         />
-      ))}
-    </>
+      )}
+    />
   );
 };
 

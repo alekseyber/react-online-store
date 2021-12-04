@@ -645,10 +645,10 @@ const typeDefs = gql`
     answer: String
     datas: String
     date: String
-    id: String
+    _id: ID!
   }
   type CommentList {
-    list: [Comment]!
+    list: [Comment]
   }
 
   # ----getOrder---

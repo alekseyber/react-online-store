@@ -14,7 +14,7 @@ module.exports.getCommentAllData = async () => {
     const list = await Comment.find(
       { status: true },
       {
-        _id: 0,
+      //  _id: 0,
         authorName: 1,
         commenText: 1,
         answer: 1,

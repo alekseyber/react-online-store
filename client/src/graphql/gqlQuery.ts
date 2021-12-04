@@ -1253,6 +1253,7 @@ export type TComment = {
   commenText: string;
   answer: string;
   date: string;
+  _id: string;
 };
 interface ICommentList {
   list: TComment[];
@@ -1274,6 +1275,7 @@ export const COMMENT_LIST_QUERY = gql`
         commenText
         answer
         date
+        _id
       }
     }
   }
