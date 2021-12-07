@@ -1,8 +1,14 @@
-import { FC, useEffect } from "react";
+import { FC, useEffect, Suspense, lazy } from "react";
 import { BrowserRouter } from "react-router-dom";
 import TagManager from "react-gtm-module";
 import { useRoutes } from "./router/index";
-import Layout from "./containers/layout/Layout";
+//import Layout from "./containers/layout/Layout";
+import AppBarSceleton from "./components/skeletons/AppBarSceleton";
+import FooterSceleton from "./components/skeletons/FooterSceleton";
+import PageSceleton from "./components/skeletons/PageSceleton";
+import ProductListSceleton from "./components/skeletons/ProductListSceleton";
+
+const Layout = lazy(() => import("./containers/layout/Layout"));
 
 // import {
 //   AnaliticsProvider,
@@ -44,7 +50,19 @@ const App: FC = () => {
   return (
     <div id="root">
       <BrowserRouter>
-        <Layout>{routes}</Layout>
+        <Suspense
+          fallback={
+            <>
+              <AppBarSceleton />
+              <PageSceleton title={true}>
+                <ProductListSceleton />
+              </PageSceleton>
+              <FooterSceleton />
+            </>
+          }
+        >
+          <Layout>{routes}</Layout>
+        </Suspense>
       </BrowserRouter>
     </div>
   );
